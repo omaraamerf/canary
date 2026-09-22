@@ -9,7 +9,7 @@ class BirdMedia extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['bird_id', 'type', 'url', 'sort_order'];
+    protected $fillable = ['bird_id', 'type', 'provider', 'public_id', 'url', 'sort_order'];
 
     public function bird()
     {
@@ -27,5 +27,10 @@ class BirdMedia extends Model
         return isset($matches[1])
             ? "https://drive.google.com/file/d/{$matches[1]}/preview"
             : $this->url;
+    }
+
+    public function isCloudinary(): bool
+    {
+        return $this->provider === 'cloudinary';
     }
 }

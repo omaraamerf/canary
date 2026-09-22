@@ -19,10 +19,12 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'phone',
         'email',
         'password',
         'role',
         'status',
+        'region_id',
     ];
 
     /**
@@ -51,5 +53,15 @@ class User extends Authenticatable
     public function birds()
     {
         return $this->hasMany(Bird::class, 'seller_id');
+    }
+
+    public function sellerProfile()
+    {
+        return $this->hasOne(SellerProfile::class);
+    }
+
+    public function region()
+    {
+        return $this->belongsTo(Region::class);
     }
 }

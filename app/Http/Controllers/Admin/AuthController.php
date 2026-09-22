@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\UserRole;
+use App\Enums\UserStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,21 +16,19 @@ class AuthController extends Controller
         return view('admin.auth.login');
     }
 
-    public function store(Request $request)
+    public function store(LoginRequest $request)
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required', 'string'],
-        ]);
+        $credentials = $request->safe()->only(['email', 'password']);
 
-        if (! Auth::attempt([...$credentials, 'status' => 'active'], $request->boolean('remember'))) {
+        if (! Auth::attempt([...$credentials, 'status' => UserStatus::Active->value], $request->boolean('remember'))) {
             return back()->withErrors(['email' => 'بيانات الدخول غير صحيحة.'])->onlyInput('email');
         }
 
         $request->session()->regenerate();
 
-        if ($request->user()->role !== 'admin') {
+        if ($request->user()->role !== UserRole::Admin->value) {
             Auth::logout();
+
             return back()->withErrors(['email' => 'هذا الحساب لا يملك صلاحية الإدارة.']);
         }
 

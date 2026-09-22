@@ -449,6 +449,9 @@ svg {
 .stat-icon.red { background: #f3dfdc; color: #943b32; }
 .stat-grid small { color: var(--admin-muted); font-size: 12px; }
 .stat-grid strong { color: var(--admin-ink); font-size: 25px; line-height: 1; }
+.approval-queue { display: grid; gap: 10px; grid-template-columns: repeat(2,minmax(0,1fr)); margin-bottom: 20px; }
+.approval-queue > div { align-items: center; background: var(--admin-accent-soft); border: 1px solid #eadb9f; display: grid; gap: 10px; grid-template-columns: 24px 1fr auto; padding: 12px 14px; }
+.approval-queue a { color: #715600; font-size: 12px; font-weight: 800; }
 
 .admin-form {
     display: grid;
@@ -527,6 +530,39 @@ svg {
     grid-column: 1 / -1;
 }
 
+.existing-media-grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+}
+
+.existing-media-item {
+    background: #f7f8f5;
+    border: 1px solid var(--admin-line);
+    border-radius: 4px;
+    overflow: hidden;
+    padding: 8px;
+}
+
+.existing-media-item img,
+.existing-media-item video {
+    aspect-ratio: 16 / 10;
+    background: #171a15;
+    object-fit: cover;
+    width: 100%;
+}
+
+.existing-media-item span {
+    align-items: center;
+    display: flex;
+    gap: 7px;
+}
+
+.existing-media-item input[type="checkbox"] {
+    min-height: auto;
+    width: auto;
+}
+
 .check-row {
     align-items: center;
     display: flex !important;
@@ -552,6 +588,28 @@ svg {
     border-right: 3px solid var(--admin-danger);
     color: #913c34;
     padding: 12px 15px;
+}
+
+.inline-admin-form,
+.seller-status-form {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+.inline-admin-form input,
+.inline-admin-form select,
+.seller-status-form input,
+.seller-status-form select {
+    border: 1px solid #ccd2cb;
+    border-radius: 3px;
+    min-height: 39px;
+    padding: 7px 10px;
+}
+
+.seller-status-form input {
+    min-width: 190px;
 }
 
 .order-layout {
@@ -730,5 +788,6 @@ svg {
     .page-content { padding-top: 90px; }
     .admin-section, .form-section, .order-details, .status-panel { padding: 15px; }
     .stat-grid, .form-grid { grid-template-columns: 1fr; }
+    .approval-queue { grid-template-columns: 1fr; }
     .span-2 { grid-column: auto; }
 }

@@ -2,48 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreOrderRequest;
 use App\Models\Bird;
 use App\Models\Order;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use App\Services\OrderService;
 
 class OrderController extends Controller
 {
-    public function store(Request $request, Bird $bird)
+    public function __construct(private readonly OrderService $orders) {}
+
+    public function store(StoreOrderRequest $request, Bird $bird)
     {
-        $validated = $request->validate([
-            'buyer_name' => ['required', 'string', 'max:100'],
-            'phone' => ['required', 'string', 'max:30'],
-            'city' => ['required', 'string', 'max:100'],
-            'notes' => ['nullable', 'string', 'max:1000'],
-        ]);
-
-        $order = DB::transaction(function () use ($bird, $validated) {
-            $lockedBird = Bird::query()->lockForUpdate()->findOrFail($bird->id);
-
-            abort_if($lockedBird->status !== 'available', 422, 'هذا الطائر لم يعد متاحًا للحجز.');
-
-            do {
-                $reference = 'CNY-'.Str::upper(Str::random(7));
-            } while (Order::where('reference', $reference)->exists());
-
-            $order = $lockedBird->orders()->create([
-                ...$validated,
-                'reference' => $reference,
-                'status' => 'pending',
-                'delivery_method' => $lockedBird->delivery_type,
-                'price_snapshot' => $lockedBird->price,
-                'currency_snapshot' => $lockedBird->currency,
-            ]);
-
-            $order->statusLogs()->create([
-                'new_status' => 'pending',
-                'note' => 'تم استلام طلب الحجز من الموقع.',
-            ]);
-
-            return $order;
-        });
+        $order = $this->orders->create($bird, $request->validated());
 
         return redirect()->route('orders.received', $order);
     }

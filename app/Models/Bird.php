@@ -13,7 +13,8 @@ class Bird extends Model
     protected $fillable = [
         'seller_id', 'breed_id', 'title', 'slug', 'sex', 'hatch_year', 'color',
         'molt_status', 'breeding_ready', 'singing_status', 'ring_number', 'price',
-        'currency', 'city', 'delivery_type', 'description', 'status', 'featured',
+        'currency', 'city', 'region_id', 'delivery_type', 'description', 'status', 'featured',
+        'approval_status', 'rejection_reason', 'published_at',
     ];
 
     protected function casts(): array
@@ -22,6 +23,7 @@ class Bird extends Model
             'breeding_ready' => 'boolean',
             'featured' => 'boolean',
             'price' => 'decimal:2',
+            'published_at' => 'datetime',
         ];
     }
 
@@ -33,6 +35,17 @@ class Bird extends Model
     public function seller()
     {
         return $this->belongsTo(User::class, 'seller_id');
+    }
+
+    public function region()
+    {
+        return $this->belongsTo(Region::class);
+    }
+
+    public function scopePublished($query)
+    {
+        return $query->where('approval_status', 'approved')
+            ->whereHas('seller', fn ($seller) => $seller->where('status', 'active'));
     }
 
     public function media()

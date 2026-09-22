@@ -8,7 +8,7 @@
         @endif
     </a>
     <div class="bird-card-body">
-        <div class="flex items-center justify-between gap-3 text-sm text-[#6d7167]"><span>{{ $bird->breed->name }}</span><span class="inline-flex items-center gap-1"><i data-lucide="map-pin" class="size-4"></i>{{ $bird->city }}</span></div>
+        <div class="flex items-center justify-between gap-3 text-sm text-[#6d7167]"><span>{{ $bird->breed->name }}</span><span class="inline-flex items-center gap-1"><i data-lucide="map-pin" class="size-4"></i>{{ $bird->city }}@if($bird->region)، {{ $bird->region->name }}@endif</span></div>
         <h3><a href="{{ route('birds.show', $bird) }}">{{ $bird->title }}</a></h3>
         <div class="bird-tags"><span>{{ ['male' => 'ذكر', 'female' => 'أنثى', 'unknown' => 'غير محدد'][$bird->sex] }}</span><span>{{ $bird->color }}</span></div>
         <div class="bird-card-footer"><strong>{{ number_format($bird->price) }} <small>ر.س</small></strong><a href="{{ route('birds.show', $bird) }}" aria-label="عرض {{ $bird->title }}"><i data-lucide="arrow-left"></i></a></div>

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ asset('admin-assets/css/bootstrap-rtl.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin-assets/css/icons-rtl.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin-assets/css/app-rtl.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin-assets/css/canary-admin.css') }}?v=4">
+    <link rel="stylesheet" href="{{ asset('admin-assets/css/canary-admin.css') }}?v=5">
 </head>
 <body data-sidebar="dark">
 <div id="layout-wrapper">
@@ -56,6 +56,12 @@
                     <li class="{{ request()->routeIs('admin.dashboard') ? 'mm-active' : '' }}"><a class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}"><i data-lucide="layout-dashboard"></i><span>نظرة عامة</span></a></li>
                     <li class="{{ request()->routeIs('admin.birds.*') ? 'mm-active' : '' }}"><a class="{{ request()->routeIs('admin.birds.*') ? 'active' : '' }}" href="{{ route('admin.birds.index') }}"><i data-lucide="bird"></i><span>الطيور</span></a></li>
                     <li class="{{ request()->routeIs('admin.orders.*') ? 'mm-active' : '' }}"><a class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}" href="{{ route('admin.orders.index') }}"><i data-lucide="clipboard-list"></i><span>الطلبات</span></a></li>
+                    <li class="{{ request()->routeIs('admin.sellers.*') ? 'mm-active' : '' }}"><a class="{{ request()->routeIs('admin.sellers.*') ? 'active' : '' }}" href="{{ route('admin.sellers.index') }}"><i data-lucide="users"></i><span>البائعون</span></a></li>
+                    <li class="{{ request()->routeIs('admin.regions.*') ? 'mm-active' : '' }}"><a class="{{ request()->routeIs('admin.regions.*') ? 'active' : '' }}" href="{{ route('admin.regions.index') }}"><i data-lucide="map-pinned"></i><span>المناطق</span></a></li>
+                    <li class="{{ request()->routeIs('admin.breeds.*') ? 'mm-active' : '' }}"><a class="{{ request()->routeIs('admin.breeds.*') ? 'active' : '' }}" href="{{ route('admin.breeds.index') }}"><i data-lucide="tags"></i><span>السلالات</span></a></li>
+                    <li class="{{ request()->routeIs('admin.guide-articles.*') ? 'mm-active' : '' }}"><a class="{{ request()->routeIs('admin.guide-articles.*') ? 'active' : '' }}" href="{{ route('admin.guide-articles.index') }}"><i data-lucide="book-open"></i><span>مقالات الدليل</span></a></li>
+                    <li class="{{ request()->routeIs('admin.guide-categories.*') ? 'mm-active' : '' }}"><a class="{{ request()->routeIs('admin.guide-categories.*') ? 'active' : '' }}" href="{{ route('admin.guide-categories.index') }}"><i data-lucide="library"></i><span>أقسام الدليل</span></a></li>
+                    <li class="{{ request()->routeIs('admin.settings.*') ? 'mm-active' : '' }}"><a class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}" href="{{ route('admin.settings.edit') }}"><i data-lucide="settings"></i><span>الإعدادات</span></a></li>
                     <li class="menu-title mt-3">روابط</li>
                     <li><a href="{{ route('home') }}" target="_blank"><i data-lucide="globe"></i><span>الموقع العام</span></a></li>
                 </ul>

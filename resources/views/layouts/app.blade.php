@@ -23,21 +23,23 @@
                 <a class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}" href="{{ route('about') }}">من نحن</a>
                 <a class="nav-link {{ request()->routeIs('policy') ? 'active' : '' }}" href="{{ route('policy') }}">سياسة الحجز</a>
                 <a class="nav-link {{ request()->routeIs('start-selling') ? 'active' : '' }}" href="{{ route('start-selling') }}">اعرض طائرك</a>
+                <a class="nav-link {{ request()->routeIs('orders.track*') ? 'active' : '' }}" href="{{ route('orders.track') }}">تتبع طلبك</a>
             </nav>
             <div class="flex items-center gap-2">
                 <details class="region-switcher"><summary><i data-lucide="map-pin"></i><span>{{ $selectedRegion?->name ?: 'كل المناطق' }}</span></summary><form method="post" action="{{ route('region.select') }}">@csrf<button name="region" value="all" type="submit">كل المناطق</button>@foreach($navigationRegions as $region)<button name="region" value="{{ $region->id }}" type="submit">{{ $region->name }}</button>@endforeach</form></details>
                 <a href="{{ route('birds.index') }}" class="btn btn-dark hidden sm:inline-flex"><i data-lucide="search"></i> ابحث عن طائر</a>
-                <button class="icon-btn md:hidden" data-menu-toggle aria-label="فتح القائمة" aria-expanded="false"><i data-lucide="menu"></i></button>
+                <button type="button" class="icon-btn md:hidden" data-menu-toggle aria-label="فتح القائمة" aria-controls="mobile-navigation" aria-expanded="false"><i data-lucide="menu"></i></button>
             </div>
         </div>
-        <nav class="mobile-menu hidden" data-mobile-menu>
+        <nav id="mobile-navigation" class="mobile-menu hidden" data-mobile-menu aria-label="التنقل للجوال">
             <a href="{{ route('home') }}">الرئيسية</a>
             <a href="{{ route('birds.index') }}">كل الطيور</a>
             @if($guideEnabled)<a href="{{ route('guide.index') }}">دليل الكناري</a>@endif
             <a href="{{ route('about') }}">من نحن</a>
             <a href="{{ route('policy') }}">سياسة الحجز</a>
             <a href="{{ route('start-selling') }}">اعرض طائرك</a>
-            <a href="{{ route('seller.login') }}">دخول البائع</a>
+            <a href="{{ route('orders.track') }}">تتبع طلبك</a>
+            <a href="{{ route('filament.seller.auth.login') }}">دخول البائع</a>
         </nav>
     </header>
 
@@ -51,10 +53,11 @@
         <div class="container footer-grid">
             <div><a href="{{ route('home') }}" class="brand brand-light"><span class="brand-mark"><i data-lucide="bird"></i></span><span><strong>كناري</strong><small>اختيار أوضح، وحجز أبسط</small></span></a></div>
             <p>نرتب بيانات الطائر وصوره وفيديوه في مكان واحد، ثم نؤكد الحجز معك مباشرة.</p>
-            <div class="footer-links"><a href="{{ route('birds.index') }}">الطيور</a>@if($guideEnabled)<a href="{{ route('guide.index') }}">دليل الكناري</a>@endif<a href="{{ route('seller.login') }}">دخول البائع</a></div>
+            <div class="footer-links"><a href="{{ route('birds.index') }}">الطيور</a>@if($guideEnabled)<a href="{{ route('guide.index') }}">دليل الكناري</a>@endif<a href="{{ route('filament.seller.auth.login') }}">دخول البائع</a></div>
         </div>
         <div class="container footer-bottom">© {{ date('Y') }} كناري. جميع الحقوق محفوظة.</div>
     </footer>
     <script src="{{ asset('assets/js/canary.js') }}" type="module"></script>
+    <script src="{{ asset('assets/js/mobile-menu.js') }}?v=1" defer></script>
 </body>
 </html>

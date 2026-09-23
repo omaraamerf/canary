@@ -11,6 +11,18 @@ enum OrderStatus: string
     case Delivered = 'delivered';
     case Cancelled = 'cancelled';
 
+    public function label(): string
+    {
+        return match ($this) {
+            self::Pending => 'قيد الانتظار',
+            self::Confirmed => 'مؤكد',
+            self::Preparing => 'قيد التجهيز',
+            self::OutForDelivery => 'خرج للتوصيل',
+            self::Delivered => 'تم التسليم',
+            self::Cancelled => 'ملغي',
+        };
+    }
+
     public function reservesBird(): bool
     {
         return $this === self::Confirmed;

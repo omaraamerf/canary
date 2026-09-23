@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -32,5 +33,20 @@ class Order extends Model
     public function buyerRegion()
     {
         return $this->belongsTo(Region::class, 'buyer_region_id');
+    }
+
+    public function buyerPhoneCanBeRevealed(): bool
+    {
+        if ($this->status === OrderStatus::Preparing->value) {
+            return true;
+        }
+
+        if ($this->relationLoaded('statusLogs')) {
+            return $this->statusLogs->contains('new_status', OrderStatus::Preparing->value);
+        }
+
+        return $this->statusLogs()
+            ->where('new_status', OrderStatus::Preparing->value)
+            ->exists();
     }
 }

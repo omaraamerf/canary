@@ -40,6 +40,8 @@ class SellerService
                     : ApprovalStatus::Pending->value,
             ]);
 
+            $user->assignRole(UserRole::Seller->value);
+
             return $user;
         });
     }
@@ -59,6 +61,25 @@ class SellerService
                 'bio' => $data['bio'] ?? null,
                 'region_id' => $data['region_id'],
             ]);
+        });
+    }
+
+    public function updateDetails(User $seller, array $data): void
+    {
+        DB::transaction(function () use ($seller, $data) {
+            $seller->update([
+                'phone' => $data['phone'],
+                'region_id' => $data['region_id'],
+            ]);
+
+            $seller->sellerProfile()->updateOrCreate(
+                ['user_id' => $seller->id],
+                [
+                    'display_name' => $data['display_name'],
+                    'bio' => $data['bio'] ?? null,
+                    'region_id' => $data['region_id'],
+                ],
+            );
         });
     }
 

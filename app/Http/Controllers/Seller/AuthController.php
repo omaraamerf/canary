@@ -10,6 +10,7 @@ use App\Http\Requests\Seller\RegisterRequest;
 use App\Models\Region;
 use App\Models\User;
 use App\Services\SellerService;
+use Filament\Facades\Filament;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -55,10 +56,10 @@ class AuthController extends Controller
             Auth::login($user);
             $request->session()->regenerate();
 
-            return redirect()->route('seller.dashboard')->with('success', 'تم إنشاء حساب البائع.');
+            return redirect()->to(Filament::getPanel('seller')->getUrl())->with('success', 'تم إنشاء حساب البائع.');
         }
 
-        return redirect()->route('seller.login')->with('success', 'تم استلام طلب حسابك وسيظهر لك الدخول بعد موافقة الإدارة.');
+        return redirect()->to(Filament::getPanel('seller')->getLoginUrl())->with('success', 'تم استلام طلب حسابك وسيظهر لك الدخول بعد موافقة الإدارة.');
     }
 
     public function destroy(Request $request)

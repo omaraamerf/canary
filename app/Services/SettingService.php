@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\DB;
 
 class SettingService
 {
+    public function update(string $key, mixed $value): Setting
+    {
+        Setting::put($key, $value);
+
+        return Setting::query()->where('key', $key)->firstOrFail();
+    }
+
     public function approvalAndGuideSettings(): array
     {
         return [

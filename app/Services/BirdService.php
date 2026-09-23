@@ -12,7 +12,7 @@ use App\Models\Setting;
 use App\Models\User;
 use App\Support\UniqueSlug;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Throwable;
@@ -51,8 +51,12 @@ class BirdService
 
     public function updateForAdmin(Bird $bird, array $data): Bird
     {
+        $approval = ApprovalStatus::from($data['approval_status']);
+
         return $this->updateBird($bird, $data, [
             'slug' => $bird->title === $data['title'] ? $bird->slug : $this->slug($data['title'], $bird->id),
+            'rejection_reason' => $approval === ApprovalStatus::Rejected ? ($data['rejection_reason'] ?? null) : null,
+            'published_at' => $approval === ApprovalStatus::Approved ? ($bird->published_at ?: now()) : null,
         ]);
     }
 
@@ -129,7 +133,7 @@ class BirdService
                     ...$extraAttributes,
                 ]);
 
-                $bird->media()->whereKey($removed->modelKeys())->delete();
+                $bird->media()->whereKey($removed->pluck('id')->all())->delete();
                 $this->persistMedia($bird, $uploaded);
 
                 return $bird;
@@ -166,7 +170,7 @@ class BirdService
     private function mediaToRemove(Bird $bird, array $ids): Collection
     {
         return $ids === []
-            ? collect()
+            ? $bird->media()->getRelated()->newCollection()
             : $bird->media()->whereKey($ids)->get();
     }
 
@@ -174,7 +178,8 @@ class BirdService
     {
         $removedImageIds = $removed
             ->where('type', MediaType::Image->value)
-            ->modelKeys();
+            ->pluck('id')
+            ->all();
         $remainingImages = $bird->media()
             ->where('type', MediaType::Image->value)
             ->when($removedImageIds !== [], fn ($query) => $query->whereKeyNot($removedImageIds))
@@ -191,7 +196,10 @@ class BirdService
             MediaType::Image->value => ['input' => 'images', 'limit' => (int) config('services.cloudinary.max_images', 8)],
             MediaType::Video->value => ['input' => 'videos', 'limit' => (int) config('services.cloudinary.max_videos', 3)],
         ] as $type => $settings) {
-            $removedIds = $removed->where('type', $type)->modelKeys();
+            $removedIds = $removed
+                ->where('type', $type)
+                ->pluck('id')
+                ->all();
             $existing = $bird->media()
                 ->where('type', $type)
                 ->when($removedIds !== [], fn ($query) => $query->whereKeyNot($removedIds))

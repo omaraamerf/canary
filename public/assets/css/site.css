@@ -264,6 +264,19 @@ textarea { resize: vertical; }
 .success-summary span { border-left: 1px solid var(--line); color: var(--muted); font-size: .72rem; padding: 1rem; }
 .success-summary span:last-child { border-left: 0; }
 .success-summary b { color: var(--ink); display: block; font-size: .84rem; margin-top: .3rem; }
+.tracking-panel { text-align: right; }
+.tracking-panel > .success-icon, .tracking-panel > .kicker, .tracking-panel > h1, .tracking-panel > p { text-align: center; }
+.tracking-form { display: grid; gap: 1rem; margin: 1.5rem auto 0; max-width: 520px; }
+.tracking-form label { color: #474c44; display: grid; font-size: .8rem; font-weight: 800; gap: .45rem; }
+.tracking-form .btn { justify-content: center; margin-top: .25rem; }
+.tracking-actions { align-items: center; display: flex; flex-wrap: wrap; gap: .7rem; justify-content: center; }
+.tracking-timeline { border-top: 1px solid var(--line); margin: 1.5rem 0; padding-top: 1.25rem; }
+.tracking-timeline h2 { font-size: 1.05rem; margin: 0 0 1rem; }
+.tracking-step { display: grid; gap: .75rem; grid-template-columns: 14px 1fr; min-height: 58px; position: relative; }
+.tracking-dot { background: var(--yellow); border: 2px solid #fff; border-radius: 50%; box-shadow: 0 0 0 2px var(--yellow-dark); height: 11px; margin-top: 5px; width: 11px; }
+.tracking-step:not(:last-child)::before { background: var(--line); content: ''; height: calc(100% - 8px); position: absolute; right: 5px; top: 16px; width: 1px; }
+.tracking-step b, .tracking-step time { display: block; }
+.tracking-step time { color: var(--muted); font-size: .72rem; margin-top: .2rem; }
 
 @media (max-width: 1000px) {
     .home-intro-grid { gap: 28px; grid-template-columns: 1fr 1fr; }

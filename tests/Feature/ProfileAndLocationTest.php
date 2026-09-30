@@ -8,7 +8,10 @@ use App\Enums\UserRole;
 use App\Enums\UserStatus;
 use App\Models\Country;
 use App\Models\Post;
+use App\Models\Region;
 use App\Models\User;
+use Database\Seeders\DatabaseSeeder;
+use Database\Seeders\LocationSeeder;
 use Database\Seeders\PermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -40,6 +43,20 @@ class ProfileAndLocationTest extends TestCase
         $this->assertTrue($syria->regions()->where('name', 'دمشق')->exists());
         $this->assertSame(13, $saudi->regions()->count());
         $this->assertSame(58, Country::where('code', 'DZ')->firstOrFail()->regions()->count());
+    }
+
+    public function test_location_seeder_includes_syria_and_can_run_repeatedly(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+        $this->seed(LocationSeeder::class);
+
+        $syria = Country::where('code', 'SY')->firstOrFail();
+
+        $this->assertSame(14, $syria->regions()->count());
+        $this->assertTrue($syria->regions()->where('slug', 'damascus')->where('name', 'دمشق')->exists());
+        $this->assertSame(0, Region::whereNull('country_id')->count());
+        $this->assertSame(1, Country::where('code', 'SY')->count());
+        $this->assertSame(Region::count(), Region::distinct()->count('slug'));
     }
 
     public function test_forms_with_location_and_image_pickers_render(): void

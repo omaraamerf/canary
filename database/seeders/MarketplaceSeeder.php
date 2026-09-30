@@ -26,29 +26,12 @@ class MarketplaceSeeder extends Seeder
         //     ->get()
         //     ->keyBy('slug');
 
-        $regions = collect([
-            ['name' => 'دمشق', 'slug' => 'damascus'],
-            ['name' => 'ريف دمشق', 'slug' => 'rif-dimashq'],
-            ['name' => 'حلب', 'slug' => 'aleppo'],
-            ['name' => 'حمص', 'slug' => 'homs'],
-            ['name' => 'حماة', 'slug' => 'hama'],
-            ['name' => 'اللاذقية', 'slug' => 'latakia'],
-            ['name' => 'طرطوس', 'slug' => 'tartus'],
-            ['name' => 'إدلب', 'slug' => 'idlib'],
-            ['name' => 'الرقة', 'slug' => 'raqqa'],
-            ['name' => 'دير الزور', 'slug' => 'deir-ez-zor'],
-            ['name' => 'الحسكة', 'slug' => 'al-hasakah'],
-            ['name' => 'درعا', 'slug' => 'daraa'],
-            ['name' => 'السويداء', 'slug' => 'as-suwayda'],
-            ['name' => 'القنيطرة', 'slug' => 'quneitra'],
-        ])->mapWithKeys(function ($data, $index) {
-            $region = Region::updateOrCreate(
-                ['name' => $data['name']],
-                ['slug' => $data['slug'], 'active' => true, 'sort_order' => $index + 1]
-            );
-
-            return [$data['name'] => $region];
-        });
+        // Syria's governorates (and the other countries) come from LocationSeeder.
+        $this->call(LocationSeeder::class);
+        $regions = Region::query()
+            ->whereHas('country', fn ($country) => $country->where('code', 'SY'))
+            ->get()
+            ->keyBy('name');
 
         Setting::put('seller_approval_required', '0');
         Setting::put('listing_approval_required', '0');

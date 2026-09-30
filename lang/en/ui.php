@@ -7,7 +7,6 @@ return array_replace_recursive($ar, [
     'direction' => 'ltr',
     'brand' => ['name' => 'Rifqna', 'tagline' => 'Selected bird marketplace', 'promise' => 'Clearer choices, simpler reservations'],
     'admin' => ['brand' => 'Rifqna Admin'], 'seller' => ['brand' => 'Rifqna Seller Portal', 'public_label' => 'Rifqna seller', 'birds' => "Seller's birds", 'no_birds' => 'No birds are currently available'],
-    'account' => ['profile' => 'Profile'],
     'register' => ['heading' => 'Start selling on Rifqna', 'lead' => 'Create your seller profile, then add your first bird from the dashboard.', 'manager' => 'Manager name', 'display_name' => 'Store or breeder name', 'choose_region' => 'Choose a region', 'bio' => 'About', 'password' => 'Password', 'password_confirmation' => 'Confirm password', 'have_account' => 'I have an account', 'submit' => 'Create account'],
     'nav' => ['home' => 'Home', 'birds' => 'All birds', 'guide' => 'Canary guide', 'about' => 'About us', 'policy' => 'Reservation policy', 'sell' => 'Sell your bird', 'track' => 'Track your order', 'seller_login' => 'Seller login', 'community' => 'Ask breeders', 'login' => 'Log in', 'register' => 'Sign up', 'logout' => 'Log out', 'seller_panel' => 'Seller dashboard', 'admin_panel' => 'Admin dashboard'],
     'layout' => ['title' => 'Trusted canary marketplace', 'description' => 'Selected canaries with clear details and direct reservation.', 'main_navigation' => 'Main navigation', 'mobile_navigation' => 'Mobile navigation', 'open_menu' => 'Open menu', 'all_regions' => 'All regions', 'find_bird' => 'Find a bird', 'choose_region' => 'Choose your region', 'region_help' => 'We will show nearby birds first. You can change this selection at any time.', 'or' => 'or', 'show_all_regions' => 'Show all regions', 'footer_about' => 'Bird details, photos and videos in one place, followed by direct reservation confirmation.', 'rights' => 'All rights reserved.'],
@@ -29,6 +28,15 @@ return array_replace_recursive($ar, [
     'guide' => ['title' => 'Canary guide', 'description' => 'A practical guide to canary care, health, sexing, readiness, breeding and breeds.', 'for_all' => 'For breeders and beginners', 'lead' => 'Practical answers to help you understand and care for your bird and make a clearer buying decision.', 'start' => 'Start with a topic', 'categories' => 'Guide categories', 'content' => 'Selected content', 'latest' => 'Latest articles', 'category' => 'Guide category', 'empty' => 'No published articles in this category yet', 'empty_help' => 'Articles will appear here after they are published.', 'back' => 'Back to guide', 'updated' => 'Last updated :date', 'read' => 'Read :title', 'tags' => 'Tags:', 'market' => 'From guide to marketplace', 'market_title' => 'Looking for available birds in your region?', 'market_text' => 'Review bird details, photos and videos, then send a reservation request directly.', 'market_button' => 'View available birds', 'continue' => 'Keep reading', 'related' => 'Related articles'],
     'post_category' => ['health' => 'Sick bird', 'treatment' => 'Treatment & medication', 'nutrition' => 'Nutrition', 'breeding' => 'Breeding', 'general' => 'General question'],
     'post_status' => ['published' => 'Published', 'hidden' => 'Hidden'],
+    'errors' => [
+        'home' => 'Back to home', 'back' => 'Go back',
+        '403' => ['title' => 'Not allowed', 'message' => 'You do not have permission to access this page.'],
+        '404' => ['title' => 'Page not found', 'message' => 'The page may have been removed or its link changed.'],
+        '419' => ['title' => 'Page expired', 'message' => 'Your session expired. Refresh the page and try again.'],
+        '429' => ['title' => 'Too many attempts', 'message' => 'You sent too many requests in a short time. Wait a minute and try again.'],
+        '500' => ['title' => 'Something went wrong', 'message' => 'Sorry, there was a server problem. Please try again shortly.'],
+        '503' => ['title' => 'Under maintenance', 'message' => 'We are making some improvements and will be back soon.'],
+    ],
     'location' => [
         'country' => 'Country', 'region' => 'Region / province',
         'choose_country' => 'Choose a country', 'choose_region' => 'Choose a region',
@@ -42,7 +50,7 @@ return array_replace_recursive($ar, [
         'max_reached' => 'You can add up to :max photos.',
     ],
     'account' => [
-        'my_account' => 'My account', 'edit' => 'Edit profile', 'public_profile' => 'Public profile',
+        'profile' => 'Profile', 'my_account' => 'My account', 'edit' => 'Edit profile', 'public_profile' => 'Public profile',
         'visit_store' => 'Visit store', 'member_since' => 'Member since :date',
         'no_bio' => "You haven't written a bio yet. Add one from Edit profile.",
         'stats_posts' => 'Questions', 'stats_replies' => 'Replies', 'stats_solutions' => 'Accepted solutions',

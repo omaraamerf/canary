@@ -387,6 +387,11 @@ textarea { resize: vertical; }
 .login-prompt p { font-weight: 800; margin: 0; }
 .login-prompt div { display: flex; gap: .6rem; }
 
+/* Error pages */
+.error-page { align-items: center; display: flex; }
+.error-page .success-panel { width: 100%; }
+.error-code { color: var(--yellow); display: block; font-size: 4.5rem; font-weight: 900; line-height: 1; }
+
 /* Avatars */
 .avatar { align-items: center; background: var(--yellow); border-radius: 50%; color: var(--dark); display: inline-flex; flex-shrink: 0; font-size: .85rem; font-weight: 900; height: 32px; justify-content: center; object-fit: cover; overflow: hidden; width: 32px; }
 .avatar-xs { font-size: .6rem; height: 20px; width: 20px; }

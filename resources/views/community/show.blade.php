@@ -13,7 +13,7 @@
             <span class="post-category post-category-{{ $post->category->value }}">{{ $post->category->label() }}</span>
             @if($post->isSolved())<span class="post-solved"><i data-lucide="circle-check"></i>{{ __('ui.community.solved') }}</span>@endif
             @if($post->breed)<span>{{ $post->breed->localized_name }}</span>@endif
-            @if($post->region)<span><i data-lucide="map-pin"></i>{{ $post->region->name }}</span>@endif
+            @if($post->country)<span><i data-lucide="map-pin"></i>{{ $post->region ? $post->region->name.'، ' : '' }}{{ $post->country->localized_name }}</span>@endif
         </div>
         <h1>{{ $post->title }}</h1>
         <div class="post-author">
@@ -75,7 +75,7 @@
                     <h3 class="full">{{ __('ui.community.add_comment') }}</h3>
                     @if($errors->any())<div class="form-errors full">{{ $errors->first() }}</div>@endif
                     <label class="full"><textarea name="body" rows="4" required minlength="2" maxlength="3000" placeholder="{{ __('ui.community.comment_placeholder') }}">{{ old('body') }}</textarea></label>
-                    <label class="full">{{ __('ui.community.comment_images') }}<input type="file" name="images[]" accept="image/*" multiple></label>
+                    <x-image-picker class="full image-picker-compact" name="images" :max="3" :label="__('ui.uploads.add_images')" />
                     <button class="btn btn-primary full" type="submit"><i data-lucide="send"></i> {{ __('ui.community.send_comment') }}</button>
                 </form>
             @endcan

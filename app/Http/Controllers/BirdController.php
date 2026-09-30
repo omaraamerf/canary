@@ -4,15 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Bird;
 use App\Models\Breed;
+use App\Support\MarketplaceLocation;
 use Illuminate\Http\Request;
 
 class BirdController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, MarketplaceLocation $location)
     {
-        $regionId = $request->filled('region') ? $request->integer('region') : session('marketplace_region_id');
+        $filtersLocation = $request->hasAny(['country', 'region']);
+        $regionId = $filtersLocation ? ($request->integer('region') ?: null) : $location->regionId();
+        $countryId = $filtersLocation ? ($request->integer('country') ?: null) : $location->countryId();
+        $allRegions = $request->boolean('all_regions');
 
-        $birds = Bird::query()
+        $birds = MarketplaceLocation::scope(Bird::query(), $allRegions ? null : $countryId, $allRegions ? null : $regionId)
             ->with(['breed', 'media', 'region'])
             ->published()
             ->when($request->filled('q'), function ($query) use ($request) {
@@ -25,7 +29,6 @@ class BirdController extends Controller
             })
             ->when($request->filled('breed'), fn ($query) => $query->whereHas('breed', fn ($breed) => $breed->where('slug', $request->string('breed'))))
             ->when($request->filled('sex'), fn ($query) => $query->where('sex', $request->string('sex')))
-            ->when($regionId && ! $request->boolean('all_regions'), fn ($query) => $query->where('region_id', $regionId))
             ->when($request->filled('color'), fn ($query) => $query->where('color', 'like', '%'.$request->string('color')->trim().'%'))
             ->when($request->filled('molt_status'), fn ($query) => $query->where('molt_status', $request->string('molt_status')))
             ->when($request->filled('singing_status'), fn ($query) => $query->where('singing_status', $request->string('singing_status')))
@@ -44,8 +47,8 @@ class BirdController extends Controller
         return view('birds.index', [
             'birds' => $birds->paginate(9)->withQueryString(),
             'breeds' => Breed::where('active', true)->orderBy('name')->get(),
-            'regions' => \App\Models\Region::where('active', true)->orderBy('sort_order')->orderBy('name')->get(),
-            'activeRegionId' => $request->boolean('all_regions') ? null : $regionId,
+            'activeCountryId' => $allRegions ? null : $countryId,
+            'activeRegionId' => $allRegions ? null : $regionId,
         ]);
     }
 
@@ -56,8 +59,6 @@ class BirdController extends Controller
 
         return view('birds.show', [
             'bird' => $bird,
-            'navigationRegions' => \App\Models\Region::where('active', true)->orderBy('sort_order')->orderBy('name')->get(),
-            'selectedRegion' => session('marketplace_region_id') ? \App\Models\Region::find(session('marketplace_region_id')) : null,
             'relatedBirds' => Bird::with(['breed', 'media', 'region'])
                 ->published()
                 ->where('status', 'available')

@@ -7,7 +7,7 @@
     <title>@yield('title', __('ui.brand.name')) | {{ __('ui.layout.title') }}</title>
     <meta name="description" content="@yield('meta_description', __('ui.layout.description'))">
     <link rel="stylesheet" href="{{ asset('assets/css/canary.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/site.css') }}?v=9">
+    <link rel="stylesheet" href="{{ asset('assets/css/site.css') }}?v=10">
 </head>
 <body class="bg-[#f7f7f4] text-[#171913] antialiased">
     @php
@@ -24,7 +24,18 @@
         <div class="topbar">
             <div class="container topbar-inner">
                 <div class="topbar-group">
-                    <details class="region-switcher"><summary><i data-lucide="map-pin"></i><span>{{ $selectedRegion?->name ?: __('ui.layout.all_regions') }}</span><i data-lucide="chevron-down" class="chevron"></i></summary><form method="post" action="{{ route('region.select') }}">@csrf<button name="region" value="all" type="submit">{{ __('ui.layout.all_regions') }}</button>@foreach($navigationRegions as $region)<button name="region" value="{{ $region->id }}" type="submit">{{ $region->name }}</button>@endforeach</form></details>
+                    <details class="region-switcher">
+                        <summary><i data-lucide="map-pin"></i><span>{{ $marketplaceLocation->label() }}</span><i data-lucide="chevron-down" class="chevron"></i></summary>
+                        <form method="post" action="{{ route('region.select') }}" class="region-switcher-panel">
+                            @csrf
+                            <strong>{{ __('ui.location.where_title') }}</strong>
+                            <x-location-picker :show-optional="false" :use-old="false" :country="$marketplaceLocation->countryId()" :region="$marketplaceLocation->regionId()" :region-placeholder="__('ui.location.all_country_regions')" />
+                            <div class="region-switcher-actions">
+                                <button type="submit" class="btn btn-primary">{{ __('ui.location.apply') }}</button>
+                                <button type="submit" class="btn btn-outline" name="scope" value="all" formnovalidate>{{ __('ui.layout.all_regions') }}</button>
+                            </div>
+                        </form>
+                    </details>
                     <a class="topbar-link topbar-optional" href="{{ route('orders.track') }}"><i data-lucide="package-search"></i>{{ __('ui.nav.track') }}</a>
                 </div>
                 <div class="topbar-group">
@@ -51,12 +62,14 @@
                 @if($currentUser)
                     <details class="account-menu">
                         <summary aria-label="{{ $currentUser->public_name }}">
-                            <span class="account-avatar">{{ mb_substr($currentUser->public_name, 0, 1) }}</span>
+                            <x-avatar :user="$currentUser" class="account-avatar" />
                             <span class="account-name">{{ $currentUser->public_name }}</span>
                             <i data-lucide="chevron-down" class="chevron"></i>
                         </summary>
                         <div class="account-panel">
                             <div class="account-panel-head"><strong>{{ $currentUser->public_name }}</strong><small dir="ltr">{{ $currentUser->email }}</small></div>
+                            <a href="{{ route('account.show') }}"><i data-lucide="user-round"></i>{{ __('ui.account.my_account') }}</a>
+                            <a href="{{ route('account.edit') }}"><i data-lucide="user-round-pen"></i>{{ __('ui.account.edit') }}</a>
                             @if($currentUser->isSeller())<a href="{{ url('/seller') }}"><i data-lucide="layout-dashboard"></i>{{ __('ui.nav.seller_panel') }}</a>@endif
                             @if($currentUser->isAdmin())<a href="{{ url('/admin') }}"><i data-lucide="shield-check"></i>{{ __('ui.nav.admin_panel') }}</a>@endif
                             @if($communityEnabled)<a href="{{ route('community.create') }}"><i data-lucide="message-circle-plus"></i>{{ __('ui.community.new_post') }}</a>@endif
@@ -81,6 +94,7 @@
             <a href="{{ route('policy') }}"><i data-lucide="file-text"></i>{{ __('ui.nav.policy') }}</a>
             <span class="mobile-menu-divider"></span>
             @if($currentUser)
+                <a href="{{ route('account.show') }}"><i data-lucide="user-round"></i>{{ __('ui.account.my_account') }}</a>
                 <form method="post" action="{{ route('logout') }}">@csrf<button type="submit"><i data-lucide="log-out"></i>{{ __('ui.nav.logout') }} ({{ $currentUser->public_name }})</button></form>
             @else
                 <div class="mobile-menu-auth">
@@ -93,7 +107,18 @@
     </header>
 
     @unless($regionChosen)
-        <div class="region-gate"><div class="region-gate-panel"><span class="brand-mark"><i data-lucide="map-pin"></i></span><h2>{{ __('ui.layout.choose_region') }}</h2><p>{{ __('ui.layout.region_help') }}</p><form method="post" action="{{ route('region.select') }}">@csrf<div class="region-options">@foreach($navigationRegions as $region)<button name="region" value="{{ $region->id }}" type="submit">{{ $region->name }}</button>@endforeach</div><div class="region-or"><span>{{ __('ui.layout.or') }}</span></div><button class="btn btn-outline w-full" name="region" value="all" type="submit">{{ __('ui.layout.show_all_regions') }}</button></form></div></div>
+        <div class="region-gate"><div class="region-gate-panel">
+            <span class="brand-mark"><i data-lucide="map-pin"></i></span>
+            <h2>{{ __('ui.layout.choose_region') }}</h2>
+            <p>{{ __('ui.layout.region_help') }}</p>
+            <form method="post" action="{{ route('region.select') }}" class="region-gate-form">
+                @csrf
+                <x-location-picker :show-optional="false" :use-old="false" :region-placeholder="__('ui.location.all_country_regions')" />
+                <button class="btn btn-primary w-full" type="submit">{{ __('ui.location.apply') }}</button>
+                <div class="region-or"><span>{{ __('ui.layout.or') }}</span></div>
+                <button class="btn btn-outline w-full" name="scope" value="all" type="submit">{{ __('ui.layout.show_all_regions') }}</button>
+            </form>
+        </div></div>
     @endunless
 
     <main>@yield('content')</main>
@@ -110,5 +135,7 @@
     <script src="{{ asset('assets/js/canary.js') }}" type="module"></script>
     <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js" defer></script>
     <script src="{{ asset('assets/js/mobile-menu.js') }}?v=2" defer></script>
+    @include('partials.location-data')
+    <script src="{{ asset('assets/js/forms.js') }}?v=1" defer></script>
 </body>
 </html>

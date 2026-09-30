@@ -12,7 +12,7 @@ class Post extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'user_id', 'breed_id', 'region_id', 'category', 'title', 'slug', 'body', 'status', 'accepted_comment_id',
+        'user_id', 'breed_id', 'country_id', 'region_id', 'category', 'title', 'slug', 'body', 'status', 'accepted_comment_id',
     ];
 
     protected function casts(): array
@@ -33,6 +33,11 @@ class Post extends Model
     public function breed()
     {
         return $this->belongsTo(Breed::class);
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
     }
 
     public function region()

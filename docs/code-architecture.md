@@ -30,6 +30,7 @@ Controllers may query data needed only to render an index or edit page. A workfl
 - `SettingService`: reads and updates the marketplace feature settings.
 - `CloudinaryMediaService`: signs image/video uploads and deletes Cloudinary assets by public ID.
 - `CommunityService`: publishes community posts and comments with their polymorphic media, accepts solutions, and moderates visibility.
+- `AccountService`: updates a member's profile (avatar on Cloudinary, bio, country/region) and password.
 - `MemberService`: registers public member accounts (role `member`) that can post and comment but cannot access any panel.
 
 Do not add a service or helper for a one-line model operation unless it represents a domain rule or is reused. Prefer backed enums over repeating status strings in PHP business logic.

@@ -28,15 +28,7 @@
                 <label>{{ __('ui.register.display_name') }}<input name="display_name" required value="{{ old('display_name') }}"></label>
                 <label>{{ __('ui.common.phone') }}<input name="phone" required value="{{ old('phone') }}" dir="ltr"></label>
                 <label>{{ __('ui.common.email') }}<input type="email" name="email" required value="{{ old('email') }}"></label>
-                <label>
-                    {{ __('ui.common.region') }}
-                    <select name="region_id" required>
-                        <option value="">{{ __('ui.register.choose_region') }}</option>
-                        @foreach($regions as $region)
-                            <option value="{{ $region->id }}" @selected(old('region_id') == $region->id)>{{ $region->name }}</option>
-                        @endforeach
-                    </select>
-                </label>
+                <x-location-picker class="span-2 form-grid" :required="true" />
                 <label class="span-2">{{ __('ui.register.bio') }}<textarea name="bio" rows="3">{{ old('bio') }}</textarea></label>
                 <label>{{ __('ui.register.password') }}<input type="password" name="password" required></label>
                 <label>{{ __('ui.register.password_confirmation') }}<input type="password" name="password_confirmation" required></label>
@@ -48,5 +40,7 @@
         </div>
     </main>
     <script src="{{ asset('assets/js/canary.js') }}" type="module"></script>
+    @include('partials.location-data')
+    <script src="{{ asset('assets/js/forms.js') }}?v=1" defer></script>
 </body>
 </html>

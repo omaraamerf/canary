@@ -21,10 +21,10 @@ class OrderService
 
             abort_if($lockedBird->status !== BirdStatus::Available->value, 422, __('هذا الطائر لم يعد متاحًا للحجز.'));
 
-            $region = Region::findOrFail($data['buyer_region_id']);
+            $region = Region::with('country')->findOrFail($data['buyer_region_id']);
             $order = $lockedBird->orders()->create([
                 ...$data,
-                'city' => $region->name,
+                'city' => $region->full_name,
                 'reference' => $this->reference(),
                 'status' => OrderStatus::Pending->value,
                 'delivery_method' => $lockedBird->delivery_type,

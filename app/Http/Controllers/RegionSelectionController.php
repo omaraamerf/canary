@@ -3,24 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SelectRegionRequest;
+use App\Models\Country;
 use App\Models\Region;
+use App\Support\MarketplaceLocation;
 
 class RegionSelectionController extends Controller
 {
-    public function store(SelectRegionRequest $request)
+    public function store(SelectRegionRequest $request, MarketplaceLocation $location)
     {
-        $data = $request->validated();
+        $region = $request->validated('region_id') ? Region::find($request->validated('region_id')) : null;
+        $country = $region ? null : ($request->validated('country_id') ? Country::find($request->validated('country_id')) : null);
 
-        if ($data['region'] === 'all') {
-            $request->session()->forget('marketplace_region_id');
-            $request->session()->put('marketplace_all_regions', true);
-        } else {
-            $region = Region::where('active', true)->findOrFail($data['region']);
-            $request->session()->put('marketplace_region_id', $region->id);
-            $request->session()->forget('marketplace_all_regions');
-        }
-
-        $request->session()->put('marketplace_region_chosen', true);
+        $location->choose($country, $region);
 
         return back();
     }

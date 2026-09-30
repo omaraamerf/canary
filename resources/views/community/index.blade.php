@@ -16,6 +16,7 @@
             <label>{{ __('ui.community.query') }}<input type="search" name="q" value="{{ request('q') }}"></label>
             <label>{{ __('ui.community.category') }}<select name="category"><option value="">{{ __('ui.community.all_categories') }}</option>@foreach(\App\Enums\PostCategory::options() as $value => $label)<option value="{{ $value }}" @selected(request('category') === $value)>{{ $label }}</option>@endforeach</select></label>
             <label>{{ __('ui.birds.breed') }}<select name="breed"><option value="">{{ __('ui.community.all_breeds') }}</option>@foreach($breeds as $breed)<option value="{{ $breed->slug }}" @selected(request('breed') === $breed->slug)>{{ $breed->localized_name }}</option>@endforeach</select></label>
+            <x-location-picker :show-optional="false" :use-old="false" country-name="country" region-name="region" :country="request('country')" :region="request('region')" :country-placeholder="__('ui.location.all_countries')" :region-placeholder="__('ui.location.all_country_regions')" />
             <label>{{ __('ui.community.state') }}<select name="state"><option value="">{{ __('ui.common.all') }}</option><option value="open" @selected(request('state') === 'open')>{{ __('ui.community.open') }}</option><option value="solved" @selected(request('state') === 'solved')>{{ __('ui.community.solved') }}</option></select></label>
             <button class="btn btn-primary w-full" type="submit"><i data-lucide="list-filter"></i> {{ __('ui.community.apply') }}</button>
         </form>

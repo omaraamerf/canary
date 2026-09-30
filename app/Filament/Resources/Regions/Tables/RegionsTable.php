@@ -7,6 +7,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class RegionsTable
@@ -18,13 +19,14 @@ class RegionsTable
                 TextColumn::make('name')
                     ->label(__('اسم المنطقة'))
                     ->searchable(),
+                TextColumn::make('country.name')
+                    ->label(__('الدولة'))
+                    ->badge()
+                    ->sortable(),
                 TextColumn::make('slug')
                     ->label(__('المعرّف'))
-                    ->searchable(),
-                TextColumn::make('parent_id')
-                    ->label(__('المنطقة الأم'))
-                    ->numeric()
-                    ->sortable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 IconColumn::make('active')
                     ->label(__('نشطة'))
                     ->boolean(),
@@ -44,8 +46,13 @@ class RegionsTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('country_id')
+                    ->label(__('الدولة'))
+                    ->relationship('country', 'name')
+                    ->searchable()
+                    ->preload(),
             ])
+            ->defaultSort('sort_order')
             ->recordActions([
                 EditAction::make(),
             ])

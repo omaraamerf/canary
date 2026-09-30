@@ -7,7 +7,6 @@ use App\Enums\UserStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\Seller\RegisterRequest;
-use App\Models\Region;
 use App\Models\User;
 use App\Services\SellerService;
 use Filament\Facades\Filament;
@@ -43,9 +42,7 @@ class AuthController extends Controller
 
     public function register()
     {
-        return view('seller.auth.register', [
-            'regions' => Region::where('active', true)->orderBy('sort_order')->orderBy('name')->get(),
-        ]);
+        return view('seller.auth.register');
     }
 
     public function storeRegistration(RegisterRequest $request)

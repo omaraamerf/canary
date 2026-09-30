@@ -8,6 +8,7 @@ use App\Models\Comment;
 use App\Models\Media;
 use App\Models\Post;
 use App\Models\User;
+use App\Support\LocationOptions;
 use App\Support\UniqueSlug;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -20,13 +21,14 @@ class CommunityService
     public function __construct(
         private readonly UniqueSlug $slugs,
         private readonly CloudinaryMediaService $cloudinary,
+        private readonly LocationOptions $locations,
     ) {}
 
     public function createPost(User $author, array $data): Post
     {
         return $this->withUploadedMedia($data, fn (array $uploaded): Post => DB::transaction(function () use ($author, $data, $uploaded) {
             $post = $author->posts()->create([
-                ...Arr::except($data, ['images', 'videos']),
+                ...$this->locations->normalize(Arr::except($data, ['images', 'videos'])),
                 'slug' => $this->slugs->for(Post::class, $data['title'], 'post', null, true),
                 'status' => PostStatus::Published->value,
             ]);

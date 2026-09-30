@@ -7,7 +7,6 @@ use App\Http\Requests\StorePostRequest;
 use App\Models\Breed;
 use App\Models\Comment;
 use App\Models\Post;
-use App\Models\Region;
 use App\Services\CommunityService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -20,8 +19,10 @@ class PostController extends Controller
     {
         $posts = Post::query()
             ->published()
-            ->with(['user.sellerProfile', 'breed', 'media'])
+            ->with(['user.sellerProfile', 'breed', 'media', 'country', 'region'])
             ->withCount('visibleComments')
+            ->when($request->integer('country'), fn ($query, $country) => $query->where('country_id', $country))
+            ->when($request->integer('region'), fn ($query, $region) => $query->where('region_id', $region))
             ->when($request->filled('q'), function ($query) use ($request) {
                 $term = '%'.$request->string('q')->trim().'%';
                 $query->where(fn ($nested) => $nested->where('title', 'like', $term)->orWhere('body', 'like', $term));
@@ -42,7 +43,6 @@ class PostController extends Controller
     {
         return view('community.create', [
             'breeds' => Breed::where('active', true)->orderBy('name')->get(),
-            'regions' => Region::where('active', true)->orderBy('sort_order')->orderBy('name')->get(),
         ]);
     }
 
@@ -59,7 +59,7 @@ class PostController extends Controller
     {
         abort_unless(Gate::forUser($request->user())->allows('view', $post), 404);
 
-        $post->load(['user.sellerProfile', 'breed', 'region', 'media']);
+        $post->load(['user.sellerProfile', 'breed', 'country', 'region', 'media']);
         $comments = $post->visibleComments()
             ->with(['user.sellerProfile', 'media'])
             ->oldest()

@@ -36,7 +36,7 @@
             @if($errors->any())<div class="form-errors">{{ $errors->first() }}</div>@endif
             <label>{{ __('ui.detail.full_name') }}<input required name="buyer_name" value="{{ old('buyer_name') }}" autocomplete="name"></label>
             <label>{{ __('ui.common.phone') }}<input required name="phone" value="{{ old('phone') }}" inputmode="tel" autocomplete="tel" placeholder="05xxxxxxxx"></label>
-            <label>{{ __('ui.common.region') }}<select required name="buyer_region_id"><option value="">{{ __('ui.detail.choose_region') }}</option>@foreach($navigationRegions as $region)<option value="{{ $region->id }}" @selected((string)old('buyer_region_id',$selectedRegion?->id)===(string)$region->id)>{{ $region->name }}</option>@endforeach</select></label>
+<x-location-picker class="full location-picker-inline" :required="true" country-name="buyer_country_id" region-name="buyer_region_id" :country="auth()->user()?->country_id ?? app(\App\Support\MarketplaceLocation::class)->countryId()" :region="auth()->user()?->region_id ?? app(\App\Support\MarketplaceLocation::class)->regionId()" />
             <div class="delivery-summary full"><span>{{ __('ui.detail.seller_delivery') }}</span><strong>{{ __('ui.delivery.'.$bird->delivery_type) }}</strong></div>
             <label class="full">{{ __('ui.detail.notes') }}<textarea name="notes" rows="3" placeholder="{{ __('ui.detail.notes_placeholder') }}">{{ old('notes') }}</textarea></label>
             <button class="btn btn-primary btn-large full" type="submit"><i data-lucide="send"></i> {{ __('ui.detail.send') }}</button>

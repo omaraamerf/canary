@@ -9,6 +9,7 @@ use App\Enums\UserStatus;
 use App\Models\SellerProfile;
 use App\Models\Setting;
 use App\Models\User;
+use App\Support\LocationOptions;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
 
@@ -28,6 +29,7 @@ class SellerService
                 'password' => $data['password'],
                 'role' => UserRole::Seller->value,
                 'status' => $status->value,
+                'country_id' => app(LocationOptions::class)->countryOfRegion((int) $data['region_id']),
                 'region_id' => $data['region_id'],
             ]);
 
@@ -70,6 +72,7 @@ class SellerService
         DB::transaction(function () use ($seller, $data) {
             $seller->update([
                 'phone' => $data['phone'],
+                'country_id' => app(LocationOptions::class)->countryOfRegion((int) $data['region_id']),
                 'region_id' => $data['region_id'],
             ]);
 

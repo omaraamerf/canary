@@ -31,7 +31,11 @@ class User extends Authenticatable implements FilamentUser
         'password',
         'role',
         'status',
+        'country_id',
         'region_id',
+        'bio',
+        'avatar_url',
+        'avatar_public_id',
     ];
 
     /**
@@ -54,7 +58,24 @@ class User extends Authenticatable implements FilamentUser
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'country_id' => 'integer',
+            'region_id' => 'integer',
         ];
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    public function getInitialAttribute(): string
+    {
+        return mb_strtoupper(mb_substr($this->public_name, 0, 1));
+    }
+
+    public function getLocationLabelAttribute(): ?string
+    {
+        return collect([$this->region?->name, $this->country?->localized_name])->filter()->implode('، ') ?: null;
     }
 
     public function birds()

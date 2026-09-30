@@ -5,8 +5,9 @@ namespace App\Providers;
 use App\Enums\SettingKey;
 use App\Models\Comment;
 use App\Models\Post;
-use App\Models\Region;
 use App\Models\Setting;
+use App\Support\LocationOptions;
+use App\Support\MarketplaceLocation;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -18,7 +19,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->scoped(LocationOptions::class);
+        $this->app->scoped(MarketplaceLocation::class, fn ($app) => new MarketplaceLocation($app['session.store']));
     }
 
     /**
@@ -32,11 +34,10 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         View::composer('layouts.app', function ($view) {
-            $selectedRegionId = session('marketplace_region_id');
+            $location = app(MarketplaceLocation::class);
 
             $view->with([
-                'navigationRegions' => Region::where('active', true)->orderBy('sort_order')->orderBy('name')->get(),
-                'selectedRegion' => $selectedRegionId ? Region::find($selectedRegionId) : null,
+                'marketplaceLocation' => $location,
                 'regionChosen' => session('marketplace_region_chosen', false),
                 'guideEnabled' => Setting::boolean('guide_enabled', true),
                 'communityEnabled' => Setting::boolean(SettingKey::CommunityEnabled->value, true),

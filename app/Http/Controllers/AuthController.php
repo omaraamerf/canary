@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Enums\UserStatus;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterMemberRequest;
-use App\Models\Region;
 use App\Services\MemberService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,9 +33,7 @@ class AuthController extends Controller
 
     public function register()
     {
-        return view('auth.register', [
-            'regions' => Region::where('active', true)->orderBy('sort_order')->orderBy('name')->get(),
-        ]);
+        return view('auth.register');
     }
 
     public function storeRegistration(RegisterMemberRequest $request)

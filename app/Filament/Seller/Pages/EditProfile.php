@@ -60,12 +60,7 @@ class EditProfile extends BaseEditProfile
                         ->maxLength(140),
                     Select::make('region_id')
                         ->label(__('المنطقة'))
-                        ->options(fn (): array => Region::query()
-                            ->where('active', true)
-                            ->orderBy('sort_order')
-                            ->orderBy('name')
-                            ->pluck('name', 'id')
-                            ->all())
+                        ->options(fn (): array => Region::groupedOptions())
                         ->searchable()
                         ->required(),
                     Textarea::make('bio')

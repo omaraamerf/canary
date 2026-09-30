@@ -25,14 +25,12 @@
         </label>
         <label class="full">{{ __('ui.community.post_title') }}<input name="title" value="{{ old('title') }}" required minlength="5" maxlength="150" placeholder="{{ __('ui.community.title_placeholder') }}"></label>
         <label class="full">{{ __('ui.community.body') }}<textarea name="body" rows="7" required minlength="10" maxlength="5000" placeholder="{{ __('ui.community.body_placeholder') }}">{{ old('body') }}</textarea></label>
-        <label>{{ __('ui.community.region') }}
-            <select name="region_id">
-                <option value="">{{ __('ui.common.unspecified') }}</option>
-                @foreach($regions as $region)<option value="{{ $region->id }}" @selected((string) old('region_id', auth()->user()->region_id) === (string) $region->id)>{{ $region->name }}</option>@endforeach
-            </select>
-        </label>
-        <label>{{ __('ui.community.images') }}<input type="file" name="images[]" accept="image/*" multiple></label>
-        <label>{{ __('ui.community.video') }}<input type="file" name="videos[]" accept="video/mp4,video/quicktime,video/webm"></label>
+        <x-location-picker class="full location-picker-inline" :country="auth()->user()->country_id" :region="auth()->user()->region_id" />
+        <div class="full">
+            <span class="field-label">{{ __('ui.community.images') }}</span>
+            <x-image-picker name="images" :max="4" :label="__('ui.uploads.add_bird_photos')" />
+        </div>
+        <label class="full">{{ __('ui.community.video') }} <small>{{ __('ui.auth.optional') }}</small><input type="file" name="videos[]" accept="video/mp4,video/quicktime,video/webm"></label>
         <button class="btn btn-primary btn-large full" type="submit"><i data-lucide="send"></i> {{ __('ui.community.submit') }}</button>
     </form>
 </div></section>

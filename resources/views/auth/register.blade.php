@@ -27,15 +27,7 @@
                 {{ __('ui.common.phone') }} {{ __('ui.auth.optional') }}
                 <input name="phone" value="{{ old('phone') }}" inputmode="tel" autocomplete="tel" dir="ltr">
             </label>
-            <label>
-                {{ __('ui.common.region') }} {{ __('ui.auth.optional') }}
-                <select name="region_id">
-                    <option value="">{{ __('ui.layout.all_regions') }}</option>
-                    @foreach($regions as $region)
-                        <option value="{{ $region->id }}" @selected((string) old('region_id') === (string) $region->id)>{{ $region->name }}</option>
-                    @endforeach
-                </select>
-            </label>
+            <x-location-picker />
             <label>
                 {{ __('ui.auth.password') }}
                 <input type="password" name="password" required autocomplete="new-password" dir="ltr">

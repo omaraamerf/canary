@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BirdController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GuideController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegionSelectionController;
@@ -58,3 +60,12 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
+
+Route::middleware('auth')->prefix('account')->name('account.')->group(function () {
+    Route::get('/', [AccountController::class, 'show'])->name('show');
+    Route::get('/edit', [AccountController::class, 'edit'])->name('edit');
+    Route::put('/', [AccountController::class, 'update'])->middleware('throttle:10,1')->name('update');
+    Route::put('/password', [AccountController::class, 'updatePassword'])->middleware('throttle:6,1')->name('password');
+});
+
+Route::get('/members/{user}', [MemberController::class, 'show'])->name('members.show');

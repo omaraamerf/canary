@@ -12,6 +12,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use App\Models\Breed;
+use App\Models\Region;
 
 class BirdForm
 {
@@ -55,7 +56,7 @@ class BirdForm
                 ->schema([
                     TextInput::make('price')->label(__('السعر'))->numeric()->minValue(0)->required(),
                     TextInput::make('currency')->label(__('العملة'))->default('SAR')->required()->maxLength(3)->visible($admin),
-                    Select::make('region_id')->label(__('المحافظة'))->relationship('region', 'name')->searchable()->preload()->required()->visible($admin),
+                    Select::make('region_id')->label(__('المحافظة'))->options(fn (): array => Region::groupedOptions())->searchable()->required()->visible($admin),
                     TextInput::make('city')->label(__('المدينة'))->required()->maxLength(120),
                     Select::make('delivery_type')->label(__('طريقة التسليم'))->options([
                         'pickup' => __('استلام شخصي'),

@@ -1,0 +1,74 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: canary-app
+    container_name: canary-app
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      CONTAINER_ROLE: app
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: ${DOCKER_DB_DATABASE:-canary}
+      DB_USERNAME: ${DOCKER_DB_USERNAME:-canary}
+      DB_PASSWORD: ${DOCKER_DB_PASSWORD:-secret}
+      APP_URL: ${DOCKER_APP_URL:-http://localhost:8080}
+    ports:
+      - "${APP_PORT:-8080}:80"
+    volumes:
+      - storage:/var/www/html/storage/app
+      - logs:/var/www/html/storage/logs
+    depends_on:
+      db:
+        condition: service_healthy
+
+  queue:
+    image: canary-app
+    container_name: canary-queue
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      CONTAINER_ROLE: queue
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: ${DOCKER_DB_DATABASE:-canary}
+      DB_USERNAME: ${DOCKER_DB_USERNAME:-canary}
+      DB_PASSWORD: ${DOCKER_DB_PASSWORD:-secret}
+    command: ["php", "artisan", "queue:work", "--sleep=3", "--tries=3", "--max-time=3600"]
+    volumes:
+      - storage:/var/www/html/storage/app
+      - logs:/var/www/html/storage/logs
+    depends_on:
+      app:
+        condition: service_started
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.0
+    container_name: canary-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DOCKER_DB_DATABASE:-canary}
+      MYSQL_USER: ${DOCKER_DB_USERNAME:-canary}
+      MYSQL_PASSWORD: ${DOCKER_DB_PASSWORD:-secret}
+      MYSQL_ROOT_PASSWORD: ${DOCKER_DB_ROOT_PASSWORD:-rootsecret}
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    ports:
+      - "${DB_FORWARD_PORT:-3307}:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${DOCKER_DB_ROOT_PASSWORD:-rootsecret}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  dbdata:
+  storage:
+  logs:

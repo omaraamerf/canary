@@ -19,11 +19,11 @@ class SettingResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $modelLabel = 'إعداد';
+    public static function getModelLabel(): string { return __('إعداد'); }
 
-    protected static ?string $pluralModelLabel = 'الإعدادات';
+    public static function getPluralModelLabel(): string { return __('الإعدادات'); }
 
-    protected static ?string $navigationLabel = 'الإعدادات';
+    public static function getNavigationLabel(): string { return __('الإعدادات'); }
 
     public static function form(Schema $schema): Schema
     {

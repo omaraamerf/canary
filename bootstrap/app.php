@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\Permission;
+use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\TrackSiteVisit;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -17,7 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->web(append: [TrackSiteVisit::class]);
+        $middleware->web(append: [SetLocale::class, TrackSiteVisit::class]);
 
         $middleware->redirectGuestsTo(fn (Request $request) => $request->is('seller*') ? '/seller/login' : '/admin/login');
         $middleware->redirectUsersTo(fn (Request $request) => $request->user()?->can(Permission::AccessSellerPanel->value) ? '/seller' : '/admin');

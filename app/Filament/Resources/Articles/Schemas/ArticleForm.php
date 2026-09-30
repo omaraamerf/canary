@@ -16,39 +16,39 @@ class ArticleForm
         return $schema
             ->components([
                 Select::make('category_id')
-                    ->label('القسم')
+                    ->label(__('القسم'))
                     ->relationship('category', 'name')
                     ->searchable()
                     ->preload()
                     ->required(),
                 TextInput::make('title')
-                    ->label('العنوان')
+                    ->label(__('العنوان'))
                     ->required(),
                 Textarea::make('summary')
-                    ->label('الملخص')
+                    ->label(__('الملخص'))
                     ->required()
                     ->columnSpanFull(),
                 Textarea::make('content')
-                    ->label('المحتوى')
+                    ->label(__('المحتوى'))
                     ->required()
                     ->rows(12)
                     ->columnSpanFull(),
                 Textarea::make('featured_image')
-                    ->label('رابط الصورة البارزة')
+                    ->label(__('رابط الصورة البارزة'))
                     ->columnSpanFull(),
                 TextInput::make('tags')
-                    ->label('الوسوم')
-                    ->helperText('افصل الوسوم بفاصلة.'),
+                    ->label(__('الوسوم'))
+                    ->helperText(__('افصل الوسوم بفاصلة.')),
                 Select::make('status')
-                    ->label('الحالة')
+                    ->label(__('الحالة'))
                     ->options([
-                        ArticleStatus::Draft->value => 'مسودة',
-                        ArticleStatus::Published->value => 'منشور',
-                        ArticleStatus::Archived->value => 'مؤرشف',
+                        ArticleStatus::Draft->value => __('مسودة'),
+                        ArticleStatus::Published->value => __('منشور'),
+                        ArticleStatus::Archived->value => __('مؤرشف'),
                     ])
                     ->required()
                     ->default(ArticleStatus::Draft->value),
-                DateTimePicker::make('published_at')->label('تاريخ النشر'),
+                DateTimePicker::make('published_at')->label(__('تاريخ النشر')),
             ]);
     }
 }

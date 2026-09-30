@@ -20,11 +20,11 @@ class OrderResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $modelLabel = 'طلب';
+    public static function getModelLabel(): string { return __('طلب'); }
 
-    protected static ?string $pluralModelLabel = 'الطلبات';
+    public static function getPluralModelLabel(): string { return __('الطلبات'); }
 
-    protected static ?string $navigationLabel = 'الطلبات';
+    public static function getNavigationLabel(): string { return __('الطلبات'); }
 
     protected static ?string $recordTitleAttribute = 'reference';
 

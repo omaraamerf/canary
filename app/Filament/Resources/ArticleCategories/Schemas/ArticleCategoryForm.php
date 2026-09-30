@@ -13,16 +13,16 @@ class ArticleCategoryForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->label('اسم القسم')
+                    ->label(__('اسم القسم'))
                     ->required(),
                 Textarea::make('description')
-                    ->label('الوصف')
+                    ->label(__('الوصف'))
                     ->columnSpanFull(),
                 Textarea::make('image')
-                    ->label('رابط الصورة')
+                    ->label(__('رابط الصورة'))
                     ->columnSpanFull(),
                 TextInput::make('sort_order')
-                    ->label('الترتيب')
+                    ->label(__('الترتيب'))
                     ->required()
                     ->numeric()
                     ->default(0),

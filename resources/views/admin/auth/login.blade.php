@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>دخول الإدارة | كناري</title>
+    <title>دخول الإدارة | رفقنا</title>
     <link rel="stylesheet" href="{{ asset('admin-assets/css/bootstrap-rtl.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin-assets/css/icons-rtl.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin-assets/css/app-rtl.min.css') }}">
@@ -15,7 +15,7 @@
         <div class="col-xxl-4 col-lg-5 col-md-6">
             <div class="auth-full-page-content d-flex p-sm-5 p-4"><div class="w-100"><div class="d-flex flex-column h-100">
                 <div class="mb-4 mb-md-5 text-center">
-                    <a href="{{ route('home') }}" class="d-block auth-logo"><img src="{{ asset('admin-assets/images/logo-sm.svg') }}" alt="" height="30"> <span class="logo-txt">كناري</span></a>
+                    <a href="{{ route('home') }}" class="d-block auth-logo"><img src="{{ asset('admin-assets/images/logo-sm.svg') }}" alt="" height="30"> <span class="logo-txt">رفقنا</span></a>
                 </div>
                 <div class="auth-content my-auto">
                     <div class="text-center"><h4 class="mb-0">مرحبًا بعودتك</h4><p class="text-muted mt-2">أدخل بيانات حساب الإدارة للمتابعة.</p></div>
@@ -29,7 +29,7 @@
                     </form>
                     <div class="mt-4 text-center"><a class="text-muted" href="{{ route('home') }}"><i class="bx bx-right-arrow-alt align-middle"></i> العودة إلى الموقع</a></div>
                 </div>
-                <div class="mt-4 mt-md-5 text-center"><p class="mb-0 text-muted">{{ date('Y') }} © كناري</p></div>
+                <div class="mt-4 mt-md-5 text-center"><p class="mb-0 text-muted">{{ date('Y') }} © رفقنا</p></div>
             </div></div></div>
         </div>
         <div class="col-xxl-8 col-lg-7 col-md-6">

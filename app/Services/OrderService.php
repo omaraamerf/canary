@@ -19,7 +19,7 @@ class OrderService
         return DB::transaction(function () use ($bird, $data) {
             $lockedBird = Bird::query()->lockForUpdate()->findOrFail($bird->id);
 
-            abort_if($lockedBird->status !== BirdStatus::Available->value, 422, 'هذا الطائر لم يعد متاحًا للحجز.');
+            abort_if($lockedBird->status !== BirdStatus::Available->value, 422, __('هذا الطائر لم يعد متاحًا للحجز.'));
 
             $region = Region::findOrFail($data['buyer_region_id']);
             $order = $lockedBird->orders()->create([
@@ -34,7 +34,7 @@ class OrderService
 
             $order->statusLogs()->create([
                 'new_status' => OrderStatus::Pending->value,
-                'note' => 'تم استلام طلب الحجز من الموقع.',
+                'note' => __('تم استلام طلب الحجز من الموقع.'),
             ]);
 
             return $order;
@@ -54,7 +54,7 @@ class OrderService
             $oldStatus = OrderStatus::from($lockedOrder->status);
 
             if ($newStatus->reservesBird() && $bird->status !== BirdStatus::Available->value && $oldStatus !== OrderStatus::Confirmed) {
-                throw ValidationException::withMessages(['status' => 'الطائر محجوز أو مباع بالفعل.']);
+                throw ValidationException::withMessages(['status' => __('الطائر محجوز أو مباع بالفعل.')]);
             }
 
             if ($newStatus->reservesBird()) {

@@ -14,31 +14,31 @@ class OrdersTable
     {
         return $table
             ->columns([
-                TextColumn::make('reference')->label('المرجع')->searchable()->sortable(),
-                TextColumn::make('bird.title')->label('الطائر')->searchable(),
-                TextColumn::make('buyer_name')->label('المشتري')->searchable(),
+                TextColumn::make('reference')->label(__('المرجع'))->searchable()->sortable(),
+                TextColumn::make('bird.title')->label(__('الطائر'))->searchable(),
+                TextColumn::make('buyer_name')->label(__('المشتري'))->searchable(),
                 TextColumn::make('phone')
-                    ->label('الهاتف')
+                    ->label(__('الهاتف'))
                     ->formatStateUsing(fn (string $state, $record): string => $record->buyerPhoneCanBeRevealed()
                         ? $state
-                        : 'يظهر بعد تحويل الطلب إلى قيد التجهيز'),
-                TextColumn::make('buyerRegion.name')->label('المنطقة'),
+                        : __('يظهر بعد تحويل الطلب إلى قيد التجهيز')),
+                TextColumn::make('buyerRegion.name')->label(__('المنطقة')),
                 TextColumn::make('status')
-                    ->label('الحالة')
+                    ->label(__('الحالة'))
                     ->badge()
                     ->formatStateUsing(fn (string $state): string => UpdateOrderStatusAction::statusOptions()[$state] ?? $state),
                 TextColumn::make('price_snapshot')
-                    ->label('السعر')
+                    ->label(__('السعر'))
                     ->formatStateUsing(fn ($state, $record): string => number_format((float) $state, 2).' '.$record->currency_snapshot),
-                TextColumn::make('created_at')->label('تاريخ الطلب')->dateTime()->sortable(),
+                TextColumn::make('created_at')->label(__('تاريخ الطلب'))->dateTime()->sortable(),
             ])
             ->filters([
                 SelectFilter::make('status')
-                    ->label('الحالة')
+                    ->label(__('الحالة'))
                     ->options(UpdateOrderStatusAction::statusOptions()),
             ])
             ->recordActions([
-                ViewAction::make()->label('عرض'),
+                ViewAction::make()->label(__('عرض')),
                 UpdateOrderStatusAction::make(),
             ])
             ->defaultSort('created_at', 'desc');

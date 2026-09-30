@@ -3,10 +3,8 @@
 namespace App\Filament\Resources\Birds\Pages;
 
 use App\Filament\Resources\Birds\BirdResource;
+use App\Filament\Shared\Actions\EntityActions;
 use App\Services\BirdService;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\ForceDeleteAction;
-use Filament\Actions\RestoreAction;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,9 +15,9 @@ class EditBird extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
-            ForceDeleteAction::make(),
-            RestoreAction::make(),
+            EntityActions::delete(),
+            EntityActions::forceDelete(),
+            EntityActions::restore(),
         ];
     }
 

@@ -3,6 +3,7 @@
 use App\Http\Controllers\BirdController;
 use App\Http\Controllers\GuideController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RegionSelectionController;
 use App\Http\Controllers\Seller\AuthController as SellerAuthController;
@@ -10,6 +11,9 @@ use App\Http\Controllers\SellerProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
+Route::get('/locale/{locale}', LocaleController::class)
+    ->whereIn('locale', ['ar', 'en'])
+    ->name('locale.switch');
 Route::get('/birds', [BirdController::class, 'index'])->name('birds.index');
 Route::get('/birds/{bird:slug}', [BirdController::class, 'show'])->name('birds.show');
 Route::post('/birds/{bird:slug}/orders', [OrderController::class, 'store'])->name('orders.store');

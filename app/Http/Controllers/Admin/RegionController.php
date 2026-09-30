@@ -20,13 +20,13 @@ class RegionController extends Controller
     {
         $this->catalog->saveRegion($request->validated());
 
-        return back()->with('success', 'تمت إضافة المنطقة.');
+        return back()->with('success', __('تمت إضافة المنطقة.'));
     }
 
     public function update(SaveRegionRequest $request, Region $region)
     {
         $this->catalog->saveRegion($request->validated(), $region);
 
-        return back()->with('success', 'تم تحديث المنطقة.');
+        return back()->with('success', __('تم تحديث المنطقة.'));
     }
 }

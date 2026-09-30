@@ -7,6 +7,6 @@
         <span>{{ $article->category->name }}</span>
         <h3><a href="{{ route('guide.show', [$article->category, $article]) }}">{{ $article->title }}</a></h3>
         <p>{{ $article->summary }}</p>
-        <div><time datetime="{{ $article->updated_at->toDateString() }}">آخر تحديث {{ $article->updated_at->format('Y/m/d') }}</time><a href="{{ route('guide.show', [$article->category, $article]) }}" aria-label="قراءة {{ $article->title }}"><i data-lucide="arrow-left"></i></a></div>
+        <div><time datetime="{{ $article->updated_at->toDateString() }}">{{ __('ui.guide.updated', ['date' => $article->updated_at->format('Y/m/d')]) }}</time><a href="{{ route('guide.show', [$article->category, $article]) }}" aria-label="{{ __('ui.guide.read', ['title' => $article->title]) }}"><i data-lucide="arrow-left"></i></a></div>
     </div>
 </article>

@@ -93,7 +93,7 @@ class CloudinaryMediaService
         } catch (ConnectionException|RequestException $exception) {
             throw new CloudinaryUploadException(
                 $type === MediaType::Image ? 'images' : 'videos',
-                'تعذر رفع الملف إلى Cloudinary. حاول مرة أخرى.',
+                __('تعذر رفع الملف إلى Cloudinary. حاول مرة أخرى.'),
             );
         } finally {
             if (is_resource($stream)) {
@@ -107,7 +107,7 @@ class CloudinaryMediaService
         if (! is_string($url) || ! is_string($publicId)) {
             throw new CloudinaryUploadException(
                 $type === MediaType::Image ? 'images' : 'videos',
-                'لم يرجع Cloudinary بيانات الملف المتوقعة.',
+                __('لم يرجع Cloudinary بيانات الملف المتوقعة.'),
             );
         }
 
@@ -139,7 +139,7 @@ class CloudinaryMediaService
                 ])
                 ->throw();
         } catch (ConnectionException|RequestException $exception) {
-            throw new CloudinaryUploadException('media', 'تعذر حذف الملف من Cloudinary.');
+            throw new CloudinaryUploadException('media', __('تعذر حذف الملف من Cloudinary.'));
         }
     }
 
@@ -166,7 +166,7 @@ class CloudinaryMediaService
     private function assertConfigured(string $field): void
     {
         if (! config('services.cloudinary.cloud_name') || ! config('services.cloudinary.api_key') || ! config('services.cloudinary.api_secret')) {
-            throw new CloudinaryUploadException($field, 'إعدادات Cloudinary غير مكتملة على الخادم.');
+            throw new CloudinaryUploadException($field, __('إعدادات Cloudinary غير مكتملة على الخادم.'));
         }
     }
 }

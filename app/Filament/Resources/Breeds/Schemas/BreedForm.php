@@ -14,13 +14,13 @@ class BreedForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->label('اسم السلالة')
+                    ->label(__('اسم السلالة'))
                     ->required(),
                 Textarea::make('description')
-                    ->label('الوصف')
+                    ->label(__('الوصف'))
                     ->columnSpanFull(),
                 Toggle::make('active')
-                    ->label('نشطة')
+                    ->label(__('نشطة'))
                     ->required(),
             ]);
     }

@@ -43,12 +43,12 @@ abstract class BirdRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'images.required' => 'أضف صورة واحدة على الأقل للطائر.',
-            'images.*.file' => 'تعذر قراءة أحد ملفات الصور المرفوعة.',
-            'images.*.mimes' => 'صيغة إحدى الصور غير مدعومة. استخدم JPG أو PNG أو WebP أو GIF أو AVIF أو HEIC.',
-            'images.*.max' => 'حجم إحدى الصور أكبر من الحد المسموح.',
-            'videos.*.mimes' => 'صيغة أحد الفيديوهات غير مدعومة. استخدم MP4 أو MOV أو WebM.',
-            'videos.*.max' => 'حجم أحد الفيديوهات أكبر من الحد المسموح.',
+            'images.required' => __('أضف صورة واحدة على الأقل للطائر.'),
+            'images.*.file' => __('تعذر قراءة أحد ملفات الصور المرفوعة.'),
+            'images.*.mimes' => __('صيغة إحدى الصور غير مدعومة. استخدم JPG أو PNG أو WebP أو GIF أو AVIF أو HEIC.'),
+            'images.*.max' => __('حجم إحدى الصور أكبر من الحد المسموح.'),
+            'videos.*.mimes' => __('صيغة أحد الفيديوهات غير مدعومة. استخدم MP4 أو MOV أو WebM.'),
+            'videos.*.max' => __('حجم أحد الفيديوهات أكبر من الحد المسموح.'),
         ];
     }
 

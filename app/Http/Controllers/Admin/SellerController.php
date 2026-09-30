@@ -33,6 +33,6 @@ class SellerController extends Controller
             $data['rejection_reason'] ?? null,
         );
 
-        return back()->with('success', 'تم تحديث حالة البائع.');
+        return back()->with('success', __('تم تحديث حالة البائع.'));
     }
 }

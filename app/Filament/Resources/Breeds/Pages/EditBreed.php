@@ -3,8 +3,8 @@
 namespace App\Filament\Resources\Breeds\Pages;
 
 use App\Filament\Resources\Breeds\BreedResource;
+use App\Filament\Shared\Actions\EntityActions;
 use App\Services\CatalogService;
-use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,7 +15,7 @@ class EditBreed extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
+            EntityActions::delete(),
         ];
     }
 

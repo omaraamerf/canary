@@ -46,6 +46,8 @@ svg { flex: 0 0 auto; height: 1.15rem; width: 1.15rem; }
 .region-switcher summary::marker { display: none; }
 .region-switcher form { background: #fff; border: 1px solid var(--line); box-shadow: 0 12px 28px rgba(30,36,29,.12); display: grid; min-width: 180px; padding: .4rem; position: absolute; right: 0; top: calc(100% + 8px); z-index: 70; }
 .region-switcher form button { background: transparent; border: 0; cursor: pointer; padding: .65rem .7rem; text-align: right; }
+[dir="ltr"] .region-switcher form button, [dir="ltr"] .tracking-panel { text-align: left; }
+.language-switch { align-items: center; border: 1px solid var(--line); color: var(--ink); display: inline-flex; font-weight: 700; height: 40px; justify-content: center; min-width: 40px; text-decoration: none; }
 .region-switcher form button:hover { background: #f0f2ed; }
 .region-gate { align-items: center; background: rgba(18,22,17,.58); display: flex; inset: 0; justify-content: center; padding: 20px; position: fixed; z-index: 100; }
 .region-gate-panel { background: #fff; border-radius: 6px; max-height: calc(100vh - 40px); max-width: 480px; overflow-y: auto; padding: 30px; text-align: center; width: 100%; }

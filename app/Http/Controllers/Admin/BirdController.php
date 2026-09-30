@@ -38,7 +38,7 @@ class BirdController extends Controller
     {
         $this->birds->createForAdmin($request->validated(), $request->user());
 
-        return redirect()->route('admin.birds.index')->with('success', 'تمت إضافة الطائر.');
+        return redirect()->route('admin.birds.index')->with('success', __('تمت إضافة الطائر.'));
     }
 
     public function edit(Bird $bird)
@@ -56,15 +56,15 @@ class BirdController extends Controller
     {
         $this->birds->updateForAdmin($bird, $request->validated());
 
-        return redirect()->route('admin.birds.index')->with('success', 'تم تحديث الإعلان.');
+        return redirect()->route('admin.birds.index')->with('success', __('تم تحديث الإعلان.'));
     }
 
     public function destroy(Bird $bird)
     {
-        abort_if($bird->orders()->exists(), 422, 'لا يمكن حذف طائر مرتبط بطلبات. غيّر حالته بدلًا من ذلك.');
+        abort_if($bird->orders()->exists(), 422, __('لا يمكن حذف طائر مرتبط بطلبات. غيّر حالته بدلًا من ذلك.'));
         $bird->delete();
 
-        return redirect()->route('admin.birds.index')->with('success', 'تم حذف الإعلان.');
+        return redirect()->route('admin.birds.index')->with('success', __('تم حذف الإعلان.'));
     }
 
     public function updateApproval(UpdateBirdApprovalRequest $request, Bird $bird)
@@ -76,6 +76,6 @@ class BirdController extends Controller
             $data['rejection_reason'] ?? null,
         );
 
-        return back()->with('success', 'تم تحديث حالة مراجعة الإعلان.');
+        return back()->with('success', __('تم تحديث حالة مراجعة الإعلان.'));
     }
 }

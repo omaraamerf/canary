@@ -20,11 +20,11 @@ class ArticleResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $modelLabel = 'مقال';
+    public static function getModelLabel(): string { return __('مقال'); }
 
-    protected static ?string $pluralModelLabel = 'المقالات';
+    public static function getPluralModelLabel(): string { return __('المقالات'); }
 
-    protected static ?string $navigationLabel = 'المقالات';
+    public static function getNavigationLabel(): string { return __('المقالات'); }
 
     protected static ?string $recordTitleAttribute = 'title';
 

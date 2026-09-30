@@ -2,8 +2,9 @@
 
 namespace App\Filament\Resources\Breeds\Tables;
 
+use App\Filament\Shared\Actions\EntityActions;
+use App\Models\Breed;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -16,21 +17,22 @@ class BreedsTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('اسم السلالة')
+                    ->label(__('اسم السلالة'))
+                    ->formatStateUsing(fn (Breed $record): string => $record->localized_name)
                     ->searchable(),
                 TextColumn::make('slug')
-                    ->label('المعرّف')
+                    ->label(__('المعرّف'))
                     ->searchable(),
                 IconColumn::make('active')
-                    ->label('نشطة')
+                    ->label(__('نشطة'))
                     ->boolean(),
                 TextColumn::make('created_at')
-                    ->label('تاريخ الإنشاء')
+                    ->label(__('تاريخ الإنشاء'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->label('آخر تحديث')
+                    ->label(__('آخر تحديث'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -43,7 +45,7 @@ class BreedsTable
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    EntityActions::deleteBulk(),
                 ]),
             ]);
     }

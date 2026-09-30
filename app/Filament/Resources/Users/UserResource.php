@@ -20,11 +20,11 @@ class UserResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $modelLabel = 'بائع';
+    public static function getModelLabel(): string { return __('بائع'); }
 
-    protected static ?string $pluralModelLabel = 'البائعون';
+    public static function getPluralModelLabel(): string { return __('البائعون'); }
 
-    protected static ?string $navigationLabel = 'البائعون';
+    public static function getNavigationLabel(): string { return __('البائعون'); }
 
     protected static ?string $recordTitleAttribute = 'name';
 

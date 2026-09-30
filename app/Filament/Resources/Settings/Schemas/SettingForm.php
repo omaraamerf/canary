@@ -13,14 +13,14 @@ class SettingForm
         return $schema
             ->components([
                 TextInput::make('key')
-                    ->label('المفتاح')
+                    ->label(__('المفتاح'))
                     ->disabled()
                     ->dehydrated(),
                 Select::make('value')
-                    ->label('القيمة')
+                    ->label(__('القيمة'))
                     ->options([
-                        '1' => 'مفعّل',
-                        '0' => 'معطّل',
+                        '1' => __('مفعّل'),
+                        '0' => __('معطّل'),
                     ])
                     ->required(),
             ]);

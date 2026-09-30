@@ -3,8 +3,8 @@
 namespace App\Filament\Resources\Regions\Pages;
 
 use App\Filament\Resources\Regions\RegionResource;
+use App\Filament\Shared\Actions\EntityActions;
 use App\Services\CatalogService;
-use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,7 +15,7 @@ class EditRegion extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
+            EntityActions::delete(),
         ];
     }
 

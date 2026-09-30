@@ -13,20 +13,20 @@ class SettingsTable
         return $table
             ->columns([
                 TextColumn::make('key')
-                    ->label('الإعداد')
+                    ->label(__('الإعداد'))
                     ->searchable(),
                 TextColumn::make('value')
-                    ->label('القيمة')
+                    ->label(__('القيمة'))
                     ->badge()
-                    ->formatStateUsing(fn ($state): string => filter_var($state, FILTER_VALIDATE_BOOL) ? 'مفعّل' : 'معطّل'),
+                    ->formatStateUsing(fn ($state): string => filter_var($state, FILTER_VALIDATE_BOOL) ? __('مفعّل') : __('معطّل')),
                 TextColumn::make('updated_at')
-                    ->label('آخر تحديث')
+                    ->label(__('آخر تحديث'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->recordActions([
-                EditAction::make()->label('تعديل'),
+                EditAction::make()->label(__('تعديل')),
             ]);
     }
 }

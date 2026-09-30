@@ -35,8 +35,8 @@ class BirdController extends Controller
         $bird = $this->birds->createForSeller($request->validated(), $request->user());
 
         $message = $bird->approval_status === ApprovalStatus::Approved->value
-            ? 'تم نشر الإعلان.'
-            : 'تم حفظ الإعلان وإرساله للمراجعة.';
+            ? __('تم نشر الإعلان.')
+            : __('تم حفظ الإعلان وإرساله للمراجعة.');
 
         return redirect()->route('seller.birds.index')->with('success', $message);
     }
@@ -59,8 +59,8 @@ class BirdController extends Controller
         $bird = $this->birds->updateForSeller($bird, $request->validated());
 
         $message = $bird->approval_status === ApprovalStatus::Approved->value
-            ? 'تم تحديث الإعلان.'
-            : 'تم تحديث الإعلان وإرساله للمراجعة.';
+            ? __('تم تحديث الإعلان.')
+            : __('تم تحديث الإعلان وإرساله للمراجعة.');
 
         return redirect()->route('seller.birds.index')->with('success', $message);
     }
@@ -68,10 +68,10 @@ class BirdController extends Controller
     public function destroy(Request $request, Bird $bird)
     {
         $this->owns($request, $bird);
-        abort_if($bird->orders()->exists(), 422, 'لا يمكن حذف إعلان مرتبط بطلبات.');
+        abort_if($bird->orders()->exists(), 422, __('لا يمكن حذف إعلان مرتبط بطلبات.'));
         $bird->delete();
 
-        return redirect()->route('seller.birds.index')->with('success', 'تم حذف الإعلان.');
+        return redirect()->route('seller.birds.index')->with('success', __('تم حذف الإعلان.'));
     }
 
     private function owns(Request $request, Bird $bird): void

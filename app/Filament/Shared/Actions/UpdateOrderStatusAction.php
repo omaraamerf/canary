@@ -15,7 +15,7 @@ class UpdateOrderStatusAction
     public static function make(): Action
     {
         return Action::make('updateStatus')
-            ->label('تحديث الحالة')
+            ->label(__('تحديث الحالة'))
             ->icon('heroicon-o-arrow-path')
             ->authorize(fn (Order $record): bool => auth()->user()?->can('update', $record) ?? false)
             ->fillForm(fn (Order $record): array => [
@@ -24,11 +24,11 @@ class UpdateOrderStatusAction
             ])
             ->schema([
                 Select::make('status')
-                    ->label('الحالة')
+                    ->label(__('الحالة'))
                     ->options(self::statusOptions())
                     ->required(),
                 Textarea::make('note')
-                    ->label('ملاحظة')
+                    ->label(__('ملاحظة'))
                     ->rows(3),
             ])
             ->action(function (Order $record, array $data): void {
@@ -43,7 +43,7 @@ class UpdateOrderStatusAction
                     sellerId: $actor->can(Permission::UpdateAnyOrder->value) ? null : $actor->id,
                 );
             })
-            ->successNotificationTitle('تم تحديث حالة الطلب');
+            ->successNotificationTitle(__('تم تحديث حالة الطلب'));
     }
 
     public static function statusOptions(): array

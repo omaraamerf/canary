@@ -21,7 +21,7 @@ class AuthController extends Controller
         $credentials = $request->safe()->only(['email', 'password']);
 
         if (! Auth::attempt([...$credentials, 'status' => UserStatus::Active->value], $request->boolean('remember'))) {
-            return back()->withErrors(['email' => 'بيانات الدخول غير صحيحة.'])->onlyInput('email');
+            return back()->withErrors(['email' => __('بيانات الدخول غير صحيحة.')])->onlyInput('email');
         }
 
         $request->session()->regenerate();
@@ -29,7 +29,7 @@ class AuthController extends Controller
         if ($request->user()->role !== UserRole::Admin->value) {
             Auth::logout();
 
-            return back()->withErrors(['email' => 'هذا الحساب لا يملك صلاحية الإدارة.']);
+            return back()->withErrors(['email' => __('هذا الحساب لا يملك صلاحية الإدارة.')]);
         }
 
         return redirect()->intended(route('admin.dashboard'));

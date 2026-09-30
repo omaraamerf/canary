@@ -26,12 +26,12 @@ class BirdResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return 'طائر';
+        return __('طائر');
     }
 
     public static function getPluralModelLabel(): string
     {
-        return 'طيوري';
+        return __('طيوري');
     }
 
     public static function form(Schema $schema): Schema

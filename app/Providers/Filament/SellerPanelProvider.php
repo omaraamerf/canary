@@ -4,7 +4,8 @@ namespace App\Providers\Filament;
 
 use App\Filament\Seller\Pages\EditProfile;
 use App\Filament\Seller\Resources\Birds\BirdResource;
-use App\Http\Middleware\SetFilamentLocale;
+use App\Http\Middleware\SetLocale;
+use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -15,6 +16,7 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets\AccountWidget;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -31,7 +33,14 @@ class SellerPanelProvider extends PanelProvider
             ->path('seller')
             ->login()
             ->profile(EditProfile::class)
-            ->brandName('بوابة بائعي كناري')
+            ->brandName(fn (): string => __('ui.seller.brand'))
+            ->userMenuItems([
+                Action::make('switch-language')
+                    ->label(fn (): string => app()->isLocale('ar') ? 'English' : 'العربية')
+                    ->icon('heroicon-o-language')
+                    ->url(fn (): string => route('locale.switch', app()->isLocale('ar') ? 'en' : 'ar')),
+            ])
+            ->renderHook(PanelsRenderHook::AUTH_LOGIN_FORM_AFTER, fn (): string => view('filament.locale-switcher')->render())
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -41,12 +50,12 @@ class SellerPanelProvider extends PanelProvider
                 Dashboard::class,
             ])
             ->navigationItems([
-                NavigationItem::make('إضافة طائر')
+                NavigationItem::make(fn (): string => __('ui.birds.add'))
                     ->icon('heroicon-o-plus-circle')
                     ->url(fn (): string => BirdResource::getUrl('create'))
                     ->isActiveWhen(fn (): bool => request()->routeIs('filament.seller.resources.birds.create'))
                     ->sort(20),
-                NavigationItem::make('الملف الشخصي')
+                NavigationItem::make(fn (): string => __('ui.account.profile'))
                     ->icon('heroicon-o-user-circle')
                     ->url(fn (): string => route('filament.seller.auth.profile'))
                     ->isActiveWhen(fn (): bool => request()->routeIs('filament.seller.auth.profile'))
@@ -68,7 +77,7 @@ class SellerPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->middleware([
-                SetFilamentLocale::class,
+                SetLocale::class,
             ], isPersistent: true)
             ->authMiddleware([
                 Authenticate::class,

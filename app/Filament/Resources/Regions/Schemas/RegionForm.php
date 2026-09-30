@@ -13,13 +13,13 @@ class RegionForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->label('اسم المنطقة')
+                    ->label(__('اسم المنطقة'))
                     ->required(),
                 Toggle::make('active')
-                    ->label('نشطة')
+                    ->label(__('نشطة'))
                     ->required(),
                 TextInput::make('sort_order')
-                    ->label('الترتيب')
+                    ->label(__('الترتيب'))
                     ->required()
                     ->numeric()
                     ->default(0),

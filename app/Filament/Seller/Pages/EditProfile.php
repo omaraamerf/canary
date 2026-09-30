@@ -19,7 +19,7 @@ class EditProfile extends BaseEditProfile
 {
     public static function getLabel(): string
     {
-        return 'الملف الشخصي';
+        return __('الملف الشخصي');
     }
 
     protected function mutateFormDataBeforeFill(array $data): array
@@ -40,26 +40,26 @@ class EditProfile extends BaseEditProfile
     public function form(Schema $schema): Schema
     {
         return $schema->components([
-            Section::make('بيانات الحساب')
+            Section::make(__('بيانات الحساب'))
                 ->schema([
-                    $this->getNameFormComponent()->label('الاسم'),
-                    $this->getEmailFormComponent()->label('البريد الإلكتروني'),
+                    $this->getNameFormComponent()->label(__('الاسم')),
+                    $this->getEmailFormComponent()->label(__('البريد الإلكتروني')),
                     TextInput::make('phone')
-                        ->label('رقم الهاتف')
+                        ->label(__('رقم الهاتف'))
                         ->tel()
                         ->required()
                         ->maxLength(30),
                 ])
                 ->columns(2),
-            Section::make('بيانات البائع')
-                ->description('هذه البيانات تمثل حسابك كبائع وتظهر مع إعلاناتك.')
+            Section::make(__('بيانات البائع'))
+                ->description(__('هذه البيانات تمثل حسابك كبائع وتظهر مع إعلاناتك.'))
                 ->schema([
                     TextInput::make('display_name')
-                        ->label('اسم المتجر أو المربي')
+                        ->label(__('اسم المتجر أو المربي'))
                         ->required()
                         ->maxLength(140),
                     Select::make('region_id')
-                        ->label('المنطقة')
+                        ->label(__('المنطقة'))
                         ->options(fn (): array => Region::query()
                             ->where('active', true)
                             ->orderBy('sort_order')
@@ -69,17 +69,17 @@ class EditProfile extends BaseEditProfile
                         ->searchable()
                         ->required(),
                     Textarea::make('bio')
-                        ->label('نبذة')
+                        ->label(__('نبذة'))
                         ->rows(4)
                         ->maxLength(1200)
                         ->columnSpanFull(),
                 ])
                 ->columns(2),
-            Section::make('تغيير كلمة المرور')
+            Section::make(__('تغيير كلمة المرور'))
                 ->schema([
-                    $this->getPasswordFormComponent()->label('كلمة المرور الجديدة'),
-                    $this->getPasswordConfirmationFormComponent()->label('تأكيد كلمة المرور'),
-                    $this->getCurrentPasswordFormComponent()->label('كلمة المرور الحالية'),
+                    $this->getPasswordFormComponent()->label(__('كلمة المرور الجديدة')),
+                    $this->getPasswordConfirmationFormComponent()->label(__('تأكيد كلمة المرور')),
+                    $this->getCurrentPasswordFormComponent()->label(__('كلمة المرور الحالية')),
                 ])
                 ->columns(2)
                 ->collapsed(),

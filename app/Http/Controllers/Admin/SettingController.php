@@ -19,6 +19,6 @@ class SettingController extends Controller
     {
         $this->settings->updateApprovalAndGuideSettings($request->validated());
 
-        return back()->with('success', 'تم حفظ إعدادات الموقع.');
+        return back()->with('success', __('تم حفظ إعدادات الموقع.'));
     }
 }

@@ -3,8 +3,8 @@
 namespace App\Filament\Seller\Resources\Birds\Pages;
 
 use App\Filament\Seller\Resources\Birds\BirdResource;
+use App\Filament\Shared\Actions\EntityActions;
 use App\Services\BirdService;
-use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,7 +15,7 @@ class EditBird extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
+            EntityActions::delete(),
         ];
     }
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'الإدارة') | كناري</title>
+    <title>@yield('title', 'الإدارة') | رفقنا</title>
     <link rel="stylesheet" href="{{ asset('admin-assets/css/bootstrap-rtl.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin-assets/css/icons-rtl.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin-assets/css/app-rtl.min.css') }}">
@@ -17,7 +17,7 @@
                 <div class="navbar-brand-box">
                     <a href="{{ route('admin.dashboard') }}" class="logo admin-brand">
                         <span class="admin-brand-mark"><i data-lucide="bird"></i></span>
-                        <span class="logo-txt">كناري</span>
+                        <span class="logo-txt">رفقنا</span>
                     </a>
                 </div>
                 <button type="button" class="btn btn-sm px-3 font-size-16 header-item" id="vertical-menu-btn" aria-label="فتح القائمة">
@@ -46,7 +46,7 @@
 
     <aside class="vertical-menu">
         <div class="mobile-sidebar-head">
-            <span><span class="admin-brand-mark"><i data-lucide="bird"></i></span> كناري</span>
+            <span><span class="admin-brand-mark"><i data-lucide="bird"></i></span> رفقنا</span>
             <button type="button" data-sidebar-close aria-label="إغلاق القائمة"><i data-lucide="x"></i></button>
         </div>
         <div data-simplebar class="h-100">
@@ -80,7 +80,7 @@
                 @yield('content')
             </div>
         </div>
-        <footer class="footer"><div class="container-fluid"><div class="row"><div class="col">{{ date('Y') }} © كناري</div><div class="col text-end d-none d-sm-block">إدارة الطيور والطلبات</div></div></div></footer>
+        <footer class="footer"><div class="container-fluid"><div class="row"><div class="col">{{ date('Y') }} © رفقنا</div><div class="col text-end d-none d-sm-block">إدارة الطيور والطلبات</div></div></div></footer>
     </main>
 </div>
 <script>

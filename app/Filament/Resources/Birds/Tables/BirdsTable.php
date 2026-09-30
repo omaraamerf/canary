@@ -2,11 +2,9 @@
 
 namespace App\Filament\Resources\Birds\Tables;
 
+use App\Filament\Shared\Actions\EntityActions;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Actions\ForceDeleteBulkAction;
-use Filament\Actions\RestoreBulkAction;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -19,53 +17,56 @@ class BirdsTable
     {
         return $table
             ->columns([
-                ImageColumn::make('primary_image')->label('الصورة')->square(),
-                TextColumn::make('title')->label('الإعلان')->searchable()->sortable(),
-                TextColumn::make('breed.name')->label('السلالة')->sortable(),
-                TextColumn::make('seller.name')->label('البائع')->searchable(),
+                ImageColumn::make('primary_image')->label(__('الصورة'))->square(),
+                TextColumn::make('title')->label(__('الإعلان'))->searchable()->sortable(),
+                TextColumn::make('breed.name')
+                    ->label(__('السلالة'))
+                    ->formatStateUsing(fn ($record): string => $record->breed->localized_name)
+                    ->sortable(),
+                TextColumn::make('seller.name')->label(__('البائع'))->searchable(),
                 TextColumn::make('price')
-                    ->label('السعر')
+                    ->label(__('السعر'))
                     ->formatStateUsing(fn ($state, $record): string => number_format((float) $state, 2).' '.$record->currency)
                     ->sortable(),
                 TextColumn::make('status')
-                    ->label('الحالة')
+                    ->label(__('الحالة'))
                     ->badge()
                     ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'available' => 'متاح',
-                        'reserved' => 'محجوز',
-                        'sold' => 'مباع',
+                        'available' => __('متاح'),
+                        'reserved' => __('محجوز'),
+                        'sold' => __('مباع'),
                         default => $state,
                     }),
                 TextColumn::make('approval_status')
-                    ->label('المراجعة')
+                    ->label(__('المراجعة'))
                     ->badge()
                     ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'pending' => 'بانتظار المراجعة',
-                        'approved' => 'منشور',
-                        'rejected' => 'مرفوض',
+                        'pending' => __('بانتظار المراجعة'),
+                        'approved' => __('منشور'),
+                        'rejected' => __('مرفوض'),
                         default => $state,
                     }),
-                TextColumn::make('created_at')->label('تاريخ الإضافة')->dateTime()->sortable(),
+                TextColumn::make('created_at')->label(__('تاريخ الإضافة'))->dateTime()->sortable(),
             ])
             ->filters([
-                SelectFilter::make('status')->label('الحالة')->options([
-                    'available' => 'متاح',
-                    'reserved' => 'محجوز',
-                    'sold' => 'مباع',
+                SelectFilter::make('status')->label(__('الحالة'))->options([
+                    'available' => __('متاح'),
+                    'reserved' => __('محجوز'),
+                    'sold' => __('مباع'),
                 ]),
-                SelectFilter::make('approval_status')->label('المراجعة')->options([
-                    'pending' => 'بانتظار المراجعة',
-                    'approved' => 'منشور',
-                    'rejected' => 'مرفوض',
+                SelectFilter::make('approval_status')->label(__('المراجعة'))->options([
+                    'pending' => __('بانتظار المراجعة'),
+                    'approved' => __('منشور'),
+                    'rejected' => __('مرفوض'),
                 ]),
                 TrashedFilter::make(),
             ])
             ->recordActions([EditAction::make()])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
+                    EntityActions::deleteBulk(),
+                    EntityActions::forceDeleteBulk(),
+                    EntityActions::restoreBulk(),
                 ]),
             ]);
     }

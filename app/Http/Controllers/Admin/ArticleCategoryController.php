@@ -22,13 +22,13 @@ class ArticleCategoryController extends Controller
     {
         $this->catalog->saveArticleCategory($request->validated());
 
-        return back()->with('success', 'تمت إضافة قسم الدليل.');
+        return back()->with('success', __('تمت إضافة قسم الدليل.'));
     }
 
     public function update(SaveArticleCategoryRequest $request, ArticleCategory $guideCategory)
     {
         $this->catalog->saveArticleCategory($request->validated(), $guideCategory);
 
-        return back()->with('success', 'تم تحديث قسم الدليل.');
+        return back()->with('success', __('تم تحديث قسم الدليل.'));
     }
 }

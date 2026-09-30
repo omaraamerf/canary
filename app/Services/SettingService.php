@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\DB;
 
 class SettingService
 {
+    public function create(array $data): Setting
+    {
+        return Setting::query()->create($data);
+    }
+
     public function update(string $key, mixed $value): Setting
     {
         Setting::put($key, $value);

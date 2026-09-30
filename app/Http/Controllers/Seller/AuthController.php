@@ -30,8 +30,8 @@ class AuthController extends Controller
         if (! Auth::attempt([...$credentials, 'role' => UserRole::Seller->value, 'status' => UserStatus::Active->value], $request->boolean('remember'))) {
             $seller = User::query()->where('email', $credentials['email'])->where('role', UserRole::Seller->value)->first();
             $message = $seller?->status === UserStatus::Pending->value
-                ? 'حسابك ما زال بانتظار موافقة الإدارة.'
-                : 'بيانات الدخول غير صحيحة أو الحساب غير نشط.';
+                ? __('حسابك ما زال بانتظار موافقة الإدارة.')
+                : __('بيانات الدخول غير صحيحة أو الحساب غير نشط.');
 
             return back()->withErrors(['email' => $message])->onlyInput('email');
         }
@@ -56,10 +56,10 @@ class AuthController extends Controller
             Auth::login($user);
             $request->session()->regenerate();
 
-            return redirect()->to(Filament::getPanel('seller')->getUrl())->with('success', 'تم إنشاء حساب البائع.');
+            return redirect()->to(Filament::getPanel('seller')->getUrl())->with('success', __('تم إنشاء حساب البائع.'));
         }
 
-        return redirect()->to(Filament::getPanel('seller')->getLoginUrl())->with('success', 'تم استلام طلب حسابك وسيظهر لك الدخول بعد موافقة الإدارة.');
+        return redirect()->to(Filament::getPanel('seller')->getLoginUrl())->with('success', __('تم استلام طلب حسابك وسيظهر لك الدخول بعد موافقة الإدارة.'));
     }
 
     public function destroy(Request $request)

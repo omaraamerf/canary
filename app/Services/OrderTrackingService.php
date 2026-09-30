@@ -16,7 +16,7 @@ class OrderTrackingService
 
         if (! $order || ! hash_equals($this->normalizePhone($order->phone), $this->normalizePhone($phone))) {
             throw ValidationException::withMessages([
-                'reference' => 'رقم الطلب أو رقم الهاتف غير صحيح.',
+                'reference' => __('رقم الطلب أو رقم الهاتف غير صحيح.'),
             ]);
         }
 

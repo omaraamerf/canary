@@ -24,6 +24,6 @@ class ProfileController extends Controller
     {
         $this->sellers->updateProfile($request->user(), $request->validated());
 
-        return back()->with('success', 'تم تحديث ملف البائع.');
+        return back()->with('success', __('تم تحديث ملف البائع.'));
     }
 }

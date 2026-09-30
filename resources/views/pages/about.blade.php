@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'من نحن')
+@section('title', __('ui.pages.about.title'))
 @section('content')
-<section class="content-page"><div class="container narrow"><span class="kicker">عن كناري</span><h1>سوق صغير يضع وضوح الطائر أولًا</h1><p class="lead">بدأنا بمنصة متخصصة لعرض الكناري المتوفر لدى مجموعة موثوقة من المربين، مع بيانات منظمة وصور واضحة وفيديو عند توفره.</p><h2>ما الذي نفعله؟</h2><p>نساعدك على مقارنة الطيور قبل التنقل، ثم نستقبل طلب الحجز ونتواصل معك لتأكيد التوفر وطريقة التسليم. المنصة لا تستقبل دفعًا إلكترونيًا في هذه المرحلة.</p><h2>كيف نختار الإعلانات؟</h2><p>تُضاف الإعلانات من فريق الإدارة فقط، وتُراجع معلومات السلالة والحالة والسعر ووسائل العرض قبل النشر.</p></div></section>
+<section class="content-page"><div class="container narrow"><span class="kicker">{{ __('ui.pages.about.eyebrow') }}</span><h1>{{ __('ui.pages.about.heading') }}</h1><p class="lead">{{ __('ui.pages.about.lead') }}</p><h2>{{ __('ui.pages.about.what') }}</h2><p>{{ __('ui.pages.about.what_text') }}</p><h2>{{ __('ui.pages.about.how') }}</h2><p>{{ __('ui.pages.about.how_text') }}</p></div></section>
 @endsection

@@ -112,6 +112,21 @@ class BirdService
         ]);
     }
 
+    public function delete(Bird $bird): bool
+    {
+        return DB::transaction(fn (): bool => (bool) $bird->delete());
+    }
+
+    public function restore(Bird $bird): bool
+    {
+        return DB::transaction(fn (): bool => (bool) $bird->restore());
+    }
+
+    public function forceDelete(Bird $bird): bool
+    {
+        return DB::transaction(fn (): bool => (bool) $bird->forceDelete());
+    }
+
     private function listingApprovalStatus(): ApprovalStatus
     {
         return Setting::boolean(SettingKey::ListingApprovalRequired->value, true)
@@ -186,7 +201,7 @@ class BirdService
             ->count();
 
         if ($remainingImages + count($newImages) === 0) {
-            throw ValidationException::withMessages(['images' => 'يجب أن يبقى للإعلان صورة واحدة على الأقل.']);
+            throw ValidationException::withMessages(['images' => __('يجب أن يبقى للإعلان صورة واحدة على الأقل.')]);
         }
     }
 
@@ -207,7 +222,7 @@ class BirdService
 
             if ($existing + count($data[$settings['input']] ?? []) > $settings['limit']) {
                 throw ValidationException::withMessages([
-                    $settings['input'] => 'تجاوز عدد الملفات الحد المسموح لهذا الإعلان.',
+                    $settings['input'] => __('تجاوز عدد الملفات الحد المسموح لهذا الإعلان.'),
                 ]);
             }
         }

@@ -3,8 +3,8 @@
 namespace App\Filament\Resources\Articles\Pages;
 
 use App\Filament\Resources\Articles\ArticleResource;
+use App\Filament\Shared\Actions\EntityActions;
 use App\Services\ArticleService;
-use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,7 +15,7 @@ class EditArticle extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
+            EntityActions::delete(),
         ];
     }
 

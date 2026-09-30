@@ -10,6 +10,7 @@ use App\Models\SellerProfile;
 use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Arr;
 
 class SellerService
 {
@@ -80,6 +81,30 @@ class SellerService
                     'region_id' => $data['region_id'],
                 ],
             );
+        });
+    }
+
+    public function updateAccount(User $seller, array $data): User
+    {
+        return DB::transaction(function () use ($seller, $data): User {
+            $seller->update(Arr::only($data, [
+                'name',
+                'email',
+                'password',
+                'phone',
+                'region_id',
+            ]));
+
+            $seller->sellerProfile()->updateOrCreate(
+                ['user_id' => $seller->id],
+                [
+                    'display_name' => $data['display_name'],
+                    'bio' => $data['bio'] ?? null,
+                    'region_id' => $data['region_id'],
+                ],
+            );
+
+            return $seller->refresh();
         });
     }
 

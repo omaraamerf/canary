@@ -20,11 +20,11 @@ class BreedResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $modelLabel = 'سلالة';
+    public static function getModelLabel(): string { return __('سلالة'); }
 
-    protected static ?string $pluralModelLabel = 'السلالات';
+    public static function getPluralModelLabel(): string { return __('السلالات'); }
 
-    protected static ?string $navigationLabel = 'السلالات';
+    public static function getNavigationLabel(): string { return __('السلالات'); }
 
     protected static ?string $recordTitleAttribute = 'name';
 

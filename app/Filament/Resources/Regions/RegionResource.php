@@ -20,11 +20,11 @@ class RegionResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $modelLabel = 'منطقة';
+    public static function getModelLabel(): string { return __('منطقة'); }
 
-    protected static ?string $pluralModelLabel = 'المناطق';
+    public static function getPluralModelLabel(): string { return __('المناطق'); }
 
-    protected static ?string $navigationLabel = 'المناطق';
+    public static function getNavigationLabel(): string { return __('المناطق'); }
 
     protected static ?string $recordTitleAttribute = 'name';
 

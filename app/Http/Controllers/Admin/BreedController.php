@@ -20,13 +20,13 @@ class BreedController extends Controller
     {
         $this->catalog->saveBreed($request->validated());
 
-        return back()->with('success', 'تمت إضافة السلالة.');
+        return back()->with('success', __('تمت إضافة السلالة.'));
     }
 
     public function update(SaveBreedRequest $request, Breed $breed)
     {
         $this->catalog->saveBreed($request->validated(), $breed);
 
-        return back()->with('success', 'تم تحديث السلالة.');
+        return back()->with('success', __('تم تحديث السلالة.'));
     }
 }

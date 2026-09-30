@@ -38,7 +38,7 @@ class ArticleController extends Controller
     {
         $this->articles->create($request->validated());
 
-        return redirect()->route('admin.guide-articles.index')->with('success', 'تم حفظ المقال.');
+        return redirect()->route('admin.guide-articles.index')->with('success', __('تم حفظ المقال.'));
     }
 
     public function edit(Article $guideArticle)
@@ -55,6 +55,6 @@ class ArticleController extends Controller
     {
         $this->articles->update($guideArticle, $request->validated());
 
-        return redirect()->route('admin.guide-articles.index')->with('success', 'تم تحديث المقال.');
+        return redirect()->route('admin.guide-articles.index')->with('success', __('تم تحديث المقال.'));
     }
 }

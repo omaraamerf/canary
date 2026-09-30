@@ -13,14 +13,7 @@ enum OrderStatus: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::Pending => 'قيد الانتظار',
-            self::Confirmed => 'مؤكد',
-            self::Preparing => 'قيد التجهيز',
-            self::OutForDelivery => 'خرج للتوصيل',
-            self::Delivered => 'تم التسليم',
-            self::Cancelled => 'ملغي',
-        };
+        return __('ui.order_status.'.$this->value);
     }
 
     public function reservesBird(): bool

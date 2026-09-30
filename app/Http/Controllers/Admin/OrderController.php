@@ -39,6 +39,6 @@ class OrderController extends Controller
             $request->user(),
         );
 
-        return back()->with('success', 'تم تحديث حالة الطلب.');
+        return back()->with('success', __('تم تحديث حالة الطلب.'));
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\Articles\Tables;
 
+use App\Filament\Shared\Actions\EntityActions;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -15,34 +15,34 @@ class ArticlesTable
         return $table
             ->columns([
                 TextColumn::make('category.name')
-                    ->label('القسم')
+                    ->label(__('القسم'))
                     ->sortable(),
                 TextColumn::make('title')
-                    ->label('العنوان')
+                    ->label(__('العنوان'))
                     ->searchable(),
                 TextColumn::make('slug')
-                    ->label('المعرّف')
+                    ->label(__('المعرّف'))
                     ->searchable(),
                 TextColumn::make('status')
-                    ->label('الحالة')
+                    ->label(__('الحالة'))
                     ->badge()
                     ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'draft' => 'مسودة',
-                        'published' => 'منشور',
-                        'archived' => 'مؤرشف',
+                        'draft' => __('مسودة'),
+                        'published' => __('منشور'),
+                        'archived' => __('مؤرشف'),
                         default => $state,
                     }),
                 TextColumn::make('published_at')
-                    ->label('تاريخ النشر')
+                    ->label(__('تاريخ النشر'))
                     ->dateTime()
                     ->sortable(),
                 TextColumn::make('created_at')
-                    ->label('تاريخ الإنشاء')
+                    ->label(__('تاريخ الإنشاء'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->label('آخر تحديث')
+                    ->label(__('آخر تحديث'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -55,7 +55,7 @@ class ArticlesTable
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    EntityActions::deleteBulk(),
                 ]),
             ]);
     }

@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\Regions\Tables;
 
+use App\Filament\Shared\Actions\EntityActions;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -16,29 +16,29 @@ class RegionsTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('اسم المنطقة')
+                    ->label(__('اسم المنطقة'))
                     ->searchable(),
                 TextColumn::make('slug')
-                    ->label('المعرّف')
+                    ->label(__('المعرّف'))
                     ->searchable(),
                 TextColumn::make('parent_id')
-                    ->label('المنطقة الأم')
+                    ->label(__('المنطقة الأم'))
                     ->numeric()
                     ->sortable(),
                 IconColumn::make('active')
-                    ->label('نشطة')
+                    ->label(__('نشطة'))
                     ->boolean(),
                 TextColumn::make('sort_order')
-                    ->label('الترتيب')
+                    ->label(__('الترتيب'))
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('created_at')
-                    ->label('تاريخ الإنشاء')
+                    ->label(__('تاريخ الإنشاء'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->label('آخر تحديث')
+                    ->label(__('آخر تحديث'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -51,7 +51,7 @@ class RegionsTable
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    EntityActions::deleteBulk(),
                 ]),
             ]);
     }

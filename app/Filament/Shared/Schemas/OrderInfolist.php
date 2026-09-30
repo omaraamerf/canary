@@ -11,34 +11,34 @@ class OrderInfolist
     public static function configure(Schema $schema, bool $protectBuyerPhone = false): Schema
     {
         return $schema->components([
-            TextEntry::make('reference')->label('رقم الطلب'),
-            TextEntry::make('bird.title')->label('الطائر'),
-            TextEntry::make('buyer_name')->label('اسم المشتري'),
+            TextEntry::make('reference')->label(__('رقم الطلب')),
+            TextEntry::make('bird.title')->label(__('الطائر')),
+            TextEntry::make('buyer_name')->label(__('اسم المشتري')),
             TextEntry::make('phone')
-                ->label('الهاتف')
+                ->label(__('الهاتف'))
                 ->formatStateUsing(fn (string $state, $record): string => ! $protectBuyerPhone || $record->buyerPhoneCanBeRevealed()
                     ? $state
-                    : 'يظهر بعد تحويل الطلب إلى قيد التجهيز'),
-            TextEntry::make('city')->label('المدينة'),
-            TextEntry::make('buyerRegion.name')->label('المنطقة')->placeholder('-'),
+                    : __('يظهر بعد تحويل الطلب إلى قيد التجهيز')),
+            TextEntry::make('city')->label(__('المدينة')),
+            TextEntry::make('buyerRegion.name')->label(__('المنطقة'))->placeholder('-'),
             TextEntry::make('delivery_method')
-                ->label('طريقة التسليم')
+                ->label(__('طريقة التسليم'))
                 ->formatStateUsing(fn (string $state): string => match ($state) {
-                    'pickup' => 'استلام شخصي',
-                    'delivery' => 'توصيل',
-                    'agreement' => 'بالاتفاق',
+                    'pickup' => __('استلام شخصي'),
+                    'delivery' => __('توصيل'),
+                    'agreement' => __('بالاتفاق'),
                     default => $state,
                 }),
-            TextEntry::make('notes')->label('الملاحظات')->placeholder('-')->columnSpanFull(),
+            TextEntry::make('notes')->label(__('الملاحظات'))->placeholder('-')->columnSpanFull(),
             TextEntry::make('status')
-                ->label('الحالة')
+                ->label(__('الحالة'))
                 ->badge()
                 ->formatStateUsing(fn (string $state): string => UpdateOrderStatusAction::statusOptions()[$state] ?? $state),
             TextEntry::make('price_snapshot')
-                ->label('السعر')
+                ->label(__('السعر'))
                 ->formatStateUsing(fn ($state, $record): string => number_format((float) $state, 2).' '.$record->currency_snapshot),
-            TextEntry::make('created_at')->label('تاريخ الطلب')->dateTime()->placeholder('-'),
-            TextEntry::make('updated_at')->label('آخر تحديث')->dateTime()->placeholder('-'),
+            TextEntry::make('created_at')->label(__('تاريخ الطلب'))->dateTime()->placeholder('-'),
+            TextEntry::make('updated_at')->label(__('آخر تحديث'))->dateTime()->placeholder('-'),
         ]);
     }
 }

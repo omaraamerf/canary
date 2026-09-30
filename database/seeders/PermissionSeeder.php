@@ -39,6 +39,12 @@ class PermissionSeeder extends Seeder
             PermissionName::UpdateOwnOrder->value,
         ])->values());
 
+        $member = Role::findOrCreate(UserRole::Member->value, 'web');
+        $member->syncPermissions([]);
+
+        User::query()->where('role', UserRole::Member->value)->each(
+            fn (User $user) => $user->syncRoles([$member])
+        );
         User::query()->where('role', UserRole::Admin->value)->each(
             fn (User $user) => $user->syncRoles([$admin])
         );

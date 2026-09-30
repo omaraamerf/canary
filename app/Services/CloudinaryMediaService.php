@@ -6,6 +6,7 @@ use App\Enums\MediaProvider;
 use App\Enums\MediaType;
 use App\Exceptions\CloudinaryUploadException;
 use App\Models\BirdMedia;
+use App\Models\Media;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\UploadedFile;
@@ -41,14 +42,15 @@ class CloudinaryMediaService
     }
 
     /**
-     * @param  iterable<int, BirdMedia|array{type: string, provider?: string|null, public_id?: string|null}>  $media
+     * @param  iterable<int, BirdMedia|Media|array{type: string, provider?: string|null, public_id?: string|null}>  $media
      */
     public function deleteUploaded(iterable $media): void
     {
         foreach ($media as $item) {
-            $provider = $item instanceof BirdMedia ? $item->provider : ($item['provider'] ?? null);
-            $publicId = $item instanceof BirdMedia ? $item->public_id : ($item['public_id'] ?? null);
-            $type = $item instanceof BirdMedia ? $item->type : $item['type'];
+            $isModel = $item instanceof BirdMedia || $item instanceof Media;
+            $provider = $isModel ? $item->provider : ($item['provider'] ?? null);
+            $publicId = $isModel ? $item->public_id : ($item['public_id'] ?? null);
+            $type = $isModel ? $item->type : $item['type'];
 
             if ($provider !== MediaProvider::Cloudinary->value || ! $publicId) {
                 continue;

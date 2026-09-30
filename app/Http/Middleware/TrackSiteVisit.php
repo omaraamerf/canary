@@ -49,6 +49,8 @@ class TrackSiteVisit
             'home',
             'birds.*',
             'guide.*',
+            'community.index',
+            'community.show',
             'about',
             'policy',
             'start-selling',

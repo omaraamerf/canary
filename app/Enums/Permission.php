@@ -32,4 +32,5 @@ enum Permission: string
     case ManageArticles = 'articles.manage';
     case ManageArticleCategories = 'articleCategories.manage';
     case ManageSettings = 'settings.manage';
+    case ManageCommunity = 'community.manage';
 }

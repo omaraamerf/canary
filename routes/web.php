@@ -1,13 +1,17 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BirdController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GuideController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegionSelectionController;
 use App\Http\Controllers\Seller\AuthController as SellerAuthController;
 use App\Http\Controllers\SellerProfileController;
+use App\Http\Middleware\EnsureCommunityEnabled;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
@@ -30,7 +34,27 @@ Route::get('/guide', [GuideController::class, 'index'])->name('guide.index');
 Route::get('/guide/{category:slug}', [GuideController::class, 'category'])->name('guide.category');
 Route::get('/guide/{category:slug}/{article:slug}', [GuideController::class, 'show'])->name('guide.show');
 
+Route::middleware(EnsureCommunityEnabled::class)->prefix('community')->name('community.')->group(function () {
+    Route::get('/', [PostController::class, 'index'])->name('index');
+    Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('show');
+
+    Route::middleware('auth')->group(function () {
+        Route::get('/create', [PostController::class, 'create'])->name('create');
+        Route::post('/posts', [PostController::class, 'store'])->middleware('throttle:6,1')->name('store');
+        Route::delete('/posts/{post:slug}', [PostController::class, 'destroy'])->name('destroy');
+        Route::post('/posts/{post:slug}/comments', [CommentController::class, 'store'])->middleware('throttle:15,1')->name('comments.store');
+        Route::post('/posts/{post:slug}/comments/{comment}/accept', [PostController::class, 'accept'])->name('comments.accept');
+        Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+    });
+});
+
 Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/login', [AuthController::class, 'authenticate'])->middleware('throttle:10,1')->name('login.store');
+    Route::get('/register', [AuthController::class, 'register'])->name('register');
+    Route::post('/register', [AuthController::class, 'storeRegistration'])->middleware('throttle:5,1')->name('register.store');
     Route::get('/seller/register', [SellerAuthController::class, 'register'])->name('seller.register');
     Route::post('/seller/register', [SellerAuthController::class, 'storeRegistration'])->name('seller.register.store');
 });
+
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');

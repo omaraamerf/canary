@@ -41,10 +41,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    const desktop = window.matchMedia('(min-width: 1251px)');
+    const desktop = window.matchMedia('(min-width: 1101px)');
     desktop.addEventListener('change', (event) => {
         if (event.matches) {
             setOpen(false);
+        }
+    });
+});
+
+// canary.js bundles only a subset of Lucide icons; render any remaining ones from the full library.
+document.addEventListener('DOMContentLoaded', () => {
+    window.lucide?.createIcons();
+});
+
+// Close header dropdowns (region, account) when clicking outside or pressing Escape.
+document.addEventListener('DOMContentLoaded', () => {
+    const dropdowns = document.querySelectorAll('.site-header details');
+
+    document.addEventListener('click', (event) => {
+        dropdowns.forEach((dropdown) => {
+            if (dropdown.open && ! dropdown.contains(event.target)) {
+                dropdown.open = false;
+            }
+        });
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            dropdowns.forEach((dropdown) => { dropdown.open = false; });
         }
     });
 });

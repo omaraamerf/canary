@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call(MarketplaceSeeder::class);
         $this->call(BreedSeeder::class);
         $this->call(GuideSeeder::class);
+        $this->call(GeneticsGuideSeeder::class);
         $this->call(PermissionSeeder::class);
     }
 }

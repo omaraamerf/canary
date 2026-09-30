@@ -3,13 +3,17 @@
 namespace App\Services;
 
 use App\Models\Bird;
+use App\Models\Post;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use LogicException;
 
 class EntityLifecycleService
 {
-    public function __construct(private readonly BirdService $birds) {}
+    public function __construct(
+        private readonly BirdService $birds,
+        private readonly CommunityService $community,
+    ) {}
 
     public function delete(Model $entity): bool
     {
@@ -24,6 +28,10 @@ class EntityLifecycleService
     {
         if ($entity instanceof Bird) {
             return $this->birds->forceDelete($entity);
+        }
+
+        if ($entity instanceof Post) {
+            return $this->community->forceDeletePost($entity);
         }
 
         if (! method_exists($entity, 'forceDelete')) {

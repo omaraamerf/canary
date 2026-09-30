@@ -20,8 +20,16 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->web(append: [SetLocale::class, TrackSiteVisit::class]);
 
-        $middleware->redirectGuestsTo(fn (Request $request) => $request->is('seller*') ? '/seller/login' : '/admin/login');
-        $middleware->redirectUsersTo(fn (Request $request) => $request->user()?->can(Permission::AccessSellerPanel->value) ? '/seller' : '/admin');
+        $middleware->redirectGuestsTo(fn (Request $request) => match (true) {
+            $request->is('seller*') => '/seller/login',
+            $request->is('admin*') => '/admin/login',
+            default => route('login'),
+        });
+        $middleware->redirectUsersTo(fn (Request $request) => match (true) {
+            (bool) $request->user()?->can(Permission::AccessSellerPanel->value) => '/seller',
+            (bool) $request->user()?->can(Permission::AccessAdminPanel->value) => '/admin',
+            default => route('home'),
+        });
 
         $middleware->alias([
             'role' => RoleMiddleware::class,

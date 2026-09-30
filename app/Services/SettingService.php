@@ -33,7 +33,9 @@ class SettingService
     {
         DB::transaction(function () use ($data) {
             foreach (SettingKey::cases() as $key) {
-                Setting::put($key->value, $data[$key->value] ? '1' : '0');
+                if (array_key_exists($key->value, $data)) {
+                    Setting::put($key->value, $data[$key->value] ? '1' : '0');
+                }
             }
         });
     }

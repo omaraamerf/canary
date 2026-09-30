@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\Permission;
+use App\Enums\UserRole;
 use App\Enums\UserStatus;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
@@ -69,6 +70,31 @@ class User extends Authenticatable implements FilamentUser
     public function region()
     {
         return $this->belongsTo(Region::class);
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function isSeller(): bool
+    {
+        return $this->role === UserRole::Seller->value;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === UserRole::Admin->value;
+    }
+
+    public function getPublicNameAttribute(): string
+    {
+        return $this->isSeller() ? ($this->sellerProfile?->display_name ?: $this->name) : $this->name;
     }
 
     public function canAccessPanel(Panel $panel): bool

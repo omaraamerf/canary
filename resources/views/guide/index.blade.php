@@ -9,7 +9,7 @@
         @foreach($categories as $category)
             <a class="guide-category-card" href="{{ route('guide.category',$category) }}">
                 <img src="{{ $category->image ?: '/images/birds/classic-canary.jpg' }}" alt="{{ $category->name }}" loading="lazy">
-                <span></span><div><small>{{ $category->published_articles_count }} {{ __('ui.common.articles') }}</small><h2>{{ $category->name }}</h2><p>{{ $category->description }}</p><i data-lucide="arrow-up-left"></i></div>
+                <span></span><div><small>{{ $category->published_articles_count }} {{ __('ui.common.articles') }}</small><h2>{{ $category->name }}</h2><p>{{ $category->description }}</p><x-lucide-arrow-up-left /></div>
             </a>
         @endforeach
     </div>

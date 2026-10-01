@@ -3,7 +3,7 @@
 @section('meta_description', \Illuminate\Support\Str::limit($post->body, 155))
 @section('content')
 <section class="detail-section"><div class="container narrow">
-    <nav class="breadcrumbs"><a href="{{ route('community.index') }}">{{ __('ui.community.title') }}</a><i data-lucide="chevron-left"></i><span>{{ $post->category->label() }}</span></nav>
+    <nav class="breadcrumbs"><a href="{{ route('community.index') }}">{{ __('ui.community.title') }}</a><x-lucide-chevron-left /><span>{{ $post->category->label() }}</span></nav>
 
     @if(session('success'))<div class="notice mb-4">{{ session('success') }}</div>@endif
     @if($post->status !== \App\Enums\PostStatus::Published)<div class="form-errors mb-4">{{ __('ui.community.hidden_notice') }}</div>@endif
@@ -11,9 +11,9 @@
     <article class="post-detail">
         <div class="post-card-meta">
             <span class="post-category post-category-{{ $post->category->value }}">{{ $post->category->label() }}</span>
-            @if($post->isSolved())<span class="post-solved"><i data-lucide="circle-check"></i>{{ __('ui.community.solved') }}</span>@endif
+            @if($post->isSolved())<span class="post-solved"><x-lucide-circle-check />{{ __('ui.community.solved') }}</span>@endif
             @if($post->breed)<span>{{ $post->breed->localized_name }}</span>@endif
-            @if($post->country)<span><i data-lucide="map-pin"></i>{{ $post->region ? $post->region->name.'، ' : '' }}{{ $post->country->localized_name }}</span>@endif
+            @if($post->country)<span><x-lucide-map-pin />{{ $post->region ? $post->region->name.'، ' : '' }}{{ $post->country->localized_name }}</span>@endif
         </div>
         <h1>{{ $post->title }}</h1>
         <div class="post-author">
@@ -26,12 +26,12 @@
         @can('delete', $post)
             <form method="post" action="{{ route('community.destroy', $post) }}" class="post-actions" onsubmit="return confirm(@js(__('ui.community.delete_confirm')))">
                 @csrf @method('delete')
-                <button type="submit" class="link-danger"><i data-lucide="trash-2"></i> {{ __('ui.community.delete') }}</button>
+                <button type="submit" class="link-danger"><x-lucide-trash-2 /> {{ __('ui.community.delete') }}</button>
             </form>
         @endcan
     </article>
 
-    <div class="notice community-disclaimer"><i data-lucide="stethoscope"></i> {{ __('ui.community.disclaimer') }}</div>
+    <div class="notice community-disclaimer"><x-lucide-stethoscope /> {{ __('ui.community.disclaimer') }}</div>
 
     <section id="comments" class="post-comments">
         <h2>{{ __('ui.community.comments') }} <small>({{ $comments->count() }})</small></h2>
@@ -42,7 +42,7 @@
                 $isStaff = $comment->user->isSeller() || $comment->user->isAdmin();
             @endphp
             <div id="comment-{{ $comment->id }}" @class(['comment', 'comment-staff' => $isStaff, 'comment-accepted' => $isAccepted])>
-                @if($isAccepted)<div class="comment-accepted-label"><i data-lucide="circle-check"></i> {{ __('ui.community.accepted') }}</div>@endif
+                @if($isAccepted)<div class="comment-accepted-label"><x-lucide-circle-check /> {{ __('ui.community.accepted') }}</div>@endif
                 <div class="post-author">
                     @include('community.partials.author', ['user' => $comment->user, 'post' => $post])
                     <time datetime="{{ $comment->created_at->toIso8601String() }}">{{ $comment->created_at->diffForHumans() }}</time>
@@ -53,13 +53,13 @@
                     @can('acceptComment', $post)
                         @unless($comment->isOwnedBy(auth()->user()))
                             <form method="post" action="{{ route('community.comments.accept', [$post, $comment]) }}">@csrf
-                                <button type="submit"><i data-lucide="circle-check"></i> {{ $isAccepted ? __('ui.community.unaccept') : __('ui.community.accept') }}</button>
+                                <button type="submit"><x-lucide-circle-check /> {{ $isAccepted ? __('ui.community.unaccept') : __('ui.community.accept') }}</button>
                             </form>
                         @endunless
                     @endcan
                     @can('delete', $comment)
                         <form method="post" action="{{ route('community.comments.destroy', $comment) }}" onsubmit="return confirm(@js(__('ui.community.delete_confirm')))">@csrf @method('delete')
-                            <button type="submit" class="link-danger"><i data-lucide="trash-2"></i> {{ __('ui.community.delete') }}</button>
+                            <button type="submit" class="link-danger"><x-lucide-trash-2 /> {{ __('ui.community.delete') }}</button>
                         </form>
                     @endcan
                 </div>
@@ -76,7 +76,7 @@
                     @if($errors->any())<div class="form-errors full">{{ $errors->first() }}</div>@endif
                     <label class="full"><textarea name="body" rows="4" required minlength="2" maxlength="3000" placeholder="{{ __('ui.community.comment_placeholder') }}">{{ old('body') }}</textarea></label>
                     <x-image-picker class="full image-picker-compact" name="images" :max="3" :label="__('ui.uploads.add_images')" />
-                    <button class="btn btn-primary full" type="submit"><i data-lucide="send"></i> {{ __('ui.community.send_comment') }}</button>
+                    <button class="btn btn-primary full" type="submit"><x-lucide-send /> {{ __('ui.community.send_comment') }}</button>
                 </form>
             @endcan
         @else

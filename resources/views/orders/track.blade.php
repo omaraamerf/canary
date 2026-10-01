@@ -5,7 +5,7 @@
 @section('content')
 <section class="success-page">
     <div class="success-panel tracking-panel">
-        <span class="success-icon"><i data-lucide="search"></i></span>
+        <span class="success-icon"><x-lucide-search /></span>
         <span class="kicker">{{ __('ui.tracking.eyebrow') }}</span>
         <h1>{{ __('ui.tracking.enter') }}</h1>
         <p>{{ __('ui.tracking.help') }}</p>
@@ -25,7 +25,7 @@
                 <input name="phone" value="{{ old('phone') }}" placeholder="{{ __('ui.tracking.phone_placeholder') }}" required dir="ltr">
             </label>
             <button class="btn btn-primary btn-large" type="submit">
-                <i data-lucide="search"></i> {{ __('ui.tracking.show') }}
+                <x-lucide-search /> {{ __('ui.tracking.show') }}
             </button>
         </form>
     </div>

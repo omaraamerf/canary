@@ -5,7 +5,7 @@
 @section('content')
 <section class="success-page">
     <div class="success-panel auth-panel">
-        <span class="success-icon"><i data-lucide="user-round-plus"></i></span>
+        <span class="success-icon"><x-lucide-user-round-plus /></span>
         <h1>{{ __('ui.auth.register_title') }}</h1>
         <p>{{ __('ui.auth.register_lead') }}</p>
 
@@ -36,7 +36,7 @@
                 {{ __('ui.auth.password_confirmation') }}
                 <input type="password" name="password_confirmation" required autocomplete="new-password" dir="ltr">
             </label>
-            <button class="btn btn-primary btn-large" type="submit"><i data-lucide="user-round-plus"></i> {{ __('ui.auth.submit_register') }}</button>
+            <button class="btn btn-primary btn-large" type="submit"><x-lucide-user-round-plus /> {{ __('ui.auth.submit_register') }}</button>
         </form>
 
         <p class="auth-switch">{{ __('ui.auth.have_account') }} <a href="{{ route('login') }}">{{ __('ui.auth.submit_login') }}</a></p>

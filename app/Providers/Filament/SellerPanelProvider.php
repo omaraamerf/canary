@@ -6,6 +6,7 @@ use App\Filament\Seller\Pages\EditProfile;
 use App\Filament\Seller\Resources\Birds\BirdResource;
 use App\Http\Middleware\SetLocale;
 use Filament\Actions\Action;
+use Filament\FontProviders\LocalFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -22,6 +23,7 @@ use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class SellerPanelProvider extends PanelProvider
@@ -44,6 +46,7 @@ class SellerPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->font('Readex Pro Variable', url: fn (): string => Vite::asset('resources/css/fonts.css'), provider: LocalFontProvider::class)
             ->discoverResources(in: app_path('Filament/Seller/Resources'), for: 'App\Filament\Seller\Resources')
             ->discoverPages(in: app_path('Filament/Seller/Pages'), for: 'App\Filament\Seller\Pages')
             ->pages([

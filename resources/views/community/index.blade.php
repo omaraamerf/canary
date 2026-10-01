@@ -6,7 +6,7 @@
     <span class="kicker">{{ __('ui.community.eyebrow') }}</span>
     <h1>{{ __('ui.community.title') }}</h1>
     <p>{{ __('ui.community.lead') }}</p>
-    <a class="btn btn-primary btn-large" href="{{ route('community.create') }}"><i data-lucide="message-circle-question"></i> {{ __('ui.community.new_post') }}</a>
+    <a class="btn btn-primary btn-large" href="{{ route('community.create') }}"><x-lucide-message-circle-question /> {{ __('ui.community.new_post') }}</a>
 </div></section>
 
 <section class="section-band pt-8"><div class="container catalog-layout">
@@ -18,7 +18,7 @@
             <label>{{ __('ui.birds.breed') }}<select name="breed"><option value="">{{ __('ui.community.all_breeds') }}</option>@foreach($breeds as $breed)<option value="{{ $breed->slug }}" @selected(request('breed') === $breed->slug)>{{ $breed->localized_name }}</option>@endforeach</select></label>
             <x-location-picker :show-optional="false" :use-old="false" country-name="country" region-name="region" :country="request('country')" :region="request('region')" :country-placeholder="__('ui.location.all_countries')" :region-placeholder="__('ui.location.all_country_regions')" />
             <label>{{ __('ui.community.state') }}<select name="state"><option value="">{{ __('ui.common.all') }}</option><option value="open" @selected(request('state') === 'open')>{{ __('ui.community.open') }}</option><option value="solved" @selected(request('state') === 'solved')>{{ __('ui.community.solved') }}</option></select></label>
-            <button class="btn btn-primary w-full" type="submit"><i data-lucide="list-filter"></i> {{ __('ui.community.apply') }}</button>
+            <button class="btn btn-primary w-full" type="submit"><x-lucide-list-filter /> {{ __('ui.community.apply') }}</button>
         </form>
     </aside>
     <div>
@@ -28,7 +28,7 @@
             <div class="post-list">@foreach($posts as $post)<x-post-card :post="$post" />@endforeach</div>
             {{ $posts->links() }}
         @else
-            <div class="empty-state"><i data-lucide="message-circle-question"></i><h2>{{ __('ui.community.empty') }}</h2><p>{{ __('ui.community.empty_help') }}</p><a class="btn btn-dark" href="{{ route('community.create') }}">{{ __('ui.community.new_post') }}</a></div>
+            <div class="empty-state"><x-lucide-message-circle-question /><h2>{{ __('ui.community.empty') }}</h2><p>{{ __('ui.community.empty_help') }}</p><a class="btn btn-dark" href="{{ route('community.create') }}">{{ __('ui.community.new_post') }}</a></div>
         @endif
     </div>
 </div></section>

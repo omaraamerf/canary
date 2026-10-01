@@ -5,7 +5,7 @@
 @section('content')
 <section class="success-page">
     <div class="success-panel">
-        <span class="success-icon"><i data-lucide="check"></i></span>
+        <span class="success-icon"><x-lucide-check /></span>
         <span class="kicker">{{ __('ui.tracking.received') }}</span>
         <h1>{{ __('ui.tracking.can_track') }}</h1>
         <p>{{ __('ui.tracking.keep_reference') }}</p>
@@ -20,10 +20,10 @@
 
         <div class="tracking-actions">
             <a class="btn btn-primary btn-large" href="{{ route('orders.track.show', $order) }}">
-                <i data-lucide="map-pin-check"></i> {{ __('ui.tracking.track') }}
+                <x-lucide-map-pin-check /> {{ __('ui.tracking.track') }}
             </a>
             <a class="btn btn-dark" href="{{ route('birds.index') }}">
-                <i data-lucide="arrow-right"></i> {{ __('ui.tracking.back_birds') }}
+                <x-lucide-arrow-right /> {{ __('ui.tracking.back_birds') }}
             </a>
         </div>
     </div>

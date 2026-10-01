@@ -5,9 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title }} | {{ __('ui.brand.name') }}</title>
-    <link rel="stylesheet" href="{{ asset('assets/css/site.css') }}?v=10">
+    {{-- Styles are optional here: a missing asset build must not break the error page itself. --}}
+    @if(is_file(public_path('build/manifest.json')) || is_file(public_path('hot')))
+        @vite('resources/css/app.css')
+    @endif
 </head>
-<body>
+<body class="bg-bg text-fg antialiased">
     <main class="success-page error-page">
         <div class="success-panel">
             <span class="error-code">{{ $code }}</span>

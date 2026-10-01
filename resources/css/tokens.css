@@ -1,0 +1,101 @@
+/*
+ * Design tokens.
+ *
+ * Brand ramps are OKLCH and anchored on the existing brand colors (the commented
+ * hex values), so introducing them changes nothing visible. Components should use
+ * the semantic utilities (bg-surface, text-fg, border-line…) rather than ramp steps,
+ * so the dark theme can swap them in one place.
+ */
+
+@theme {
+    --font-sans: "Readex Pro Variable", "Segoe UI", Tahoma, system-ui, sans-serif;
+
+    /* Canary yellow — primary actions and highlights. */
+    --color-canary-50: oklch(98.5% 0.018 90.5);
+    --color-canary-100: oklch(96.5% 0.035 90.5);
+    --color-canary-200: oklch(93.5% 0.07 90.5);
+    --color-canary-300: oklch(89.5% 0.11 90.5);
+    --color-canary-400: oklch(85% 0.146 90.5); /* #f2c94c */
+    --color-canary-500: oklch(76% 0.15 86);
+    --color-canary-600: oklch(64% 0.13 82);
+    --color-canary-700: oklch(53% 0.11 78);
+    --color-canary-800: oklch(44% 0.085 75);
+    --color-canary-900: oklch(36% 0.06 72);
+    --color-canary-950: oklch(26% 0.04 70);
+
+    /* Leaf green — trust, success, secondary accents. */
+    --color-leaf-50: oklch(98.5% 0.008 156);
+    --color-leaf-100: oklch(96.2% 0.015 156);
+    --color-leaf-200: oklch(92% 0.03 156);
+    --color-leaf-300: oklch(86.5% 0.048 156);
+    --color-leaf-400: oklch(78% 0.065 156);
+    --color-leaf-500: oklch(68% 0.07 156);
+    --color-leaf-600: oklch(56% 0.072 156);
+    --color-leaf-700: oklch(44.1% 0.067 156); /* #315e43 */
+    --color-leaf-800: oklch(37% 0.055 156);
+    --color-leaf-900: oklch(30% 0.04 156);
+    --color-leaf-950: oklch(22% 0.025 156);
+
+    /* Sage — warm green-grey neutrals for text, lines and surfaces. */
+    --color-sage-50: oklch(97.4% 0.007 115.7); /* #f6f7f2 */
+    --color-sage-100: oklch(95.8% 0.007 124.4); /* #f0f2ed */
+    --color-sage-200: oklch(89.9% 0.011 123.5); /* #dcdfd7 */
+    --color-sage-300: oklch(80.6% 0.013 124.8);
+    --color-sage-400: oklch(71.3% 0.014 126.1);
+    --color-sage-500: oklch(62% 0.015 127.5);
+    --color-sage-600: oklch(52.7% 0.017 128.8); /* #686d63 */
+    --color-sage-700: oklch(43.7% 0.016 131.4);
+    --color-sage-800: oklch(34.7% 0.015 134.1);
+    --color-sage-900: oklch(25.7% 0.015 136.7); /* #20251e */
+    --color-sage-950: oklch(21.7% 0.011 132.7); /* #181b16 */
+
+    --color-danger-600: oklch(48.7% 0.152 32.4); /* #a4331f */
+
+    --shadow-header: 0 1px 0 rgb(24 27 22 / 0.02), 0 8px 24px -18px rgb(24 27 22 / 0.25);
+    --shadow-popover: 0 16px 36px rgb(30 36 29 / 0.14);
+}
+
+@theme inline {
+    --color-bg: var(--bg);
+    --color-surface: var(--surface);
+    --color-surface-muted: var(--surface-muted);
+    --color-fg: var(--fg);
+    --color-fg-muted: var(--fg-muted);
+    --color-line: var(--border);
+    --color-primary: var(--primary);
+    --color-on-primary: var(--on-primary);
+    --color-accent: var(--accent);
+    --color-inverse: var(--inverse);
+    --color-danger: var(--danger);
+}
+
+:root {
+    color-scheme: light;
+    --bg: var(--color-sage-50);
+    --surface: #fff;
+    --surface-muted: var(--color-sage-100);
+    --fg: var(--color-sage-950);
+    --fg-muted: var(--color-sage-600);
+    --border: var(--color-sage-200);
+    --primary: var(--color-canary-400);
+    --on-primary: var(--color-sage-900);
+    --accent: var(--color-leaf-700);
+    --inverse: var(--color-sage-900);
+    --danger: var(--color-danger-600);
+}
+
+/* Dark theme values, switched on by data-theme once components use semantic tokens. */
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: var(--color-sage-950);
+    --surface: var(--color-sage-900);
+    --surface-muted: var(--color-sage-800);
+    --fg: var(--color-sage-50);
+    --fg-muted: var(--color-sage-300);
+    --border: var(--color-sage-800);
+    --primary: var(--color-canary-400);
+    --on-primary: var(--color-sage-950);
+    --accent: var(--color-leaf-400);
+    --inverse: var(--color-sage-950);
+    --danger: oklch(70% 0.15 32.4);
+}

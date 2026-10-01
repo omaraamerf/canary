@@ -62,4 +62,21 @@ class Bird extends Model
     {
         return $this->media->firstWhere('type', 'image')?->url ?? '/images/birds/yellow-canary.jpg';
     }
+
+    public function getCurrencyLabelAttribute(): string
+    {
+        if (blank($this->currency)) {
+            return '';
+        }
+
+        $key = 'ui.currencies.'.$this->currency;
+
+        return __($key) === $key ? $this->currency : __($key);
+    }
+
+    // "City, Region" — the region is dropped when it only repeats the city (e.g. "Damascus, Damascus").
+    public function getLocationLabelAttribute(): string
+    {
+        return collect([$this->city, $this->region?->name])->filter()->unique()->implode('، ');
+    }
 }

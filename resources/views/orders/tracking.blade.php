@@ -5,7 +5,7 @@
 @section('content')
 <section class="success-page">
     <div class="success-panel tracking-panel">
-        <span class="success-icon"><i data-lucide="package-check"></i></span>
+        <span class="success-icon"><x-lucide-package-check /></span>
         <span class="kicker">{{ __('ui.tracking.status') }}</span>
         <h1>{{ \App\Enums\OrderStatus::from($order->status)->label() }}</h1>
         <p>{{ __('ui.tracking.reference_label') }} <b dir="ltr">{{ $order->reference }}</b></p>

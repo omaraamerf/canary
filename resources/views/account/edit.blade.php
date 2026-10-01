@@ -2,7 +2,7 @@
 @section('title', __('ui.account.edit'))
 @section('content')
 <section class="detail-section"><div class="container narrow">
-    <nav class="breadcrumbs"><a href="{{ route('account.show') }}">{{ __('ui.account.my_account') }}</a><i data-lucide="chevron-left"></i><span>{{ __('ui.account.edit') }}</span></nav>
+    <nav class="breadcrumbs"><a href="{{ route('account.show') }}">{{ __('ui.account.my_account') }}</a><x-lucide-chevron-left /><span>{{ __('ui.account.edit') }}</span></nav>
     <div class="section-heading"><div><span class="kicker">{{ __('ui.account.my_account') }}</span><h2>{{ __('ui.account.edit') }}</h2></div></div>
 
     <form action="{{ route('account.update') }}" method="post" enctype="multipart/form-data" class="settings-card">
@@ -38,7 +38,7 @@
 
         <div class="settings-actions">
             <a class="btn btn-outline" href="{{ route('account.show') }}">{{ __('ui.account.cancel') }}</a>
-            <button class="btn btn-primary" type="submit"><i data-lucide="save"></i>{{ __('ui.account.save') }}</button>
+            <button class="btn btn-primary" type="submit"><x-lucide-save />{{ __('ui.account.save') }}</button>
         </div>
     </form>
 
@@ -54,7 +54,7 @@
                 <label>{{ __('ui.auth.password_confirmation') }}<input type="password" name="password_confirmation" required autocomplete="new-password" dir="ltr"></label>
             </div>
         </fieldset>
-        <div class="settings-actions"><button class="btn btn-dark" type="submit"><i data-lucide="lock-keyhole"></i>{{ __('ui.account.update_password') }}</button></div>
+        <div class="settings-actions"><button class="btn btn-dark" type="submit"><x-lucide-lock-keyhole />{{ __('ui.account.update_password') }}</button></div>
     </form>
 </div></section>
 @endsection

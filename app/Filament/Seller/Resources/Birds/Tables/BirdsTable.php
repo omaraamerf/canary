@@ -22,7 +22,7 @@ class BirdsTable
                     ->formatStateUsing(fn ($record): string => $record->breed->localized_name),
                 TextColumn::make('price')
                     ->label(__('السعر'))
-                    ->formatStateUsing(fn ($state): string => number_format((float) $state, 2).' SAR')
+                    ->formatStateUsing(fn ($state, $record): string => number_format((float) $state, 2).' '.$record->currency)
                     ->sortable(),
                 TextColumn::make('status')
                     ->label(__('الحالة'))

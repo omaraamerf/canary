@@ -1,17 +1,17 @@
+/* Legacy names kept for the rules below; the values come from tokens.css. */
 :root {
-    --ink: #181b16;
-    --muted: #686d63;
-    --line: #dcdfd7;
-    --paper: #f6f7f2;
-    --white: #fff;
-    --yellow: #f2c94c;
-    --green: #315e43;
-    --dark: #20251e;
+    --ink: var(--fg);
+    --muted: var(--fg-muted);
+    --line: var(--border);
+    --paper: var(--bg);
+    --yellow: var(--primary);
+    --green: var(--accent);
+    --dark: var(--inverse);
 }
 
 html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--paper); color: var(--ink); font-family: Tahoma, Arial, sans-serif; }
-body, button, input, select, textarea { font-family: inherit; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-sans); }
+button, input, select, textarea { font-family: inherit; }
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
 svg { flex: 0 0 auto; height: 1.15rem; width: 1.15rem; }
@@ -38,7 +38,7 @@ svg { flex: 0 0 auto; height: 1.15rem; width: 1.15rem; }
 .header-login { align-items: center; border-radius: 4px; color: var(--ink); display: inline-flex; font-size: .85rem; font-weight: 800; gap: .45rem; min-height: 42px; padding-inline: .8rem; transition: background .15s ease; white-space: nowrap; }
 .header-login:hover { background: #f0f2ed; }
 .header-cta { white-space: nowrap; }
-.menu-toggle { display: none; }
+.icon-btn.menu-toggle { display: none; }
 .account-menu { position: relative; }
 .account-menu summary { align-items: center; border: 1px solid var(--line); border-radius: 999px; cursor: pointer; display: flex; gap: .5rem; list-style: none; min-height: 42px; padding: .25rem .35rem; padding-inline-end: .75rem; transition: border-color .15s ease; }
 .account-menu summary::-webkit-details-marker, .region-switcher summary::-webkit-details-marker { display: none; }
@@ -390,6 +390,7 @@ textarea { resize: vertical; }
 /* Error pages */
 .error-page { align-items: center; display: flex; }
 .error-page .success-panel { width: 100%; }
+.error-page .tracking-actions { margin-top: 1.5rem; }
 .error-code { color: var(--yellow); display: block; font-size: 4.5rem; font-weight: 900; line-height: 1; }
 
 /* Avatars */
@@ -487,7 +488,7 @@ textarea { resize: vertical; }
 @media (max-width: 1100px) {
     .main-nav { display: none; }
     .header-main { justify-content: space-between; }
-    .menu-toggle { display: inline-flex; }
+    .icon-btn.menu-toggle { display: inline-flex; }
 }
 
 @media (max-width: 760px) {

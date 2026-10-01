@@ -6,13 +6,14 @@
     <title>{{ __('ui.pages.sell.register') }} | {{ __('ui.brand.name') }}</title>
     <link rel="stylesheet" href="{{ asset('admin-assets/css/bootstrap-rtl.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin-assets/css/app-rtl.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin-assets/css/canary-admin.css') }}?v=5">
+    <link rel="stylesheet" href="{{ asset('admin-assets/css/canary-admin.css') }}?v=6">
+    @vite(['resources/css/fonts.css', 'resources/js/app.js'])
 </head>
 <body>
     <main class="container py-5" style="max-width:820px">
         <div class="admin-section">
             <div class="text-center mb-4">
-                <span class="admin-brand-mark mx-auto mb-3"><i data-lucide="bird"></i></span>
+                <span class="admin-brand-mark mx-auto mb-3"><x-lucide-bird /></span>
                 <a href="{{ route('locale.switch', app()->isLocale('ar') ? 'en' : 'ar') }}" class="btn btn-sm btn-outline mb-3">{{ app()->isLocale('ar') ? 'English' : 'العربية' }}</a>
                 <h1 class="h3">{{ __('ui.register.heading') }}</h1>
                 <p class="text-muted">{{ __('ui.register.lead') }}</p>
@@ -39,8 +40,6 @@
             </form>
         </div>
     </main>
-    <script src="{{ asset('assets/js/canary.js') }}" type="module"></script>
     @include('partials.location-data')
-    <script src="{{ asset('assets/js/forms.js') }}?v=1" defer></script>
 </body>
 </html>

@@ -13,12 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
         toggle.setAttribute('aria-label', open ? 'إغلاق القائمة' : 'فتح القائمة');
     };
 
-    toggle.addEventListener('click', (event) => {
-        // The legacy bundle only toggles `is-open`; intercept it so `hidden`
-        // remains the single source of truth for the menu visibility.
-        event.stopImmediatePropagation();
+    toggle.addEventListener('click', () => {
         setOpen(toggle.getAttribute('aria-expanded') !== 'true');
-    }, true);
+    });
 
     menu.querySelectorAll('a').forEach((link) => {
         link.addEventListener('click', () => setOpen(false));
@@ -47,11 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
             setOpen(false);
         }
     });
-});
-
-// canary.js bundles only a subset of Lucide icons; render any remaining ones from the full library.
-document.addEventListener('DOMContentLoaded', () => {
-    window.lucide?.createIcons();
 });
 
 // Close header dropdowns (region, account) when clicking outside or pressing Escape.

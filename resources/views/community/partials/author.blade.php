@@ -2,7 +2,7 @@
     <x-avatar :user="$user" size="sm" />
     <a href="{{ route('members.show', $user) }}">{{ $user->public_name }}</a>
     @if($user->isSeller())
-        <span class="author-badge author-badge-seller"><i data-lucide="badge-check"></i>{{ __('ui.community.seller_badge') }}</span>
+        <span class="author-badge author-badge-seller"><x-lucide-badge-check />{{ __('ui.community.seller_badge') }}</span>
     @elseif($user->isAdmin())
         <span class="author-badge author-badge-admin">{{ __('ui.community.admin_badge') }}</span>
     @endif

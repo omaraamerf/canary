@@ -2,10 +2,10 @@
 @section('title', __('ui.community.create_title'))
 @section('content')
 <section class="detail-section"><div class="container narrow">
-    <nav class="breadcrumbs"><a href="{{ route('community.index') }}">{{ __('ui.community.title') }}</a><i data-lucide="chevron-left"></i><span>{{ __('ui.community.create_title') }}</span></nav>
+    <nav class="breadcrumbs"><a href="{{ route('community.index') }}">{{ __('ui.community.title') }}</a><x-lucide-chevron-left /><span>{{ __('ui.community.create_title') }}</span></nav>
     <div class="section-heading"><div><span class="kicker">{{ __('ui.community.eyebrow') }}</span><h2>{{ __('ui.community.create_title') }}</h2><p class="community-muted">{{ __('ui.community.create_lead') }}</p></div></div>
 
-    <div class="notice community-disclaimer"><i data-lucide="stethoscope"></i> {{ __('ui.community.disclaimer') }}</div>
+    <div class="notice community-disclaimer"><x-lucide-stethoscope /> {{ __('ui.community.disclaimer') }}</div>
 
     <form action="{{ route('community.store') }}" method="post" enctype="multipart/form-data" class="reserve-form community-form">
         @csrf
@@ -31,7 +31,7 @@
             <x-image-picker name="images" :max="4" :label="__('ui.uploads.add_bird_photos')" />
         </div>
         <label class="full">{{ __('ui.community.video') }} <small>{{ __('ui.auth.optional') }}</small><input type="file" name="videos[]" accept="video/mp4,video/quicktime,video/webm"></label>
-        <button class="btn btn-primary btn-large full" type="submit"><i data-lucide="send"></i> {{ __('ui.community.submit') }}</button>
+        <button class="btn btn-primary btn-large full" type="submit"><x-lucide-send /> {{ __('ui.community.submit') }}</button>
     </form>
 </div></section>
 @endsection

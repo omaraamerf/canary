@@ -13,7 +13,7 @@ class ManifestController extends Controller
     {
         $shortcuts = array_values(array_filter([
             ['name' => __('ui.nav.birds'), 'url' => route('birds.index', absolute: false)],
-            Setting::boolean('guide_enabled', true) ? ['name' => __('ui.nav.guide'), 'url' => route('guide.index', absolute: false)] : null,
+            Setting::boolean(SettingKey::GuideEnabled->value, true) ? ['name' => __('ui.nav.guide'), 'url' => route('guide.index', absolute: false)] : null,
             Setting::boolean(SettingKey::CommunityEnabled->value, true) ? ['name' => __('ui.nav.community'), 'url' => route('community.index', absolute: false)] : null,
             ['name' => __('ui.favorites.title'), 'url' => route('favorites.index', absolute: false)],
         ]));

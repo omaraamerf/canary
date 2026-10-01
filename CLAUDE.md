@@ -68,7 +68,7 @@ PHP 8.2، Laravel 12، Filament 5، spatie/laravel-permission 6، mallardduck/bl
 - **النصوص:** تُكتب `__('نص عربي')`، وترجمتها الإنجليزية في `lang/en.json`. تأكد من عدم تكرار المفاتيح.
 - **الإعدادات:** جدول `settings` (key/value).
   - المفاتيح في `App\Enums\SettingKey` مع `label()` و `description()`.
-  - القراءة بـ `Setting::boolean()`.
+  - القراءة بـ `Setting::boolean(SettingKey::X->value)`. القيم كلها تُجلب باستعلام واحد لكل طلب (scoped binding باسم `Setting::VALUES`)، وتُمسح عند حفظ أي إعداد.
   - لا يمكن إضافة إعداد من اللوحة (`canCreate=false`).
 - **صفحة "البائعون"** (`Resources/Users`): تعرض مستخدمي دور seller فقط، وفيها index فقط.
 

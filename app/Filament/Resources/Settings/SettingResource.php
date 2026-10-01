@@ -30,6 +30,11 @@ class SettingResource extends Resource
 
     public static function getNavigationLabel(): string { return __('إعدادات الموقع'); }
 
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
     public static function form(Schema $schema): Schema
     {
         return SettingForm::configure($schema);

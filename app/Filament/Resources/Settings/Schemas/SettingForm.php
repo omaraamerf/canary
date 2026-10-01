@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\Settings\Schemas;
 
+use App\Enums\SettingKey;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class SettingForm
@@ -12,16 +12,14 @@ class SettingForm
     {
         return $schema
             ->components([
-                TextInput::make('key')
-                    ->label(__('المفتاح'))
-                    ->disabled()
-                    ->dehydrated(),
                 Select::make('value')
-                    ->label(__('القيمة'))
+                    ->label(fn ($record): string => SettingKey::labelFor($record->key))
+                    ->helperText(fn ($record): ?string => SettingKey::descriptionFor($record->key))
                     ->options([
                         '1' => __('مفعّل'),
                         '0' => __('معطّل'),
                     ])
+                    ->native(false)
                     ->required(),
             ]);
     }

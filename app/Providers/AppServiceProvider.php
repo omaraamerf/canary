@@ -6,12 +6,17 @@ use App\Enums\SettingKey;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Setting;
+use App\Policies\PermissionPolicy;
+use App\Policies\RolePolicy;
 use App\Support\LocationOptions;
 use App\Support\MarketplaceLocation;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,6 +38,9 @@ class AppServiceProvider extends ServiceProvider
             'post' => Post::class,
             'comment' => Comment::class,
         ]);
+
+        Gate::policy(Role::class, RolePolicy::class);
+        Gate::policy(Permission::class, PermissionPolicy::class);
 
         Paginator::defaultView('partials.pagination');
 

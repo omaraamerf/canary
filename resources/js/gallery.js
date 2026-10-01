@@ -41,7 +41,10 @@ document.querySelectorAll('[data-gallery]').forEach((gallery) => {
 
         const image = slides[current].querySelector('img');
         const target = lightbox.querySelector('[data-lightbox-image]');
-        target.src = image.currentSrc || image.src;
+        // Full screen deserves the largest file in the srcset, not the one sized for the slide.
+        const largest = (image.getAttribute('srcset') ?? '').split(',').map((candidate) => candidate.trim().split(/\s+/))
+            .filter(([url, width]) => url && width).sort((a, b) => parseInt(b[1], 10) - parseInt(a[1], 10))[0]?.[0];
+        target.src = largest ?? image.currentSrc ?? image.src;
         target.alt = image.alt;
         lightbox.showModal();
     };

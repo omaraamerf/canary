@@ -54,6 +54,7 @@ class TrackSiteVisit
             'about',
             'policy',
             'start-selling',
+            'favorites.index',
             'sellers.show',
             'orders.received',
             'orders.track',

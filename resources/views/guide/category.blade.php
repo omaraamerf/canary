@@ -19,6 +19,7 @@
     <div class="container guide-layout">
         <div>
             @if($articles->count())
+                <h2 class="sr-only">{{ __('ui.guide.section_articles') }}</h2>
                 <div class="article-list">@foreach($articles as $article)<x-article-row :article="$article" :show-category="false" />@endforeach</div>
                 {{ $articles->links() }}
             @else

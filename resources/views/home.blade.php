@@ -35,7 +35,7 @@
             <div @class(['hero-mosaic', 'is-single' => $mosaic->count() === 1])>
                 @foreach($mosaic as $bird)
                     <a @class(['mosaic-tile', 'is-main' => $loop->first]) href="{{ route('birds.show', $bird) }}">
-                        <img src="{{ $bird->primary_image }}" alt="" @if($loop->first) fetchpriority="high" @else loading="lazy" @endif>
+                        <x-img :src="$bird->primary_image" :width="640" sizes="(max-width: 1000px) 100vw, 560px" alt="" :fetchpriority="$loop->first ? 'high' : null" :loading="$loop->first ? null : 'lazy'" />
                         <span class="mosaic-caption">
                             @if($loop->first && $bird->featured)<small>{{ __('ui.home.featured') }}</small>@endif
                             <strong>{{ $bird->title }}</strong>
@@ -64,7 +64,7 @@
             <div class="breed-grid">
                 @foreach($breeds as $breed)
                     <a class="breed-tile" href="{{ route('birds.index', ['breed' => $breed->slug]) }}">
-                        <span class="breed-tile-image">@if($breed->birds->first())<img src="{{ $breed->birds->first()->primary_image }}" alt="" loading="lazy">@else<x-lucide-bird />@endif</span>
+                        <span class="breed-tile-image">@if($breed->birds->first())<x-img :src="$breed->birds->first()->primary_image" :width="160" alt="" loading="lazy" />@else<x-lucide-bird />@endif</span>
                         <strong>{{ $breed->localized_name }}</strong>
                         <small>{{ __('ui.home.bird_count', ['count' => $breed->birds_count]) }}</small>
                     </a>
@@ -117,7 +117,7 @@
                 <div class="guide-list">
                     @foreach($articles as $article)
                         <a class="guide-list-item" href="{{ route('guide.show', [$article->category, $article]) }}">
-                            <img src="{{ $article->featured_image ?: '/images/birds/yellow-canary.jpg' }}" alt="" loading="lazy">
+                            <x-img :src="$article->featured_image ?: '/images/birds/yellow-canary.jpg'" :width="320" alt="" loading="lazy" />
                             <span><small>{{ $article->category->name }}</small><strong>{{ $article->title }}</strong></span>
                         </a>
                     @endforeach

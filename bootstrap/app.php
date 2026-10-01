@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\MarkPersonalizedResponses;
 use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\TrackSiteVisit;
 use Illuminate\Foundation\Application;
@@ -17,7 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->web(append: [SetLocale::class, TrackSiteVisit::class]);
+        $middleware->web(append: [SetLocale::class, TrackSiteVisit::class, MarkPersonalizedResponses::class]);
 
         // One sign-in page for the site and both panels (see AuthController).
         $middleware->redirectGuestsTo(fn () => route('login'));

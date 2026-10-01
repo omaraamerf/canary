@@ -30,7 +30,7 @@
             <div class="gallery-stage">
                 <div class="gallery-track" data-gallery-track tabindex="0">
                     @foreach($slides as $url)
-                        <figure class="gallery-slide"><img src="{{ $url }}" alt="{{ __('ui.detail.photo', ['current' => $loop->iteration, 'total' => $slides->count()]) }} — {{ $bird->title }}" @if($loop->first) fetchpriority="high" @else loading="lazy" @endif></figure>
+                        <figure class="gallery-slide"><x-img :src="$url" :width="760" sizes="(max-width: 1000px) 100vw, 720px" :style="$loop->first ? 'view-transition-name: bird-photo' : null" :alt="__('ui.detail.photo', ['current' => $loop->iteration, 'total' => $slides->count()]).' — '.$bird->title" :fetchpriority="$loop->first ? 'high' : null" :loading="$loop->first ? null : 'lazy'" /></figure>
                     @endforeach
                 </div>
                 <span class="status-pill status-{{ $bird->status }}">{{ __('ui.bird_status.'.$bird->status) }}</span>
@@ -44,7 +44,7 @@
             @if($slides->count() > 1)
                 <div class="gallery-thumbs">
                     @foreach($slides as $url)
-                        <button type="button" data-gallery-thumb="{{ $loop->index }}" @if($loop->first) aria-current="true" @endif aria-label="{{ __('ui.detail.photo', ['current' => $loop->iteration, 'total' => $slides->count()]) }}"><img src="{{ $url }}" alt="" loading="lazy"></button>
+                        <button type="button" data-gallery-thumb="{{ $loop->index }}" @if($loop->first) aria-current="true" @endif aria-label="{{ __('ui.detail.photo', ['current' => $loop->iteration, 'total' => $slides->count()]) }}"><x-img :src="$url" :width="96" alt="" loading="lazy" /></button>
                     @endforeach
                 </div>
             @endif
@@ -72,7 +72,10 @@
                 @else
                     <div class="alert alert-warning">{{ __('ui.detail.unavailable') }}</div>
                 @endif
-                <button type="button" class="btn btn-ghost btn-sm summary-share" data-share data-share-title="{{ $bird->title }}" data-share-copied="{{ __('ui.detail.link_copied') }}"><x-lucide-share-2 />{{ __('ui.detail.share') }}</button>
+                <div class="summary-tools">
+                    <x-favorite-button :bird="$bird" with-label class="btn btn-ghost btn-sm" />
+                    <button type="button" class="btn btn-ghost btn-sm" data-share data-share-title="{{ $bird->title }}" data-share-copied="{{ __('ui.detail.link_copied') }}"><x-lucide-share-2 />{{ __('ui.detail.share') }}</button>
+                </div>
             </div>
 
             <div class="seller-card">

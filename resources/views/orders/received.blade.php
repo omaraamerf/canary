@@ -28,7 +28,7 @@
             <h2>{{ __('ui.tracking.order_summary') }}</h2>
             @if($order->bird)
                 <a class="order-bird" href="{{ route('birds.show', $order->bird) }}">
-                    <img src="{{ $order->bird->primary_image }}" alt="" loading="lazy">
+                    <x-img :src="$order->bird->primary_image" :width="160" alt="" loading="lazy" />
                     <span><small>{{ __('ui.tracking.bird') }}</small><strong>{{ $order->bird->title }}</strong></span>
                 </a>
             @endif

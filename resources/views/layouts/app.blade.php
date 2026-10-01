@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', __('ui.brand.name')) | {{ __('ui.layout.title') }}</title>
     <meta name="description" content="@yield('meta_description', __('ui.layout.description'))">
+    @include('partials.head-icons')
     @include('partials.theme-script')
     @foreach(['arabic', 'latin'] as $subset)
         <link rel="preload" href="{{ Vite::asset("node_modules/@fontsource-variable/readex-pro/files/readex-pro-{$subset}-wght-normal.woff2") }}" as="font" type="font/woff2" crossorigin>
@@ -52,6 +53,7 @@
                 <div class="header-tools">
                     <a class="icon-btn header-lang" href="{{ route('locale.switch', $otherLocale) }}" hreflang="{{ $otherLocale }}" lang="{{ $otherLocale }}" aria-label="{{ __('ui.language.switch') }}">{{ $otherLocale === 'en' ? __('ui.language.english') : __('ui.language.arabic') }}</a>
                     <button type="button" class="icon-btn theme-toggle" data-theme-toggle aria-pressed="false" aria-label="{{ __('ui.theme.dark_mode') }}" title="{{ __('ui.theme.dark_mode') }}"><x-lucide-moon class="icon-dark" /><x-lucide-sun class="icon-light" /></button>
+                    <a @class(['icon-btn', 'header-fav', 'is-active' => request()->routeIs('favorites.*')]) href="{{ route('favorites.index') }}" aria-label="{{ __('ui.favorites.title') }}" title="{{ __('ui.favorites.title') }}"><x-lucide-heart /><span class="icon-badge" data-favorites-count hidden></span></a>
                     @if($currentUser)
                         <button type="button" class="account-trigger" popovertarget="account-menu" aria-label="{{ $currentUser->public_name }}">
                             <x-avatar :user="$currentUser" />
@@ -86,6 +88,7 @@
             <div class="menu-sheet-section">@include('partials.account-links', ['user' => $currentUser])</div>
         @endif
         <nav class="menu-sheet-section" aria-label="{{ __('ui.layout.mobile_navigation') }}">
+            <a @class(['menu-item', 'is-active' => request()->routeIs('favorites.*')]) href="{{ route('favorites.index') }}"><x-lucide-heart />{{ __('ui.favorites.title') }}<span class="menu-count" data-favorites-count hidden></span></a>
             <a @class(['menu-item', 'is-active' => request()->routeIs('start-selling')]) href="{{ route('start-selling') }}"><x-lucide-store />{{ __('ui.nav.sell') }}</a>
             <a @class(['menu-item', 'is-active' => request()->routeIs('orders.track*')]) href="{{ route('orders.track') }}"><x-lucide-package-search />{{ __('ui.nav.track') }}</a>
             <a @class(['menu-item', 'is-active' => request()->routeIs('about')]) href="{{ route('about') }}"><x-lucide-info />{{ __('ui.nav.about') }}</a>
@@ -95,6 +98,7 @@
             <div class="menu-sheet-prefs">
                 <x-ui.button variant="outline" icon="languages" :href="route('locale.switch', $otherLocale)" hreflang="{{ $otherLocale }}" lang="{{ $otherLocale }}">{{ $otherLocale === 'en' ? __('ui.language.english') : __('ui.language.arabic') }}</x-ui.button>
                 <button type="button" class="btn btn-outline theme-toggle" data-theme-toggle aria-pressed="false"><x-lucide-moon class="icon-dark" /><x-lucide-sun class="icon-light" />{{ __('ui.theme.dark_mode') }}</button>
+                <button type="button" class="btn btn-outline" data-install-app hidden><x-lucide-download />{{ __('ui.pwa.install') }}</button>
             </div>
             @guest
                 <div class="menu-sheet-auth">

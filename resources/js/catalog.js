@@ -1,5 +1,6 @@
 // Catalog filters refresh the results in place. On wide screens every change applies at once;
 // on phones the filter sheet applies everything together with its submit button.
+import { syncFavorites } from './favorites';
 import { initLocationPickers } from './forms';
 
 const FORM_ID = 'filters-form';
@@ -58,6 +59,7 @@ const load = async (url, { replaceForm = false } = {}) => {
         });
 
         document.startViewTransition ? await document.startViewTransition(swap).updateCallbackDone : swap();
+        syncFavorites();
 
         if (replaceForm) {
             initLocationPickers(form());

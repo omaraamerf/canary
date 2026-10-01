@@ -30,7 +30,7 @@
     <div class="container">
         <div class="section-heading"><div><span class="kicker">{{ __('ui.home.available_now') }}</span><h2>{{ __('ui.seller.birds') }}</h2></div></div>
         @if($birds->count())
-            <div class="birds-grid">@foreach($birds as $bird)<x-bird-card :bird="$bird" />@endforeach</div>
+            <div class="birds-grid">@foreach($birds as $bird)<x-bird-card :bird="$bird" :eager="$loop->index < 2" />@endforeach</div>
             {{ $birds->links() }}
         @else
             <x-ui.empty-state icon="bird" :title="__('ui.seller.no_birds')" />

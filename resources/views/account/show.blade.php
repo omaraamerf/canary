@@ -58,7 +58,7 @@
                         @foreach($items as $order)
                             @php $status = \App\Enums\OrderStatus::from($order->status); @endphp
                             <a class="order-row" href="{{ route('orders.track.show', $order) }}">
-                                <img src="{{ $order->bird?->primary_image ?? '/images/birds/yellow-canary.jpg' }}" alt="" width="72" height="72" loading="lazy" decoding="async">
+                                <x-img :src="$order->bird?->primary_image ?? '/images/birds/yellow-canary.jpg'" :width="72" alt="" width="72" height="72" loading="lazy" />
                                 <div class="order-row-main">
                                     <strong>{{ $order->bird?->title ?? __('ui.account.bird_removed') }}</strong>
                                     <span class="order-row-meta"><span dir="ltr">{{ $order->reference }}</span><span>{{ $order->created_at->translatedFormat('j F Y') }}</span></span>

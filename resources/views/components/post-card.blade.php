@@ -24,7 +24,7 @@
         </p>
     </div>
     <div class="post-row-side">
-        @if($image)<img src="{{ $image->url }}" alt="" loading="lazy">@endif
+        @if($image)<x-img :src="$image->url" :width="96" alt="" loading="lazy" />@endif
         <span class="post-row-replies" title="{{ __('ui.community.comments_count', ['count' => $replies]) }}"><x-lucide-message-circle />{{ $replies }}</span>
     </div>
 </article>

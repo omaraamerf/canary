@@ -1,13 +1,14 @@
-@props(['bird'])
+@props(['bird', 'eager' => false])
 @php
     $images = $bird->media->where('type', 'image')->values();
     $profile = $bird->seller?->sellerProfile;
 @endphp
 <article class="bird-card">
     <div class="bird-card-media">
-        <img src="{{ $bird->primary_image }}" alt="" loading="lazy" decoding="async">
-        @if($images->count() > 1)<img class="bird-card-alt" src="{{ $images[1]->url }}" alt="" loading="lazy" decoding="async">@endif
+        <x-img :src="$bird->primary_image" :width="320" sizes="(max-width: 767px) 50vw, 280px" alt="" :loading="$eager ? null : 'lazy'" :fetchpriority="$eager ? 'high' : null" />
+        @if($images->count() > 1)<x-img class="bird-card-alt" :src="$images[1]->url" :width="320" sizes="(max-width: 767px) 50vw, 280px" alt="" loading="lazy" />@endif
         <span class="status-pill status-{{ $bird->status }}">{{ __('ui.bird_status.'.$bird->status) }}</span>
+        <x-favorite-button :bird="$bird" class="bird-card-fav" />
         @if($bird->media->contains('type', 'video'))
             <span class="media-pill"><x-lucide-play />{{ __('ui.card.video') }}</span>
         @endif

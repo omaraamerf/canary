@@ -21,7 +21,9 @@ class Columns
             ->state(fn ($record): ?string => ($image = $bird($record)?->primary_image) ? url($image) : null)
             ->square()
             ->imageSize(48)
-            ->extraImgAttributes(['alt' => '', 'loading' => 'lazy']);
+            // The row links through every cell, so the photo's link needs the bird's name.
+            ->alt(fn ($record): string => $bird($record)?->title ?? '')
+            ->extraImgAttributes(['loading' => 'lazy']);
     }
 
     public static function birdStatus(): TextColumn

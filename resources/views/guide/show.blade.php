@@ -22,7 +22,7 @@
 
     <div class="container article-layout">
         <div class="article-main">
-            <img class="article-cover" src="{{ $article->featured_image ?: '/images/birds/yellow-canary.jpg' }}" alt="">
+            <x-img class="article-cover" :src="$article->featured_image ?: '/images/birds/yellow-canary.jpg'" :width="860" sizes="(max-width: 1000px) 100vw, 860px" alt="" fetchpriority="high" />
             <div class="prose">{!! $content['html'] !!}</div>
             @if($article->tags->count())<div class="article-tags"><strong>{{ __('ui.guide.tags') }}</strong>@foreach($article->tags as $tag)<span>{{ $tag->name }}</span>@endforeach</div>@endif
             <aside class="guide-market-cta"><div><span class="kicker">{{ __('ui.guide.market') }}</span><h2>{{ __('ui.guide.market_title') }}</h2><p>{{ __('ui.guide.market_text') }}</p></div><x-ui.button :href="route('birds.index')" size="lg" icon="bird">{{ __('ui.guide.market_button') }}</x-ui.button></aside>

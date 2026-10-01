@@ -47,6 +47,7 @@
                 <span class="catalog-count">{{ $posts->total() }} {{ __('ui.common.results') }}</span>
             </div>
             @if($posts->count())
+                <h2 class="sr-only">{{ __('ui.community.list_heading') }}</h2>
                 <div class="post-list">@foreach($posts as $post)<x-post-card :post="$post" />@endforeach</div>
                 {{ $posts->links() }}
             @else

@@ -58,7 +58,7 @@
                 <div class="section-heading"><div><span class="kicker">{{ __('ui.guide.content') }}</span><h2>{{ __('ui.guide.latest') }}</h2></div></div>
                 <div class="guide-latest">
                     <article class="article-feature">
-                        <img src="{{ $featured->featured_image ?: '/images/birds/yellow-canary.jpg' }}" alt="" loading="lazy">
+                        <x-img :src="$featured->featured_image ?: '/images/birds/yellow-canary.jpg'" :width="640" sizes="(max-width: 1000px) 100vw, 560px" alt="" loading="lazy" />
                         <div>
                             <span class="badge badge-primary">{{ __('ui.guide.featured') }}</span>
                             <span class="article-row-category"><x-dynamic-component :component="'lucide-'.$featured->category->icon" />{{ $featured->category->name }}</span>

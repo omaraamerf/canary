@@ -51,7 +51,7 @@
 .bottom-nav { display: none; }
 
 /* Footer */
-.site-footer { background: var(--inverse-deep); color: var(--on-inverse); padding: 56px 0 24px; }
+.site-footer { background: var(--inverse-deep); color: var(--on-inverse); contain-intrinsic-size: auto 420px; content-visibility: auto; padding: 56px 0 24px; }
 .footer-grid { display: grid; gap: 2.5rem; grid-template-columns: 1.4fr repeat(3, minmax(0, 1fr)); }
 .footer-brand p { color: var(--on-inverse-2); font-size: .9375rem; line-height: 1.9; margin: 1rem 0 0; max-width: 38ch; }
 .brand-light strong { color: var(--on-inverse); }

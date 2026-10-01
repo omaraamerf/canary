@@ -1,7 +1,7 @@
 @props(['article'])
 <article class="article-card">
     <div class="article-card-image">
-        <img src="{{ $article->featured_image ?: '/images/birds/yellow-canary.jpg' }}" alt="" loading="lazy">
+        <x-img :src="$article->featured_image ?: '/images/birds/yellow-canary.jpg'" :width="400" sizes="(max-width: 767px) 100vw, 380px" alt="" loading="lazy" />
     </div>
     <div class="article-card-body">
         <span class="article-row-category"><x-dynamic-component :component="'lucide-'.$article->category->icon" />{{ $article->category->name }}</span>

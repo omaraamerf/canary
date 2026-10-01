@@ -33,6 +33,18 @@ select { appearance: auto; }
 .skip-link { background: var(--inverse); border-radius: var(--radius-control); color: var(--on-inverse); inset-inline-start: 1rem; padding: .75rem 1rem; position: fixed; top: -100px; z-index: 200; }
 .skip-link:focus { top: 1rem; }
 
+/*
+ * Page-to-page motion (cross-document View Transitions, Chromium 126+; elsewhere pages simply load).
+ * Pages cross-fade; the header and bottom bar stay put; a bird's photo grows from its card into the
+ * bird page (resources/js/motion.js names the clicked card's photo "bird-photo"). The opt-in
+ * (@view-transition) is in app.css, since it is not allowed inside a layer.
+ */
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .2s; }
+::view-transition-group(bird-photo) { animation-duration: .32s; animation-timing-function: cubic-bezier(.2, .8, .2, 1); }
+::view-transition-old(bird-photo), ::view-transition-new(bird-photo) { height: 100%; object-fit: cover; overflow: clip; }
+.site-header { view-transition-name: site-header; }
+.bottom-nav { view-transition-name: bottom-nav; }
+
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     *, ::before, ::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }

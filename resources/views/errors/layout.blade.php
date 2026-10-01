@@ -11,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex">
     <title>{{ $title }} | {{ __('ui.brand.name') }}</title>
+    @include('partials.head-icons')
     @include('partials.theme-script')
     {{-- Styles are optional here: a missing asset build must not break the error page itself. --}}
     @if(is_file(public_path('build/manifest.json')) || is_file(public_path('hot')))

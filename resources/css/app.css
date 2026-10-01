@@ -10,3 +10,8 @@
 @source "../js";
 /* .container is ours (layout.css); Tailwind's utility of the same name would override its gutters. */
 @source not inline("container");
+
+/* Outside the layers: @view-transition is not valid inside @layer (motion rules: base.css). */
+@media (prefers-reduced-motion: no-preference) {
+    @view-transition { navigation: auto; }
+}

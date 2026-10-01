@@ -86,7 +86,8 @@
                 </div>
             @endif
             @if($birds->count())
-                <div class="birds-grid catalog-grid">@foreach($birds as $bird)<x-bird-card :bird="$bird" />@endforeach</div>
+                <h2 class="sr-only">{{ __('ui.catalog.results_heading') }}</h2>
+                <div class="birds-grid catalog-grid">@foreach($birds as $bird)<x-bird-card :bird="$bird" :eager="$loop->index < 2" />@endforeach</div>
                 {{ $birds->links() }}
             @else
                 <x-ui.empty-state icon="bird" :title="__('ui.catalog.empty')" :text="__('ui.catalog.empty_help')"><x-ui.button variant="dark" :href="route('birds.index')">{{ __('ui.catalog.clear_all') }}</x-ui.button></x-ui.empty-state>

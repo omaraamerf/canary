@@ -51,6 +51,7 @@ class SiteTheme
             ->brandName($brandName)
             ->brandLogo(fn () => view('filament.brand', ['name' => $brandName()]))
             ->brandLogoHeight('2.25rem')
+            ->favicon('/images/icons/icon.svg')
             ->colors([
                 'primary' => self::CANARY,
                 'gray' => self::SAGE,

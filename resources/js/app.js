@@ -4,4 +4,7 @@ import './forms';
 import './gallery';
 import './catalog';
 import './share';
+import './favorites';
+import './motion';
+import './pwa';
 import './steps';

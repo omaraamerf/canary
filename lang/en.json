@@ -295,5 +295,8 @@
     "إدارة أقسام المقالات": "Manage article categories",
     "إدارة إعدادات الموقع": "Manage site settings",
     "إدارة المجتمع": "Manage community",
-    "إدارة الأدوار والصلاحيات": "Manage roles and permissions"
+    "إدارة الأدوار والصلاحيات": "Manage roles and permissions",
+    "صيغة الصورة غير مدعومة. استخدم JPG أو PNG أو WebP أو HEIC.": "Unsupported image format. Use JPG, PNG, WebP or HEIC.",
+    "حجم الصورة أكبر من الحد المسموح.": "The image is larger than the allowed size.",
+    "أخرى": "Other"
 }

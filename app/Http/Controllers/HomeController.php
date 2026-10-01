@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ApprovalStatus;
+use App\Enums\SettingKey;
 use App\Models\Article;
 use App\Models\Bird;
 use App\Models\Breed;
@@ -49,7 +50,7 @@ class HomeController extends Controller
                     ->count(),
                 'regions' => Region::whereHas('birds', $available)->count(),
             ],
-            'articles' => Setting::boolean('guide_enabled', true)
+            'articles' => Setting::boolean(SettingKey::GuideEnabled->value, true)
                 ? Article::with('category')->published()->latest('published_at')->take(3)->get()
                 : collect(),
         ]);

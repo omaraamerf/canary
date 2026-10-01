@@ -12,7 +12,7 @@
     @endforeach
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-bg text-fg antialiased">
+<body class="bg-bg text-fg antialiased @yield('body_class')">
     @php
         $mainLinks = array_filter([
             ['route' => 'birds.index', 'active' => 'birds.*', 'label' => __('ui.nav.birds')],
@@ -107,18 +107,17 @@
     </x-ui.sheet>
 
     @unless($regionChosen)
-        <div class="region-gate"><div class="region-gate-panel" role="dialog" aria-modal="true" aria-labelledby="region-gate-title">
-            <span class="brand-mark"><x-lucide-map-pin /></span>
-            <h2 id="region-gate-title">{{ __('ui.layout.choose_region') }}</h2>
-            <p>{{ __('ui.layout.region_help') }}</p>
-            <form method="post" action="{{ route('region.select') }}" class="region-form">
-                @csrf
-                <x-location-picker :show-optional="false" :use-old="false" :region-placeholder="__('ui.location.all_country_regions')" />
-                <x-ui.button type="submit" block>{{ __('ui.location.apply') }}</x-ui.button>
-                <div class="region-or"><span>{{ __('ui.layout.or') }}</span></div>
-                <x-ui.button type="submit" variant="outline" block name="scope" value="all">{{ __('ui.layout.show_all_regions') }}</x-ui.button>
-            </form>
-        </div></div>
+        {{-- First visit: a dismissible prompt instead of blocking the page until a region is chosen. --}}
+        <div class="region-prompt">
+            <div class="container region-prompt-inner">
+                <x-lucide-map-pin />
+                <p>{{ __('ui.layout.region_prompt') }}</p>
+                <div class="region-prompt-actions">
+                    <x-ui.button size="sm" data-sheet-open="region-sheet" aria-haspopup="dialog">{{ __('ui.layout.region_choose') }}</x-ui.button>
+                    <form method="post" action="{{ route('region.select') }}">@csrf<x-ui.button type="submit" variant="ghost" size="sm" name="scope" value="all">{{ __('ui.layout.region_later') }}</x-ui.button></form>
+                </div>
+            </div>
+        </div>
     @endunless
 
     @include('partials.toasts')

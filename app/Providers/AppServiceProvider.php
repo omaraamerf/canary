@@ -9,6 +9,7 @@ use App\Models\Setting;
 use App\Support\LocationOptions;
 use App\Support\MarketplaceLocation;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -32,6 +33,8 @@ class AppServiceProvider extends ServiceProvider
             'post' => Post::class,
             'comment' => Comment::class,
         ]);
+
+        Paginator::defaultView('partials.pagination');
 
         View::composer('layouts.app', function ($view) {
             $location = app(MarketplaceLocation::class);

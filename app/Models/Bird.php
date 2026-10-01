@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Currency;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -65,13 +66,7 @@ class Bird extends Model
 
     public function getCurrencyLabelAttribute(): string
     {
-        if (blank($this->currency)) {
-            return '';
-        }
-
-        $key = 'ui.currencies.'.$this->currency;
-
-        return __($key) === $key ? $this->currency : __($key);
+        return Currency::labelFor($this->currency);
     }
 
     // "City, Region" — the region is dropped when it only repeats the city (e.g. "Damascus, Damascus").

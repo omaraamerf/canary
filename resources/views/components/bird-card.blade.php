@@ -1,16 +1,32 @@
 @props(['bird'])
-<article class="bird-card group">
-    <a href="{{ route('birds.show', $bird) }}" class="bird-card-image">
-        <img src="{{ $bird->primary_image }}" alt="{{ $bird->title }}" loading="lazy">
+@php
+    $images = $bird->media->where('type', 'image')->values();
+    $profile = $bird->seller?->sellerProfile;
+@endphp
+<article class="bird-card">
+    <div class="bird-card-media">
+        <img src="{{ $bird->primary_image }}" alt="" loading="lazy" decoding="async">
+        @if($images->count() > 1)<img class="bird-card-alt" src="{{ $images[1]->url }}" alt="" loading="lazy" decoding="async">@endif
         <span class="status-pill status-{{ $bird->status }}">{{ __('ui.bird_status.'.$bird->status) }}</span>
         @if($bird->media->contains('type', 'video'))
-            <span class="media-pill"><x-lucide-play /> {{ __('ui.common.video') }}</span>
+            <span class="media-pill"><x-lucide-play />{{ __('ui.card.video') }}</span>
         @endif
-    </a>
+    </div>
     <div class="bird-card-body">
-        <div class="flex items-center justify-between gap-3 text-sm text-fg-muted"><span>{{ $bird->breed->localized_name }}</span><span class="inline-flex items-center gap-1"><x-lucide-map-pin class="size-4" />{{ $bird->location_label }}</span></div>
-        <h3><a href="{{ route('birds.show', $bird) }}">{{ $bird->title }}</a></h3>
-        <div class="bird-tags"><span>{{ __('ui.sex.'.$bird->sex) }}</span><span>{{ $bird->color }}</span></div>
-        <div class="bird-card-footer"><strong>{{ number_format($bird->price) }} <small>{{ $bird->currency_label }}</small></strong><a href="{{ route('birds.show', $bird) }}" aria-label="{{ __('ui.common.view') }} {{ $bird->title }}"><x-lucide-arrow-left /></a></div>
+        <p class="bird-card-meta"><span>{{ $bird->breed->localized_name }}</span><span><x-lucide-map-pin />{{ $bird->location_label }}</span></p>
+        <h3><a class="bird-card-link" href="{{ route('birds.show', $bird) }}">{{ $bird->title }}</a></h3>
+        <ul class="bird-traits">
+            <li>{{ __('ui.sex.'.$bird->sex) }}</li>
+            <li>{{ $bird->color }}</li>
+            @if($bird->singing_status === 'singing')<li class="is-highlight"><x-lucide-music />{{ __('ui.card.singing') }}</li>@endif
+            @if($bird->breeding_ready)<li class="is-highlight"><x-lucide-heart-handshake />{{ __('ui.card.breeding_ready') }}</li>@endif
+            @if($bird->ring_number)<li><x-lucide-circle-dot />{{ __('ui.card.ringed') }}</li>@endif
+        </ul>
+        <div class="bird-card-footer">
+            <p class="bird-price"><strong>{{ number_format($bird->price) }}</strong> <span>{{ $bird->currency_label }}</span></p>
+            @if($profile?->approval_status === 'approved')
+                <span class="bird-card-seller" title="{{ __('ui.card.verified') }}"><x-lucide-badge-check />{{ $profile->display_name }}</span>
+            @endif
+        </div>
     </div>
 </article>

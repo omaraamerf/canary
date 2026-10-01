@@ -81,6 +81,7 @@ class SellerService
                 [
                     'display_name' => $data['display_name'],
                     'bio' => $data['bio'] ?? null,
+                    'whatsapp' => $data['whatsapp'] ?? null,
                     'region_id' => $data['region_id'],
                 ],
             );
@@ -103,6 +104,7 @@ class SellerService
                 [
                     'display_name' => $data['display_name'],
                     'bio' => $data['bio'] ?? null,
+                    'whatsapp' => $data['whatsapp'] ?? null,
                     'region_id' => $data['region_id'],
                 ],
             );

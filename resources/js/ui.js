@@ -1,5 +1,24 @@
 // Sheets, toasts and submit feedback for the components in resources/views/components/ui.
 
+export function toast(message) {
+    let region = document.querySelector('.toast-region');
+
+    if (! region) {
+        region = document.createElement('div');
+        region.className = 'toast-region';
+        region.setAttribute('role', 'status');
+        region.setAttribute('aria-live', 'polite');
+        document.body.append(region);
+    }
+
+    const item = document.createElement('div');
+    item.className = 'toast';
+    item.dataset.toast = '';
+    item.textContent = message;
+    region.append(item);
+    setTimeout(() => item.remove(), 4000);
+}
+
 document.addEventListener('click', (event) => {
     const opener = event.target.closest('[data-sheet-open]');
 
@@ -16,7 +35,7 @@ document.addEventListener('click', (event) => {
     }
 
     // A modal dialog only receives clicks on its own box when the backdrop is clicked.
-    if (event.target instanceof HTMLDialogElement && event.target.classList.contains('sheet')) {
+    if (event.target instanceof HTMLDialogElement && event.target.matches('.sheet, .lightbox')) {
         event.target.close();
     }
 
@@ -27,15 +46,16 @@ document.addEventListener('click', (event) => {
     }
 });
 
-document.querySelectorAll('[data-toast]').forEach((toast) => {
-    setTimeout(() => { toast.hidden = true; }, 6000);
+document.querySelectorAll('[data-toast]').forEach((item) => {
+    setTimeout(() => { item.hidden = true; }, 6000);
 });
 
 // Show the clicked submit button as busy and ignore repeat submits (a double tap would send twice).
+// Live filter forms submit many times without leaving the page, so they are left alone.
 document.addEventListener('submit', (event) => {
     const form = event.target;
 
-    if (event.defaultPrevented || form.method === 'dialog') {
+    if (event.defaultPrevented || form.method === 'dialog' || form.hasAttribute('data-live-filter')) {
         return;
     }
 

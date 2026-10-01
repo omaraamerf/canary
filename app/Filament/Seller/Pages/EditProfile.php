@@ -34,6 +34,7 @@ class EditProfile extends BaseEditProfile
             'display_name' => $seller->sellerProfile?->display_name,
             'region_id' => $seller->sellerProfile?->region_id ?? $seller->region_id,
             'bio' => $seller->sellerProfile?->bio,
+            'whatsapp' => $seller->sellerProfile?->whatsapp,
         ];
     }
 
@@ -63,6 +64,12 @@ class EditProfile extends BaseEditProfile
                         ->options(fn (): array => Region::groupedOptions())
                         ->searchable()
                         ->required(),
+                    TextInput::make('whatsapp')
+                        ->label(__('رقم واتساب'))
+                        ->tel()
+                        ->maxLength(30)
+                        ->regex('/^\+?[0-9\s\-]{8,20}$/')
+                        ->helperText(__('اختياري. عند إدخاله يظهر زر «تواصل عبر واتساب» في إعلاناتك وصفحتك.')),
                     Textarea::make('bio')
                         ->label(__('نبذة'))
                         ->rows(4)
@@ -91,7 +98,7 @@ class EditProfile extends BaseEditProfile
         /** @var User $record */
         app(SellerService::class)->updateDetails(
             $record,
-            Arr::only($data, ['phone', 'display_name', 'region_id', 'bio']),
+            Arr::only($data, ['phone', 'display_name', 'region_id', 'bio', 'whatsapp']),
         );
 
         return $record;

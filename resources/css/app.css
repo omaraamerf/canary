@@ -8,3 +8,5 @@
 
 @source "../views";
 @source "../js";
+/* .container is ours (layout.css); Tailwind's utility of the same name would override its gutters. */
+@source not inline("container");

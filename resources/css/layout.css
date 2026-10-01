@@ -65,14 +65,12 @@
 .footer-prefs .btn, .footer-prefs .icon-btn { background: transparent; border-color: var(--inverse-line); color: var(--on-inverse); }
 .footer-prefs .btn:hover, .footer-prefs .icon-btn:hover { background: var(--inverse-hover); }
 
-/* Region gate (first visit) */
-.region-gate { align-items: center; background: var(--backdrop); display: flex; inset: 0; justify-content: center; padding: 20px; position: fixed; z-index: 100; }
-.region-gate-panel { background: var(--surface); border-radius: var(--radius-panel); box-shadow: var(--shadow-lg); max-height: calc(100vh - 40px); max-width: 480px; overflow-y: auto; padding: 32px; text-align: center; width: 100%; }
-.region-gate-panel .brand-mark { margin-inline: auto; }
-.region-gate-panel h2 { font-size: 1.75rem; margin: 1rem 0 .4rem; }
-.region-gate-panel p { color: var(--fg-muted); line-height: 1.8; }
-.region-or { align-items: center; color: var(--fg-muted); display: flex; font-size: .875rem; font-weight: 700; gap: .75rem; margin: 0; }
-.region-or::before, .region-or::after { background: var(--border); content: ""; flex: 1; height: 1px; }
+/* Region prompt (first visit, non-blocking) */
+.region-prompt { background: var(--primary-soft); border-bottom: 1px solid var(--border); }
+.region-prompt-inner { align-items: center; display: flex; flex-wrap: wrap; gap: .5rem 1rem; min-height: 52px; padding-block: .5rem; }
+.region-prompt-inner > svg { color: var(--primary-ink); }
+.region-prompt p { flex: 1; font-size: .9375rem; font-weight: 600; margin: 0; min-width: 200px; }
+.region-prompt-actions { align-items: center; display: flex; gap: .4rem; }
 .region-form { display: grid; gap: .9rem; text-align: start; }
 .region-form-actions { display: grid; gap: .6rem; }
 

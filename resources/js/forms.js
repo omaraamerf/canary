@@ -4,11 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('[data-image-picker]').forEach(initImagePicker);
 });
 
-function initLocationPickers() {
+// Exported so markup swapped in later (catalog filters) can be wired up again.
+export function initLocationPickers(root = document) {
     const source = document.getElementById('location-data');
     const countries = source ? JSON.parse(source.textContent || '[]') : [];
 
-    document.querySelectorAll('[data-location-picker]').forEach((picker) => {
+    root.querySelectorAll('[data-location-picker]').forEach((picker) => {
         const country = picker.querySelector('[data-location-country]');
         const region = picker.querySelector('[data-location-region]');
 

@@ -138,6 +138,19 @@
 .toast[hidden] { display: none; }
 @keyframes toast-in { from { opacity: 0; transform: translateY(-8px); } }
 
+/* Pagination */
+.pagination { align-items: center; display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; margin-top: 2rem; }
+.pagination-pages { display: flex; flex-wrap: wrap; gap: .3rem; justify-content: center; list-style: none; margin: 0; padding: 0; }
+.pagination-page, .pagination-step, .pagination-gap { align-items: center; border-radius: var(--radius-control); display: inline-flex; font-weight: 600; justify-content: center; min-height: 44px; min-width: 44px; padding: 0 .75rem; }
+.pagination-page, .pagination-step { background: var(--surface); border: 1px solid var(--border); }
+a.pagination-page:hover, a.pagination-step:hover { border-color: var(--fg-muted); }
+.pagination-page.is-current { background: var(--strong); border-color: var(--strong); color: var(--on-strong); }
+.pagination-step { gap: .3rem; }
+.pagination-step.is-disabled { color: var(--fg-muted); opacity: .6; }
+
+/* Icons that point along the reading direction are drawn for RTL and mirrored for LTR. */
+[dir="ltr"] .dir-icon, [dir="ltr"] .dir-icon-end > svg:last-child { transform: scaleX(-1); }
+
 /* Empty states */
 .empty-state { background: var(--surface); border: 1px dashed var(--border-strong); border-radius: var(--radius-card); padding: 3.5rem 1.5rem; text-align: center; }
 .empty-state > svg { background: var(--surface-2); border-radius: 50%; box-sizing: content-box; color: var(--fg-muted); height: 32px; margin-inline: auto; padding: 16px; width: 32px; }

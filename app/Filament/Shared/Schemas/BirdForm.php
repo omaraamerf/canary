@@ -2,6 +2,7 @@
 
 namespace App\Filament\Shared\Schemas;
 
+use App\Enums\Currency;
 use App\Models\Bird;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\FileUpload;
@@ -55,7 +56,11 @@ class BirdForm
             Section::make(__('السعر والموقع'))
                 ->schema([
                     TextInput::make('price')->label(__('السعر'))->numeric()->minValue(0)->required(),
-                    TextInput::make('currency')->label(__('العملة'))->default('SAR')->required()->maxLength(3)->visible($admin),
+                    Select::make('currency')
+                        ->label(__('العملة'))
+                        ->options(Currency::options())
+                        ->default(fn (): string => self::lastUsedCurrency())
+                        ->required(),
                     Select::make('region_id')->label(__('المحافظة'))->options(fn (): array => Region::groupedOptions())->searchable()->required()->visible($admin),
                     TextInput::make('city')->label(__('المدينة'))->required()->maxLength(120),
                     Select::make('delivery_type')->label(__('طريقة التسليم'))->options([
@@ -110,5 +115,13 @@ class BirdForm
                     Textarea::make('rejection_reason')->label(__('سبب الرفض')),
                 ])->visible($admin),
         ]);
+    }
+
+    // New listings start in the currency the user priced their previous one in.
+    private static function lastUsedCurrency(): string
+    {
+        $last = auth()->user()?->birds()->latest()->value('currency');
+
+        return Currency::tryFrom((string) $last)?->value ?? Currency::USD->value;
     }
 }

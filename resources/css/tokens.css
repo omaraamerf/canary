@@ -138,6 +138,10 @@
     --shadow-lg: 0 24px 48px -16px var(--shadow-color);
     --focus-ring: 0 0 0 3px color-mix(in oklab, var(--accent) 35%, transparent);
 
+    /* WhatsApp green, darkened from the brand #25d366 so white text passes 4.5:1. */
+    --whatsapp: #0f7a3e;
+    --whatsapp-hover: #0b6532;
+
     /* Photo scrims stay dark in both themes. */
     --scrim: rgb(13 18 11 / 0.78);
     --backdrop: rgb(18 22 17 / 0.58);

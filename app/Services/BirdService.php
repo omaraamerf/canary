@@ -72,7 +72,6 @@ class BirdService
                     ...$this->attributes($data),
                     'seller_id' => $seller->id,
                     'region_id' => $profile->region_id,
-                    'currency' => 'SAR',
                     'status' => BirdStatus::Available->value,
                     'featured' => false,
                     'approval_status' => $approval->value,

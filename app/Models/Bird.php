@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Currency;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -61,5 +62,16 @@ class Bird extends Model
     public function getPrimaryImageAttribute(): string
     {
         return $this->media->firstWhere('type', 'image')?->url ?? '/images/birds/yellow-canary.jpg';
+    }
+
+    public function getCurrencyLabelAttribute(): string
+    {
+        return Currency::labelFor($this->currency);
+    }
+
+    // "City, Region" — the region is dropped when it only repeats the city (e.g. "Damascus, Damascus").
+    public function getLocationLabelAttribute(): string
+    {
+        return collect([$this->city, $this->region?->name])->filter()->unique()->implode('، ');
     }
 }

@@ -4,9 +4,11 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BirdController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\GuideController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\ManifestController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PostController;
@@ -15,6 +17,8 @@ use App\Http\Controllers\Seller\AuthController as SellerAuthController;
 use App\Http\Controllers\SellerProfileController;
 use App\Http\Middleware\EnsureCommunityEnabled;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\MessageBag;
+use Illuminate\Support\ViewErrorBag;
 
 Route::get('/', HomeController::class)->name('home');
 Route::get('/locale/{locale}', LocaleController::class)
@@ -30,6 +34,10 @@ Route::get('/orders/{order:reference}/received', [OrderController::class, 'recei
 Route::view('/about', 'pages.about')->name('about');
 Route::view('/policy', 'pages.policy')->name('policy');
 Route::view('/start-selling', 'pages.start-selling')->name('start-selling');
+Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
+Route::get('/favorites/cards', [FavoriteController::class, 'cards'])->name('favorites.cards');
+Route::get('/manifest.webmanifest', ManifestController::class)->name('manifest');
+Route::view('/offline', 'offline')->name('offline');
 Route::post('/region', [RegionSelectionController::class, 'store'])->name('region.select');
 Route::get('/sellers/{seller}', [SellerProfileController::class, 'show'])->name('sellers.show');
 Route::get('/guide', [GuideController::class, 'index'])->name('guide.index');
@@ -69,3 +77,12 @@ Route::middleware('auth')->prefix('account')->name('account.')->group(function (
 });
 
 Route::get('/members/{user}', [MemberController::class, 'show'])->name('members.show');
+
+// Component gallery for reviewing the design system; never registered outside local development.
+if (app()->environment('local')) {
+    Route::get('/_ui', function () {
+        view()->share('errors', (new ViewErrorBag)->put('default', new MessageBag(['demo_email' => __('validation.email', ['attribute' => __('ui.common.email')])])));
+
+        return view('dev.ui');
+    })->name('dev.ui');
+}

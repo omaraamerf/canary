@@ -11,7 +11,7 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = [
-        'reference', 'bird_id', 'buyer_name', 'phone', 'city', 'buyer_region_id', 'delivery_method',
+        'reference', 'bird_id', 'user_id', 'buyer_name', 'phone', 'city', 'buyer_region_id', 'delivery_method',
         'notes', 'status', 'price_snapshot', 'currency_snapshot',
     ];
 
@@ -23,6 +23,11 @@ class Order extends Model
     public function bird()
     {
         return $this->belongsTo(Bird::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function statusLogs()

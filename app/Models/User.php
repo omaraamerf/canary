@@ -6,7 +6,9 @@ use App\Enums\Permission;
 use App\Enums\UserRole;
 use App\Enums\UserStatus;
 use Database\Factories\UserFactory;
+use Filament\Facades\Filament;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,7 +16,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, HasAvatar
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, HasRoles, Notifiable;
@@ -103,9 +105,29 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Comment::class);
     }
 
+    /** Reservations made while signed in (guest orders stay unlinked). */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
     public function isSeller(): bool
     {
         return $this->role === UserRole::Seller->value;
+    }
+
+    /** The panel this user works in after signing in, if any; admins before sellers. */
+    public function panelUrl(): ?string
+    {
+        foreach (['admin', 'seller'] as $id) {
+            $panel = Filament::getPanel($id);
+
+            if ($this->canAccessPanel($panel)) {
+                return $panel->getUrl();
+            }
+        }
+
+        return null;
     }
 
     public function isAdmin(): bool
@@ -116,6 +138,12 @@ class User extends Authenticatable implements FilamentUser
     public function getPublicNameAttribute(): string
     {
         return $this->isSeller() ? ($this->sellerProfile?->display_name ?: $this->name) : $this->name;
+    }
+
+    /** The uploaded photo; without one, App\Filament\Support\InitialAvatarProvider draws the initial. */
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->avatar_url;
     }
 
     public function canAccessPanel(Panel $panel): bool

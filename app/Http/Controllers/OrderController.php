@@ -19,7 +19,7 @@ class OrderController extends Controller
 
     public function store(StoreOrderRequest $request, Bird $bird)
     {
-        $order = $this->orders->create($bird, $request->validated());
+        $order = $this->orders->create($bird, [...$request->validated(), 'user_id' => $request->user()?->id]);
         $this->tracking->authorizeSession($request->session(), $order);
 
         return redirect()->route('orders.received', $order);
@@ -27,7 +27,7 @@ class OrderController extends Controller
 
     public function received(Request $request, Order $order)
     {
-        if (! $this->tracking->sessionCanTrack($request->session(), $order)) {
+        if (! $this->tracking->canTrack($request->session(), $request->user(), $order)) {
             return redirect()->route('orders.track', ['reference' => $order->reference]);
         }
 
@@ -57,7 +57,7 @@ class OrderController extends Controller
 
     public function showTracking(Request $request, Order $order)
     {
-        abort_unless($this->tracking->sessionCanTrack($request->session(), $order), 403);
+        abort_unless($this->tracking->canTrack($request->session(), $request->user(), $order), 403);
 
         $order->load(['bird', 'buyerRegion']);
 

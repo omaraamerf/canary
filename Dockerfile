@@ -18,7 +18,21 @@ RUN composer install \
     --ignore-platform-reqs
 
 ############################################
-# Stage 2: Application runtime
+# Stage 2: Front-end assets (Vite + Tailwind)
+############################################
+FROM node:22-alpine AS assets
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm ci --no-audit --no-fund
+
+COPY vite.config.js ./
+COPY resources ./resources
+RUN npm run build
+
+############################################
+# Stage 3: Application runtime
 ############################################
 FROM php:8.3-apache
 
@@ -62,6 +76,7 @@ WORKDIR /var/www/html
 # Dependencies first (better layer caching), then the application code
 COPY --from=vendor /app/vendor ./vendor
 COPY . .
+COPY --from=assets /app/public/build ./public/build
 
 # Build optimized autoloader and publish Filament assets
 RUN composer dump-autoload --no-dev --optimize --classmap-authoritative \

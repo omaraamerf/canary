@@ -8,7 +8,7 @@
 <div {{ $attributes->class('image-picker') }} data-image-picker data-max="{{ $multiple ? $max : 1 }}" data-max-message="{{ __('ui.uploads.max_reached', ['max' => $multiple ? $max : 1]) }}">
     <label class="image-picker-drop" data-image-drop>
         <input type="file" name="{{ $multiple ? $name.'[]' : $name }}" accept="image/*" @if($multiple) multiple @endif data-image-input>
-        <span class="image-picker-icon"><i data-lucide="image-plus"></i></span>
+        <span class="image-picker-icon"><x-lucide-image-plus /></span>
         <strong>{{ $label }}</strong>
         <small>{{ $hint ?? ($multiple ? __('ui.uploads.hint_many', ['max' => $max]) : __('ui.uploads.hint_one')) }}</small>
     </label>

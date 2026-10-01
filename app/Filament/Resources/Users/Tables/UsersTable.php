@@ -18,17 +18,22 @@ class UsersTable
     {
         return $table
             ->columns([
-                TextColumn::make('name')->label(__('الاسم'))->searchable()->sortable(),
-                TextColumn::make('sellerProfile.display_name')->label(__('اسم المتجر'))->searchable(),
-                TextColumn::make('email')->label(__('البريد الإلكتروني'))->searchable(),
-                TextColumn::make('phone')->label(__('الهاتف'))->searchable(),
-                TextColumn::make('sellerProfile.region.name')->label(__('المنطقة')),
-                TextColumn::make('birds_count')->label(__('عدد الطيور'))->numeric()->sortable(),
+                TextColumn::make('name')->label(__('الاسم'))->searchable()->sortable()->visibleFrom('md'),
+                TextColumn::make('sellerProfile.display_name')->label(__('اسم المتجر'))->searchable()->weight('semibold'),
+                TextColumn::make('email')->label(__('البريد الإلكتروني'))->searchable()->visibleFrom('lg'),
+                TextColumn::make('phone')->label(__('الهاتف'))->searchable()->visibleFrom('lg'),
+                TextColumn::make('sellerProfile.region.name')->label(__('المنطقة'))->visibleFrom('lg'),
+                TextColumn::make('birds_count')->label(__('عدد الطيور'))->numeric()->sortable()->visibleFrom('md'),
                 TextColumn::make('status')
                     ->label(__('الحالة'))
                     ->badge()
-                    ->formatStateUsing(fn (string $state): string => self::statusOptions()[$state] ?? $state),
-                TextColumn::make('created_at')->label(__('تاريخ التسجيل'))->dateTime()->sortable(),
+                    ->formatStateUsing(fn (string $state): string => self::statusOptions()[$state] ?? $state)
+                    ->color(fn (string $state): string => match ($state) {
+                        'active' => 'success',
+                        'pending' => 'warning',
+                        default => 'danger',
+                    }),
+                TextColumn::make('created_at')->label(__('تاريخ التسجيل'))->date('j F Y')->sortable()->visibleFrom('lg'),
             ])
             ->filters([
                 SelectFilter::make('status')
@@ -38,7 +43,7 @@ class UsersTable
             ->recordActions([
                 Action::make('updateStatus')
                     ->label(__('تحديث الحالة'))
-                    ->icon('heroicon-o-user-circle')
+                    ->icon('lucide-user-round-check')
                     ->authorize(fn (User $record): bool => auth()->user()?->can('update', $record) ?? false)
                     ->fillForm(fn (User $record): array => [
                         'status' => $record->status,

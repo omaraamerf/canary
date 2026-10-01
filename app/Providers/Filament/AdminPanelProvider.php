@@ -2,18 +2,16 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Auth\SiteLogin;
+use App\Filament\Support\SiteTheme;
 use App\Http\Middleware\SetLocale;
 use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
-use Filament\Widgets\AccountWidget;
-use Filament\View\PanelsRenderHook;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -25,32 +23,29 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        return $panel
+        return SiteTheme::apply($panel, fn (): string => __('ui.admin.brand'))
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->login(SiteLogin::class)
             ->profile()
-            ->brandName(fn (): string => __('ui.admin.brand'))
             ->userMenuItems([
+                Action::make('view-site')
+                    ->label(fn (): string => __('عرض الموقع'))
+                    ->icon('lucide-external-link')
+                    ->url(fn (): string => route('home'), shouldOpenInNewTab: true),
                 Action::make('switch-language')
                     ->label(fn (): string => app()->isLocale('ar') ? 'English' : 'العربية')
-                    ->icon('heroicon-o-language')
+                    ->icon('lucide-languages')
                     ->url(fn (): string => route('locale.switch', app()->isLocale('ar') ? 'en' : 'ar')),
             ])
-            ->renderHook(PanelsRenderHook::AUTH_LOGIN_FORM_AFTER, fn (): string => view('filament.locale-switcher')->render())
-            ->colors([
-                'primary' => Color::Amber,
-            ])
+            // Sidebar groups come from App\Filament\Navigation\AdminGroup on each resource, ordered
+            // by the enum. They are not registered here: that would fix their labels at boot, before
+            // the request's language is set.
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
+            // The dashboard (App\Filament\Pages\Dashboard) and its widgets are discovered.
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
-            ->pages([
-                Dashboard::class,
-            ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
-            ->widgets([
-                AccountWidget::class,
-            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

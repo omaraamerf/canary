@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Settings;
 
+use App\Filament\Navigation\AdminGroup;
 use App\Filament\Resources\Settings\Pages\EditSetting;
 use App\Filament\Resources\Settings\Pages\ListSettings;
 use App\Filament\Resources\Settings\Schemas\SettingForm;
@@ -10,20 +11,29 @@ use App\Models\Setting;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class SettingResource extends Resource
 {
     protected static ?string $model = Setting::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'lucide-settings';
+
+    protected static string|UnitEnum|null $navigationGroup = AdminGroup::Setup;
+
+    protected static ?int $navigationSort = 4;
 
     public static function getModelLabel(): string { return __('إعداد'); }
 
     public static function getPluralModelLabel(): string { return __('الإعدادات'); }
 
-    public static function getNavigationLabel(): string { return __('الإعدادات'); }
+    public static function getNavigationLabel(): string { return __('إعدادات الموقع'); }
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
 
     public static function form(Schema $schema): Schema
     {

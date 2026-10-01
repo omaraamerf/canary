@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Regions;
 
+use App\Filament\Navigation\AdminGroup;
 use App\Filament\Resources\Regions\Pages\CreateRegion;
 use App\Filament\Resources\Regions\Pages\EditRegion;
 use App\Filament\Resources\Regions\Pages\ListRegions;
@@ -11,14 +12,18 @@ use App\Models\Region;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class RegionResource extends Resource
 {
     protected static ?string $model = Region::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'lucide-map-pin';
+
+    protected static string|UnitEnum|null $navigationGroup = AdminGroup::Setup;
+
+    protected static ?int $navigationSort = 3;
 
     public static function getModelLabel(): string { return __('منطقة'); }
 

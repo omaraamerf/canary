@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Orders\Tables;
 
 use App\Filament\Shared\Actions\UpdateOrderStatusAction;
+use App\Filament\Shared\Tables\Columns;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -14,19 +15,14 @@ class OrdersTable
     {
         return $table
             ->columns([
-                TextColumn::make('reference')->label(__('المرجع'))->searchable()->sortable(),
-                TextColumn::make('bird.title')->label(__('الطائر'))->searchable(),
-                TextColumn::make('bird.seller.name')->label(__('البائع'))->searchable(),
-                TextColumn::make('buyer_name')->label(__('المشتري'))->searchable(),
-                TextColumn::make('phone')->label(__('الهاتف'))->searchable(),
-                TextColumn::make('status')
-                    ->label(__('الحالة'))
-                    ->badge()
-                    ->formatStateUsing(fn (string $state): string => UpdateOrderStatusAction::statusOptions()[$state] ?? $state),
-                TextColumn::make('price_snapshot')
-                    ->label(__('السعر'))
-                    ->formatStateUsing(fn ($state, $record): string => number_format((float) $state, 2).' '.$record->currency_snapshot),
-                TextColumn::make('created_at')->label(__('تاريخ الطلب'))->dateTime()->sortable(),
+                TextColumn::make('reference')->label(__('المرجع'))->searchable()->sortable()->fontFamily('mono')->visibleFrom('md'),
+                TextColumn::make('bird.title')->label(__('الطائر'))->searchable()->weight('semibold'),
+                TextColumn::make('bird.seller.name')->label(__('البائع'))->searchable()->visibleFrom('lg'),
+                TextColumn::make('buyer_name')->label(__('المشتري'))->searchable()->visibleFrom('md'),
+                TextColumn::make('phone')->label(__('الهاتف'))->searchable()->visibleFrom('lg'),
+                Columns::orderStatus(),
+                Columns::price('price_snapshot', 'currency_snapshot')->visibleFrom('md'),
+                TextColumn::make('created_at')->label(__('تاريخ الطلب'))->since()->sortable(),
             ])
             ->filters([
                 SelectFilter::make('status')

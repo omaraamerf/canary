@@ -2,9 +2,31 @@
 @section('title', $category->name.' | '.__('ui.guide.title'))
 @section('meta_description', $category->description ?: __('ui.guide.description'))
 @section('content')
-<section class="page-head"><div class="container"><nav class="breadcrumbs"><a href="{{ route('home') }}">{{ __('ui.nav.home') }}</a><i data-lucide="chevron-left"></i><a href="{{ route('guide.index') }}">{{ __('ui.guide.title') }}</a><i data-lucide="chevron-left"></i><span>{{ $category->name }}</span></nav><span class="kicker">{{ __('ui.guide.category') }}</span><h1>{{ $category->name }}</h1><p>{{ $category->description }}</p></div></section>
-<section class="section-band"><div class="container">
-    @if($articles->count())<div class="article-grid">@foreach($articles as $article)<x-article-card :article="$article" />@endforeach</div>{{ $articles->links() }}
-    @else<div class="empty-state"><i data-lucide="book-open"></i><h2>{{ __('ui.guide.empty') }}</h2><p>{{ __('ui.guide.empty_help') }}</p><a class="btn btn-dark" href="{{ route('guide.index') }}">{{ __('ui.guide.back') }}</a></div>@endif
-</div></section>
+<section class="guide-head">
+    <div class="container">
+        <nav class="breadcrumbs" aria-label="{{ __('ui.nav.home') }}"><a href="{{ route('home') }}">{{ __('ui.nav.home') }}</a><x-lucide-chevron-left class="dir-icon" /><a href="{{ route('guide.index') }}">{{ __('ui.guide.title') }}</a><x-lucide-chevron-left class="dir-icon" /><span>{{ $category->name }}</span></nav>
+        <div class="guide-head-title">
+            <span class="topic-icon topic-icon-lg"><x-dynamic-component :component="'lucide-'.$category->icon" /></span>
+            <div>
+                <span class="kicker">{{ __('ui.guide.category') }} · {{ __('ui.guide.articles_count', ['count' => $articles->total()]) }}</span>
+                <h1>{{ $category->name }}</h1>
+                @if($category->description)<p>{{ $category->description }}</p>@endif
+            </div>
+        </div>
+    </div>
+</section>
+<section class="section-band">
+    <div class="container guide-layout">
+        <div>
+            @if($articles->count())
+                <h2 class="sr-only">{{ __('ui.guide.section_articles') }}</h2>
+                <div class="article-list">@foreach($articles as $article)<x-article-row :article="$article" :show-category="false" />@endforeach</div>
+                {{ $articles->links() }}
+            @else
+                <x-ui.empty-state icon="book-open" :title="__('ui.guide.empty')" :text="__('ui.guide.empty_help')"><x-ui.button variant="dark" :href="route('guide.index')">{{ __('ui.guide.back') }}</x-ui.button></x-ui.empty-state>
+            @endif
+        </div>
+        @include('guide.partials.sidebar', ['current' => $category])
+    </div>
+</section>
 @endsection

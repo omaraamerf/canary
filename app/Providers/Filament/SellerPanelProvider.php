@@ -2,21 +2,19 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Auth\SiteLogin;
 use App\Filament\Seller\Pages\EditProfile;
 use App\Filament\Seller\Resources\Birds\BirdResource;
+use App\Filament\Support\SiteTheme;
 use App\Http\Middleware\SetLocale;
 use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages\Dashboard;
 use Filament\Navigation\NavigationItem;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
-use Filament\Widgets\AccountWidget;
-use Filament\View\PanelsRenderHook;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -28,43 +26,37 @@ class SellerPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        return $panel
+        return SiteTheme::apply($panel, fn (): string => __('ui.seller.brand'))
             ->id('seller')
             ->path('seller')
-            ->login()
+            ->login(SiteLogin::class)
             ->profile(EditProfile::class)
-            ->brandName(fn (): string => __('ui.seller.brand'))
             ->userMenuItems([
+                Action::make('view-site')
+                    ->label(fn (): string => __('عرض الموقع'))
+                    ->icon('lucide-external-link')
+                    ->url(fn (): string => route('home'), shouldOpenInNewTab: true),
                 Action::make('switch-language')
                     ->label(fn (): string => app()->isLocale('ar') ? 'English' : 'العربية')
-                    ->icon('heroicon-o-language')
+                    ->icon('lucide-languages')
                     ->url(fn (): string => route('locale.switch', app()->isLocale('ar') ? 'en' : 'ar')),
             ])
-            ->renderHook(PanelsRenderHook::AUTH_LOGIN_FORM_AFTER, fn (): string => view('filament.locale-switcher')->render())
-            ->colors([
-                'primary' => Color::Amber,
-            ])
             ->discoverResources(in: app_path('Filament/Seller/Resources'), for: 'App\Filament\Seller\Resources')
+            // The dashboard (App\Filament\Seller\Pages\Dashboard) and its widgets are discovered.
             ->discoverPages(in: app_path('Filament/Seller/Pages'), for: 'App\Filament\Seller\Pages')
-            ->pages([
-                Dashboard::class,
-            ])
             ->navigationItems([
                 NavigationItem::make(fn (): string => __('ui.birds.add'))
-                    ->icon('heroicon-o-plus-circle')
+                    ->icon('lucide-circle-plus')
                     ->url(fn (): string => BirdResource::getUrl('create'))
                     ->isActiveWhen(fn (): bool => request()->routeIs('filament.seller.resources.birds.create'))
-                    ->sort(20),
+                    ->sort(2),
                 NavigationItem::make(fn (): string => __('ui.account.profile'))
-                    ->icon('heroicon-o-user-circle')
+                    ->icon('lucide-circle-user-round')
                     ->url(fn (): string => route('filament.seller.auth.profile'))
                     ->isActiveWhen(fn (): bool => request()->routeIs('filament.seller.auth.profile'))
                     ->sort(90),
             ])
             ->discoverWidgets(in: app_path('Filament/Seller/Widgets'), for: 'App\Filament\Seller\Widgets')
-            ->widgets([
-                AccountWidget::class,
-            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

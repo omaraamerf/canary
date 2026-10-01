@@ -22,23 +22,25 @@ class PostsTable
     {
         return $table
             ->columns([
-                TextColumn::make('title')->label(__('العنوان'))->searchable()->limit(60),
-                TextColumn::make('user.name')->label(__('الكاتب'))->searchable(),
+                TextColumn::make('title')->label(__('العنوان'))->searchable()->limit(60)->weight('semibold'),
+                TextColumn::make('user.name')->label(__('الكاتب'))->searchable()->visibleFrom('lg'),
                 TextColumn::make('category')
                     ->label(__('النوع'))
                     ->badge()
-                    ->formatStateUsing(fn (PostCategory $state): string => $state->label()),
+                    ->formatStateUsing(fn (PostCategory $state): string => $state->label())
+                    ->visibleFrom('md'),
                 TextColumn::make('status')
                     ->label(__('الحالة'))
                     ->badge()
                     ->color(fn (PostStatus $state): string => $state === PostStatus::Published ? 'success' : 'gray')
                     ->formatStateUsing(fn (PostStatus $state): string => $state->label()),
-                TextColumn::make('comments_count')->label(__('الردود'))->sortable(),
+                TextColumn::make('comments_count')->label(__('الردود'))->sortable()->visibleFrom('md'),
                 IconColumn::make('accepted_comment_id')
                     ->label(__('تم الحل'))
                     ->state(fn (Post $record): bool => $record->isSolved())
-                    ->boolean(),
-                TextColumn::make('created_at')->label(__('تاريخ النشر'))->dateTime()->sortable(),
+                    ->boolean()
+                    ->visibleFrom('md'),
+                TextColumn::make('created_at')->label(__('تاريخ النشر'))->since()->sortable()->visibleFrom('lg'),
             ])
             ->filters([
                 SelectFilter::make('category')->label(__('النوع'))->options(PostCategory::options()),

@@ -6,7 +6,8 @@ cd /var/www/html
 # Wait for the database when using MySQL
 if [ "${DB_CONNECTION}" = "mysql" ] && [ -n "${DB_HOST}" ]; then
     echo "Waiting for MySQL at ${DB_HOST}:${DB_PORT:-3306}..."
-    until mysqladmin ping -h"${DB_HOST}" -P"${DB_PORT:-3306}" -u"${DB_USERNAME}" -p"${DB_PASSWORD}" --silent >/dev/null 2>&1; do
+    # --skip-ssl: the MariaDB client in the image rejects MySQL 8's self-signed cert
+    until mysqladmin ping --skip-ssl -h"${DB_HOST}" -P"${DB_PORT:-3306}" -u"${DB_USERNAME}" -p"${DB_PASSWORD}" --silent >/dev/null 2>&1; do
         sleep 2
     done
     echo "MySQL is up."

@@ -1,0 +1,12 @@
+<?php
+
+namespace App\Filament\Pages;
+
+use BackedEnum;
+use Filament\Pages\Dashboard as BaseDashboard;
+
+/** Admin home: what needs attention first, then traffic and the latest orders. */
+class Dashboard extends BaseDashboard
+{
+    protected static string|BackedEnum|null $navigationIcon = 'lucide-layout-dashboard';
+}

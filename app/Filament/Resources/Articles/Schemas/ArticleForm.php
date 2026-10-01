@@ -31,6 +31,7 @@ class ArticleForm
                 Textarea::make('content')
                     ->label(__('المحتوى'))
                     ->required()
+                    ->helperText(__('اترك سطرًا فارغًا بين الفقرات. «## » لعنوان، و«### » لعنوان فرعي، و«- » لعنصر قائمة، و«> » لملاحظة بارزة، و**نص** للخط العريض. تظهر العناوين في فهرس المقال.'))
                     ->rows(12)
                     ->columnSpanFull(),
                 Textarea::make('featured_image')

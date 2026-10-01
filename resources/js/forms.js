@@ -1,8 +1,24 @@
-// Country → region pickers and image pickers used across the public site.
+// Country → region pickers, image pickers and password toggles used across the public site.
 document.addEventListener('DOMContentLoaded', () => {
     initLocationPickers();
     document.querySelectorAll('[data-image-picker]').forEach(initImagePicker);
+    document.querySelectorAll('[data-password-toggle]').forEach(initPasswordToggle);
 });
+
+// The label stays "show password"; aria-pressed tells whether it is shown.
+function initPasswordToggle(button) {
+    const input = button.previousElementSibling;
+
+    button.hidden = false;
+    button.addEventListener('click', () => {
+        const show = input.type === 'password';
+
+        input.type = show ? 'text' : 'password';
+        button.setAttribute('aria-pressed', String(show));
+    });
+    // Submitted as a password field again, so browsers do not keep it in text autofill history.
+    input.form?.addEventListener('submit', () => { input.type = 'password'; });
+}
 
 // Exported so markup swapped in later (catalog filters) can be wired up again.
 export function initLocationPickers(root = document) {

@@ -36,7 +36,7 @@ class AppServiceProvider extends ServiceProvider
 
         Paginator::defaultView('partials.pagination');
 
-        View::composer(['layouts.app', 'guide.partials.sidebar'], function ($view) {
+        View::composer(['layouts.app', 'guide.partials.sidebar', 'pages.about'], function ($view) {
             $location = app(MarketplaceLocation::class);
 
             $view->with([

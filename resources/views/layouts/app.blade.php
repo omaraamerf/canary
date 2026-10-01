@@ -90,7 +90,6 @@
             <a @class(['menu-item', 'is-active' => request()->routeIs('orders.track*')]) href="{{ route('orders.track') }}"><x-lucide-package-search />{{ __('ui.nav.track') }}</a>
             <a @class(['menu-item', 'is-active' => request()->routeIs('about')]) href="{{ route('about') }}"><x-lucide-info />{{ __('ui.nav.about') }}</a>
             <a @class(['menu-item', 'is-active' => request()->routeIs('policy')]) href="{{ route('policy') }}"><x-lucide-file-text />{{ __('ui.nav.policy') }}</a>
-            @guest<a class="menu-item" href="{{ route('filament.seller.auth.login') }}"><x-lucide-layout-dashboard />{{ __('ui.nav.seller_login') }}</a>@endguest
         </nav>
         <div class="menu-sheet-section">
             <div class="menu-sheet-prefs">
@@ -106,7 +105,7 @@
         </div>
     </x-ui.sheet>
 
-    @unless($regionChosen)
+    @unless($regionChosen || View::hasSection('no_region_prompt'))
         {{-- First visit: a dismissible prompt instead of blocking the page until a region is chosen. --}}
         <div class="region-prompt">
             <div class="container region-prompt-inner">
@@ -136,7 +135,6 @@
                     <li><a href="{{ route('birds.index') }}">{{ __('ui.nav.birds') }}</a></li>
                     <li><a href="{{ route('start-selling') }}">{{ __('ui.nav.sell') }}</a></li>
                     <li><a href="{{ route('orders.track') }}">{{ __('ui.nav.track') }}</a></li>
-                    <li><a href="{{ route('filament.seller.auth.login') }}">{{ __('ui.nav.seller_login') }}</a></li>
                 </ul>
             </div>
             @if($guideEnabled || $communityEnabled)

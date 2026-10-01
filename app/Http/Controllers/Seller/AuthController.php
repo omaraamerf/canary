@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Seller;
 
+use App\Enums\SettingKey;
 use App\Enums\UserStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Seller\RegisterRequest;
+use App\Models\Setting;
 use App\Services\SellerService;
 use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +17,9 @@ class AuthController extends Controller
 
     public function register()
     {
-        return view('seller.auth.register');
+        return view('seller.auth.register', [
+            'approvalRequired' => Setting::boolean(SettingKey::SellerApprovalRequired->value, true),
+        ]);
     }
 
     public function storeRegistration(RegisterRequest $request)
@@ -29,6 +33,6 @@ class AuthController extends Controller
             return redirect()->to(Filament::getPanel('seller')->getUrl())->with('success', __('تم إنشاء حساب البائع.'));
         }
 
-        return redirect()->to(Filament::getPanel('seller')->getLoginUrl())->with('success', __('تم استلام طلب حسابك وسيظهر لك الدخول بعد موافقة الإدارة.'));
+        return redirect()->route('login')->with('status', __('تم استلام طلب حسابك وسيظهر لك الدخول بعد موافقة الإدارة.'));
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Session\Store;
 use Illuminate\Validation\ValidationException;
 
@@ -31,6 +32,13 @@ class OrderTrackingService
     public function sessionCanTrack(Store $session, Order $order): bool
     {
         return (bool) $session->get($this->sessionKey($order), false);
+    }
+
+    /** This browser looked the order up, or the order belongs to the signed-in account. */
+    public function canTrack(Store $session, ?User $user, Order $order): bool
+    {
+        return $this->sessionCanTrack($session, $order)
+            || ($user !== null && $order->user_id === $user->id);
     }
 
     private function normalizePhone(string $phone): string

@@ -6,6 +6,7 @@ use App\Enums\Permission;
 use App\Enums\UserRole;
 use App\Enums\UserStatus;
 use Database\Factories\UserFactory;
+use Filament\Facades\Filament;
 use Filament\Models\Contracts\FilamentUser;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Panel;
@@ -103,9 +104,29 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Comment::class);
     }
 
+    /** Reservations made while signed in (guest orders stay unlinked). */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
     public function isSeller(): bool
     {
         return $this->role === UserRole::Seller->value;
+    }
+
+    /** The panel this user works in after signing in, if any; admins before sellers. */
+    public function panelUrl(): ?string
+    {
+        foreach (['admin', 'seller'] as $id) {
+            $panel = Filament::getPanel($id);
+
+            if ($this->canAccessPanel($panel)) {
+                return $panel->getUrl();
+            }
+        }
+
+        return null;
     }
 
     public function isAdmin(): bool

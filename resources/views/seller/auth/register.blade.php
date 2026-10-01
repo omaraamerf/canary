@@ -1,45 +1,71 @@
-<!doctype html>
-<html lang="{{ app()->getLocale() }}" dir="{{ __('ui.direction') }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>{{ __('ui.pages.sell.register') }} | {{ __('ui.brand.name') }}</title>
-    <link rel="stylesheet" href="{{ asset('admin-assets/css/bootstrap-rtl.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin-assets/css/app-rtl.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin-assets/css/canary-admin.css') }}?v=6">
-    @vite(['resources/css/fonts.css', 'resources/js/app.js'])
-</head>
-<body>
-    <main class="container py-5" style="max-width:820px">
-        <div class="admin-section">
-            <div class="text-center mb-4">
-                <span class="admin-brand-mark mx-auto mb-3"><x-lucide-bird /></span>
-                <a href="{{ route('locale.switch', app()->isLocale('ar') ? 'en' : 'ar') }}" class="btn btn-sm btn-outline mb-3">{{ app()->isLocale('ar') ? 'English' : 'العربية' }}</a>
-                <h1 class="h3">{{ __('ui.register.heading') }}</h1>
-                <p class="text-muted">{{ __('ui.register.lead') }}</p>
+@extends('layouts.app')
+
+@section('title', __('ui.pages.sell.register'))
+@section('no_region_prompt', '1')
+
+@section('content')
+<x-auth-shell :title="__('ui.register.heading')" :lead="__('ui.register.lead')" icon="store" wide>
+    @if($errors->any())<div class="form-errors" role="alert">{{ $errors->first() }}</div>@endif
+
+    <form class="auth-form" method="post" action="{{ route('seller.register.store') }}">
+        @csrf
+        <fieldset class="auth-fieldset">
+            <legend>{{ __('ui.register.store_section') }}</legend>
+            <label>
+                {{ __('ui.register.display_name') }}
+                <input name="display_name" value="{{ old('display_name') }}" required maxlength="140" autocomplete="organization">
+            </label>
+            <x-location-picker class="auth-form-row" :required="true" :region-label="__('ui.register.region')" />
+            <label>
+                <span>{{ __('ui.register.bio') }} <small>{{ __('ui.auth.optional') }}</small></span>
+                <textarea name="bio" rows="3" maxlength="1200" placeholder="{{ __('ui.register.bio_placeholder') }}">{{ old('bio') }}</textarea>
+            </label>
+        </fieldset>
+
+        <fieldset class="auth-fieldset">
+            <legend>{{ __('ui.register.account_section') }}</legend>
+            <div class="auth-form-row">
+                <label>
+                    {{ __('ui.register.manager') }}
+                    <input name="name" value="{{ old('name') }}" required maxlength="100" autocomplete="name">
+                </label>
+                <label>
+                    {{ __('ui.common.phone') }}
+                    <input name="phone" value="{{ old('phone') }}" required maxlength="30" inputmode="tel" autocomplete="tel" dir="ltr">
+                </label>
             </div>
+            <label>
+                {{ __('ui.common.email') }}
+                <input type="email" name="email" value="{{ old('email') }}" required maxlength="190" autocomplete="email" dir="ltr">
+            </label>
+            <div class="auth-form-row">
+                <label>
+                    {{ __('ui.register.password') }}
+                    <x-ui.password autocomplete="new-password" required minlength="8" />
+                </label>
+                <label>
+                    {{ __('ui.register.password_confirmation') }}
+                    <x-ui.password name="password_confirmation" autocomplete="new-password" required minlength="8" />
+                </label>
+            </div>
+            <p class="field-hint">{{ __('ui.auth.password_hint') }}</p>
+        </fieldset>
 
-            @if($errors->any())
-                <div class="form-errors mb-3">{{ $errors->first() }}</div>
-            @endif
+        @if($approvalRequired)<p class="auth-note"><x-lucide-shield-check />{{ __('ui.register.approval_note') }}</p>@endif
+        <x-ui.button type="submit" size="lg" icon="store" block>{{ __('ui.register.submit') }}</x-ui.button>
+    </form>
 
-            <form class="form-grid" method="post" action="{{ route('seller.register.store') }}">
-                @csrf
-                <label>{{ __('ui.register.manager') }}<input name="name" required value="{{ old('name') }}"></label>
-                <label>{{ __('ui.register.display_name') }}<input name="display_name" required value="{{ old('display_name') }}"></label>
-                <label>{{ __('ui.common.phone') }}<input name="phone" required value="{{ old('phone') }}" dir="ltr"></label>
-                <label>{{ __('ui.common.email') }}<input type="email" name="email" required value="{{ old('email') }}"></label>
-                <x-location-picker class="span-2 form-grid" :required="true" />
-                <label class="span-2">{{ __('ui.register.bio') }}<textarea name="bio" rows="3">{{ old('bio') }}</textarea></label>
-                <label>{{ __('ui.register.password') }}<input type="password" name="password" required></label>
-                <label>{{ __('ui.register.password_confirmation') }}<input type="password" name="password_confirmation" required></label>
-                <div class="span-2 d-flex gap-2 justify-content-end">
-                    <a class="btn btn-outline" href="{{ route('filament.seller.auth.login') }}">{{ __('ui.register.have_account') }}</a>
-                    <button class="btn btn-primary btn-large" type="submit">{{ __('ui.register.submit') }}</button>
-                </div>
-            </form>
-        </div>
-    </main>
-    @include('partials.location-data')
-</body>
-</html>
+    <div class="auth-alt">
+        <p>{{ __('ui.register.have_account') }} <a href="{{ route('login') }}">{{ __('ui.auth.submit_login') }}</a></p>
+    </div>
+
+    <x-slot:aside>
+        <h2>{{ __('ui.register.aside_title') }}</h2>
+        <ul class="auth-points">
+            <li><span><x-lucide-layout-dashboard /></span><div><strong>{{ __('ui.register.point_panel') }}</strong><p>{{ __('ui.register.point_panel_text') }}</p></div></li>
+            <li><span><x-lucide-banknote /></span><div><strong>{{ __('ui.register.point_currency') }}</strong><p>{{ __('ui.register.point_currency_text') }}</p></div></li>
+            <li><span><x-lucide-message-circle /></span><div><strong>{{ __('ui.register.point_whatsapp') }}</strong><p>{{ __('ui.register.point_whatsapp_text') }}</p></div></li>
+        </ul>
+    </x-slot:aside>
+</x-auth-shell>
+@endsection

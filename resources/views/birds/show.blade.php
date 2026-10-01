@@ -132,8 +132,8 @@
                     <p class="field-hint">{{ __('ui.detail.request_help') }}</p>
                     <form action="{{ route('orders.store', $bird) }}" method="post" class="reserve-form">@csrf
                         @if($errors->any())<div class="form-errors full">{{ $errors->first() }}</div>@endif
-                        <label>{{ __('ui.detail.full_name') }}<input required name="buyer_name" value="{{ old('buyer_name') }}" autocomplete="name"></label>
-                        <label>{{ __('ui.common.phone') }}<input required name="phone" value="{{ old('phone') }}" inputmode="tel" autocomplete="tel" dir="ltr"></label>
+                        <label>{{ __('ui.detail.full_name') }}<input required name="buyer_name" value="{{ old('buyer_name', auth()->user()?->name) }}" autocomplete="name"></label>
+                        <label>{{ __('ui.common.phone') }}<input required name="phone" value="{{ old('phone', auth()->user()?->phone) }}" inputmode="tel" autocomplete="tel" dir="ltr"></label>
                         <x-location-picker class="full location-picker-inline" :required="true" country-name="buyer_country_id" region-name="buyer_region_id" :country="auth()->user()?->country_id ?? app(\App\Support\MarketplaceLocation::class)->countryId()" :region="auth()->user()?->region_id ?? app(\App\Support\MarketplaceLocation::class)->regionId()" />
                         <div class="delivery-summary full"><span>{{ __('ui.detail.seller_delivery') }}</span><strong>{{ __('ui.delivery.'.$bird->delivery_type) }}</strong></div>
                         <label class="full">{{ __('ui.detail.notes') }}<textarea name="notes" rows="3" placeholder="{{ __('ui.detail.notes_placeholder') }}">{{ old('notes') }}</textarea></label>

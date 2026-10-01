@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\Permission;
 use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\TrackSiteVisit;
 use Illuminate\Foundation\Application;
@@ -20,16 +19,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->web(append: [SetLocale::class, TrackSiteVisit::class]);
 
-        $middleware->redirectGuestsTo(fn (Request $request) => match (true) {
-            $request->is('seller*') => '/seller/login',
-            $request->is('admin*') => '/admin/login',
-            default => route('login'),
-        });
-        $middleware->redirectUsersTo(fn (Request $request) => match (true) {
-            (bool) $request->user()?->can(Permission::AccessSellerPanel->value) => '/seller',
-            (bool) $request->user()?->can(Permission::AccessAdminPanel->value) => '/admin',
-            default => route('home'),
-        });
+        // One sign-in page for the site and both panels (see AuthController).
+        $middleware->redirectGuestsTo(fn () => route('login'));
+        $middleware->redirectUsersTo(fn (Request $request) => $request->user()?->panelUrl() ?? route('home'));
 
         $middleware->alias([
             'role' => RoleMiddleware::class,

@@ -16,26 +16,46 @@ class AccountController extends Controller
 {
     public function __construct(private readonly AccountService $accounts) {}
 
+    /** The personal dashboard: one tab at a time (questions, replies, orders); settings live on edit. */
     public function show(Request $request)
     {
         $user = $request->user()->load(['country', 'region', 'sellerProfile']);
+        $tabs = self::tabs($user);
+        $requested = $request->query('tab');
+        $tab = is_string($requested) && array_key_exists($requested, $tabs) ? $requested : array_key_first($tabs);
 
         return view('account.show', [
             'user' => $user,
-            'communityEnabled' => Setting::boolean(SettingKey::CommunityEnabled->value, true),
             'stats' => self::stats($user),
-            'posts' => $user->posts()->with(['media', 'breed', 'user.sellerProfile', 'country', 'region'])->withCount('visibleComments')->latest()->paginate(10, pageName: 'posts'),
-            'comments' => $user->comments()
-                ->whereHasMorph('commentable', [Post::class])
-                ->with('commentable')
-                ->latest()
-                ->paginate(10, pageName: 'replies'),
+            'tabs' => $tabs,
+            'tab' => $tab,
+            'items' => match ($tab) {
+                'posts' => $user->posts()->with(['media', 'breed', 'user.sellerProfile', 'country', 'region'])->withCount('visibleComments')->latest()->paginate(10)->withQueryString(),
+                'replies' => $user->comments()->whereHasMorph('commentable', [Post::class])->with('commentable')->latest()->paginate(10)->withQueryString(),
+                'orders' => $user->orders()->with('bird.media')->latest()->paginate(10)->withQueryString(),
+            },
         ]);
     }
 
     public function edit(Request $request)
     {
-        return view('account.edit', ['user' => $request->user()]);
+        return view('account.edit', ['user' => $request->user(), 'tabs' => self::tabs($request->user())]);
+    }
+
+    /**
+     * Tab => count. Questions and replies only while the community is on.
+     *
+     * @return array<string, int>
+     */
+    private static function tabs(User $user): array
+    {
+        $community = Setting::boolean(SettingKey::CommunityEnabled->value, true);
+
+        return array_filter([
+            'posts' => $community ? $user->posts()->count() : null,
+            'replies' => $community ? $user->comments()->whereHasMorph('commentable', [Post::class])->count() : null,
+            'orders' => $user->orders()->count(),
+        ], fn (?int $count): bool => $count !== null);
     }
 
     public function update(UpdateAccountRequest $request)

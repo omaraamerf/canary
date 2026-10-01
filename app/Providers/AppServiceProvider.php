@@ -27,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->scoped(LocationOptions::class);
         $this->app->scoped(MarketplaceLocation::class, fn ($app) => new MarketplaceLocation($app['session.store']));
+        $this->app->scoped(Setting::VALUES, fn (): array => Setting::query()->pluck('value', 'key')->all());
     }
 
     /**
@@ -50,7 +51,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with([
                 'marketplaceLocation' => $location,
                 'regionChosen' => session('marketplace_region_chosen', false),
-                'guideEnabled' => Setting::boolean('guide_enabled', true),
+                'guideEnabled' => Setting::boolean(SettingKey::GuideEnabled->value, true),
                 'communityEnabled' => Setting::boolean(SettingKey::CommunityEnabled->value, true),
             ]);
         });

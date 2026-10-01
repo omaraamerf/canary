@@ -69,6 +69,22 @@ document.addEventListener('submit', (event) => {
     event.submitter?.setAttribute('aria-busy', 'true');
 });
 
+// A floating action button repeats a button already on the page: it appears only once that
+// button has scrolled out of view, so the two are never on screen together.
+document.querySelectorAll('[data-fab-after]').forEach((fab) => {
+    const original = document.getElementById(fab.dataset.fabAfter);
+
+    if (! original) {
+        fab.classList.add('is-shown');
+
+        return;
+    }
+
+    new IntersectionObserver(([entry]) => {
+        fab.classList.toggle('is-shown', ! entry.isIntersecting);
+    }).observe(original);
+});
+
 // Pages restored from the back/forward cache must be submittable again.
 window.addEventListener('pageshow', () => {
     document.querySelectorAll('form[data-submitting]').forEach((form) => {

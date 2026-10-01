@@ -36,6 +36,10 @@ class PostController extends Controller
         return view('community.index', [
             'posts' => $posts->paginate(12)->withQueryString(),
             'breeds' => Breed::where('active', true)->orderBy('name')->get(),
+            'stats' => [
+                'posts' => Post::published()->count(),
+                'solved' => Post::published()->whereNotNull('accepted_comment_id')->count(),
+            ],
         ]);
     }
 
@@ -67,7 +71,18 @@ class PostController extends Controller
             ->sortByDesc(fn (Comment $comment): bool => $comment->id === $post->accepted_comment_id)
             ->values();
 
-        return view('community.show', compact('post', 'comments'));
+        return view('community.show', [
+            'post' => $post,
+            'comments' => $comments,
+            'relatedPosts' => Post::published()
+                ->with('user')
+                ->withCount('visibleComments')
+                ->where('category', $post->category->value)
+                ->whereKeyNot($post->id)
+                ->latest()
+                ->take(4)
+                ->get(),
+        ]);
     }
 
     public function destroy(Post $post)

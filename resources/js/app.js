@@ -4,3 +4,4 @@ import './forms';
 import './gallery';
 import './catalog';
 import './share';
+import './steps';

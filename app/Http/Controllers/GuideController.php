@@ -5,24 +5,35 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\ArticleCategory;
 use App\Models\Setting;
+use App\Support\ArticleContent;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 
 class GuideController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $this->ensureEnabled();
+        $query = $request->string('q')->trim()->toString();
 
         return view('guide.index', [
-            'categories' => ArticleCategory::query()
-                ->withCount(['articles as published_articles_count' => fn ($query) => $query->published()])
-                ->orderBy('sort_order')
-                ->orderBy('name')
-                ->get(),
+            'categories' => $this->categories(),
+            'query' => $query,
+            'results' => $query === '' ? null : Article::with('category')
+                ->published()
+                ->where(fn ($match) => $match
+                    ->where('title', 'like', "%{$query}%")
+                    ->orWhere('summary', 'like', "%{$query}%")
+                    ->orWhere('content', 'like', "%{$query}%"))
+                ->latest('published_at')
+                ->paginate(12)
+                ->withQueryString(),
             'latestArticles' => Article::with(['category', 'tags'])
                 ->published()
                 ->latest('published_at')
-                ->take(6)
+                ->take(5)
                 ->get(),
+            'articlesCount' => Article::published()->count(),
         ]);
     }
 
@@ -32,8 +43,9 @@ class GuideController extends Controller
 
         return view('guide.category', [
             'category' => $category,
+            'categories' => $this->categories(),
             'articles' => $category->articles()
-                ->with('tags')
+                ->with(['tags', 'category'])
                 ->published()
                 ->latest('published_at')
                 ->paginate(12),
@@ -49,6 +61,8 @@ class GuideController extends Controller
 
         return view('guide.show', [
             'article' => $article,
+            'content' => ArticleContent::render($article->content),
+            'categories' => $this->categories(),
             'relatedArticles' => Article::with('category')
                 ->published()
                 ->where('category_id', $category->id)
@@ -57,6 +71,15 @@ class GuideController extends Controller
                 ->take(3)
                 ->get(),
         ]);
+    }
+
+    private function categories(): Collection
+    {
+        return ArticleCategory::query()
+            ->withCount(['articles as published_articles_count' => fn ($query) => $query->published()])
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get();
     }
 
     private function ensureEnabled(): void

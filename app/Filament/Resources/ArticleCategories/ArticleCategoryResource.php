@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ArticleCategories;
 
+use App\Filament\Navigation\AdminGroup;
 use App\Filament\Resources\ArticleCategories\Pages\CreateArticleCategory;
 use App\Filament\Resources\ArticleCategories\Pages\EditArticleCategory;
 use App\Filament\Resources\ArticleCategories\Pages\ListArticleCategories;
@@ -11,14 +12,18 @@ use App\Models\ArticleCategory;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class ArticleCategoryResource extends Resource
 {
     protected static ?string $model = ArticleCategory::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'lucide-folder-tree';
+
+    protected static string|UnitEnum|null $navigationGroup = AdminGroup::Content;
+
+    protected static ?int $navigationSort = 2;
 
     public static function getModelLabel(): string { return __('قسم مقال'); }
 

@@ -64,9 +64,10 @@ class BirdController extends Controller
         ]);
     }
 
-    public function show(Bird $bird)
+    public function show(Request $request, Bird $bird)
     {
         abort_unless($bird->approval_status === 'approved' && $bird->seller?->status === 'active', 404);
+        $this->countView($request, $bird);
         $bird->load(['breed', 'media', 'seller.sellerProfile.region.country', 'region']);
         $profile = $bird->seller->sellerProfile;
 
@@ -84,6 +85,22 @@ class BirdController extends Controller
                 ->take(8)
                 ->get(),
         ]);
+    }
+
+    /**
+     * One view per visitor session; the seller looking at their own listing does not count.
+     * The listing's updated_at stays as it is: a view is not an edit.
+     */
+    private function countView(Request $request, Bird $bird): void
+    {
+        $seen = $request->session()->get('viewed_birds', []);
+
+        if (in_array($bird->id, $seen, true) || $request->user()?->id === $bird->seller_id) {
+            return;
+        }
+
+        Bird::withoutTimestamps(fn () => $bird->increment('views_count'));
+        $request->session()->put('viewed_birds', array_slice([...$seen, $bird->id], -200));
     }
 
     /**

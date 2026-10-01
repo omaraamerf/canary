@@ -16,13 +16,15 @@ class ArticlesTable
             ->columns([
                 TextColumn::make('category.name')
                     ->label(__('القسم'))
-                    ->sortable(),
+                    ->sortable()
+                    ->visibleFrom('md'),
                 TextColumn::make('title')
                     ->label(__('العنوان'))
                     ->searchable(),
                 TextColumn::make('slug')
                     ->label(__('المعرّف'))
-                    ->searchable(),
+                    ->searchable()
+                    ->visibleFrom('lg'),
                 TextColumn::make('status')
                     ->label(__('الحالة'))
                     ->badge()
@@ -31,11 +33,17 @@ class ArticlesTable
                         'published' => __('منشور'),
                         'archived' => __('مؤرشف'),
                         default => $state,
+                    })
+                    ->color(fn (string $state): string => match ($state) {
+                        'published' => 'success',
+                        'archived' => 'warning',
+                        default => 'gray',
                     }),
                 TextColumn::make('published_at')
                     ->label(__('تاريخ النشر'))
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->visibleFrom('md'),
                 TextColumn::make('created_at')
                     ->label(__('تاريخ الإنشاء'))
                     ->dateTime()

@@ -3,6 +3,7 @@
 namespace App\Filament\Seller\Resources\Orders\Tables;
 
 use App\Filament\Shared\Actions\UpdateOrderStatusAction;
+use App\Filament\Shared\Tables\Columns;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -14,23 +15,19 @@ class OrdersTable
     {
         return $table
             ->columns([
-                TextColumn::make('reference')->label(__('المرجع'))->searchable()->sortable(),
-                TextColumn::make('bird.title')->label(__('الطائر'))->searchable(),
-                TextColumn::make('buyer_name')->label(__('المشتري'))->searchable(),
+                TextColumn::make('reference')->label(__('المرجع'))->searchable()->sortable()->fontFamily('mono')->visibleFrom('md'),
+                TextColumn::make('bird.title')->label(__('الطائر'))->searchable()->weight('semibold'),
+                TextColumn::make('buyer_name')->label(__('المشتري'))->searchable()->visibleFrom('md'),
                 TextColumn::make('phone')
                     ->label(__('الهاتف'))
                     ->formatStateUsing(fn (string $state, $record): string => $record->buyerPhoneCanBeRevealed()
                         ? $state
-                        : __('يظهر بعد تحويل الطلب إلى قيد التجهيز')),
-                TextColumn::make('buyerRegion.name')->label(__('المنطقة')),
-                TextColumn::make('status')
-                    ->label(__('الحالة'))
-                    ->badge()
-                    ->formatStateUsing(fn (string $state): string => UpdateOrderStatusAction::statusOptions()[$state] ?? $state),
-                TextColumn::make('price_snapshot')
-                    ->label(__('السعر'))
-                    ->formatStateUsing(fn ($state, $record): string => number_format((float) $state, 2).' '.$record->currency_snapshot),
-                TextColumn::make('created_at')->label(__('تاريخ الطلب'))->dateTime()->sortable(),
+                        : __('يظهر بعد تحويل الطلب إلى قيد التجهيز'))
+                    ->visibleFrom('lg'),
+                TextColumn::make('buyerRegion.name')->label(__('المنطقة'))->visibleFrom('lg'),
+                Columns::orderStatus(),
+                Columns::price('price_snapshot', 'currency_snapshot')->visibleFrom('md'),
+                TextColumn::make('created_at')->label(__('تاريخ الطلب'))->since()->sortable(),
             ])
             ->filters([
                 SelectFilter::make('status')

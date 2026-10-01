@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Birds;
 
+use App\Enums\ApprovalStatus;
+use App\Filament\Navigation\AdminGroup;
 use App\Filament\Resources\Birds\Pages\CreateBird;
 use App\Filament\Resources\Birds\Pages\EditBird;
 use App\Filament\Resources\Birds\Pages\ListBirds;
@@ -11,16 +13,20 @@ use App\Models\Bird;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use UnitEnum;
 
 class BirdResource extends Resource
 {
     protected static ?string $model = Bird::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'lucide-bird';
+
+    protected static string|UnitEnum|null $navigationGroup = AdminGroup::Market;
+
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $recordTitleAttribute = 'title';
 
@@ -66,6 +72,24 @@ class BirdResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    /** Count of what is waiting, shown beside the sidebar item. */
+    public static function getNavigationBadge(): ?string
+    {
+        $count = Bird::query()->where('approval_status', ApprovalStatus::Pending->value)->count();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): string
+    {
+        return 'warning';
+    }
+
+    public static function getNavigationBadgeTooltip(): ?string
+    {
+        return __('بانتظار المراجعة');
     }
 
     public static function getEloquentQuery(): Builder

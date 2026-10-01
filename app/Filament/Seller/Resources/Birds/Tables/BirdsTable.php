@@ -3,8 +3,8 @@
 namespace App\Filament\Seller\Resources\Birds\Tables;
 
 use App\Filament\Shared\Actions\EntityActions;
+use App\Filament\Shared\Tables\Columns;
 use Filament\Actions\EditAction;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -15,34 +15,18 @@ class BirdsTable
     {
         return $table
             ->columns([
-                ImageColumn::make('primary_image')->label(__('الصورة'))->square(),
-                TextColumn::make('title')->label(__('الإعلان'))->searchable()->sortable(),
+                Columns::birdImage(),
+                TextColumn::make('title')->label(__('الإعلان'))->searchable()->sortable()->weight('semibold'),
                 TextColumn::make('breed.name')
                     ->label(__('السلالة'))
-                    ->formatStateUsing(fn ($record): string => $record->breed->localized_name),
-                TextColumn::make('price')
-                    ->label(__('السعر'))
-                    ->formatStateUsing(fn ($state, $record): string => number_format((float) $state, 2).' '.$record->currency)
-                    ->sortable(),
-                TextColumn::make('status')
-                    ->label(__('الحالة'))
-                    ->badge()
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'available' => __('متاح'),
-                        'reserved' => __('محجوز'),
-                        'sold' => __('مباع'),
-                        default => $state,
-                    }),
-                TextColumn::make('approval_status')
-                    ->label(__('المراجعة'))
-                    ->badge()
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'pending' => __('بانتظار المراجعة'),
-                        'approved' => __('منشور'),
-                        'rejected' => __('مرفوض'),
-                        default => $state,
-                    }),
-                TextColumn::make('created_at')->label(__('تاريخ الإضافة'))->dateTime()->sortable(),
+                    ->formatStateUsing(fn ($record): string => $record->breed->localized_name)
+                    ->visibleFrom('md'),
+                Columns::price('price', 'currency')->sortable(),
+                Columns::birdStatus(),
+                Columns::approvalStatus()->visibleFrom('md'),
+                TextColumn::make('views_count')->label(__('المشاهدات'))->numeric()->sortable()->visibleFrom('md'),
+                TextColumn::make('orders_count')->label(__('الطلبات'))->counts('orders')->sortable()->visibleFrom('lg'),
+                TextColumn::make('created_at')->label(__('تاريخ الإضافة'))->date('j F Y')->sortable()->visibleFrom('lg'),
             ])
             ->filters([
                 SelectFilter::make('approval_status')->label(__('المراجعة'))->options([
@@ -52,6 +36,7 @@ class BirdsTable
                 ]),
             ])
             ->recordActions([EditAction::make()])
-            ->toolbarActions([EntityActions::deleteBulk()]);
+            ->toolbarActions([EntityActions::deleteBulk()])
+            ->defaultSort('created_at', 'desc');
     }
 }

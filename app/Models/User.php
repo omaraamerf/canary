@@ -8,6 +8,7 @@ use App\Enums\UserStatus;
 use Database\Factories\UserFactory;
 use Filament\Facades\Filament;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,7 +16,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, HasAvatar
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, HasRoles, Notifiable;
@@ -137,6 +138,12 @@ class User extends Authenticatable implements FilamentUser
     public function getPublicNameAttribute(): string
     {
         return $this->isSeller() ? ($this->sellerProfile?->display_name ?: $this->name) : $this->name;
+    }
+
+    /** The uploaded photo; without one, App\Filament\Support\InitialAvatarProvider draws the initial. */
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->avatar_url;
     }
 
     public function canAccessPanel(Panel $panel): bool

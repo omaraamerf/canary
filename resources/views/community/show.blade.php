@@ -5,7 +5,6 @@
 <section class="detail-section"><div class="container narrow">
     <nav class="breadcrumbs"><a href="{{ route('community.index') }}">{{ __('ui.community.title') }}</a><x-lucide-chevron-left /><span>{{ $post->category->label() }}</span></nav>
 
-    @if(session('success'))<div class="notice mb-4">{{ session('success') }}</div>@endif
     @if($post->status !== \App\Enums\PostStatus::Published)<div class="form-errors mb-4">{{ __('ui.community.hidden_notice') }}</div>@endif
 
     <article class="post-detail">

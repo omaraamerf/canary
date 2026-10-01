@@ -8,7 +8,7 @@
         @endif
     </a>
     <div class="bird-card-body">
-        <div class="flex items-center justify-between gap-3 text-sm text-[#6d7167]"><span>{{ $bird->breed->localized_name }}</span><span class="inline-flex items-center gap-1"><x-lucide-map-pin class="size-4" />{{ $bird->location_label }}</span></div>
+        <div class="flex items-center justify-between gap-3 text-sm text-fg-muted"><span>{{ $bird->breed->localized_name }}</span><span class="inline-flex items-center gap-1"><x-lucide-map-pin class="size-4" />{{ $bird->location_label }}</span></div>
         <h3><a href="{{ route('birds.show', $bird) }}">{{ $bird->title }}</a></h3>
         <div class="bird-tags"><span>{{ __('ui.sex.'.$bird->sex) }}</span><span>{{ $bird->color }}</span></div>
         <div class="bird-card-footer"><strong>{{ number_format($bird->price) }} <small>{{ $bird->currency_label }}</small></strong><a href="{{ route('birds.show', $bird) }}" aria-label="{{ __('ui.common.view') }} {{ $bird->title }}"><x-lucide-arrow-left /></a></div>

@@ -4,7 +4,6 @@
 @include('partials.profile-header', ['member' => $user, 'stats' => $stats, 'isOwner' => true])
 
 <section class="section-band pt-8"><div class="container">
-    @if(session('success'))<div class="notice profile-flash">{{ session('success') }}</div>@endif
     <div class="profile-layout">
         <div>
             <div class="section-heading"><div><span class="kicker">{{ __('ui.nav.community') }}</span><h2>{{ __('ui.account.my_posts') }}</h2></div>
@@ -14,7 +13,7 @@
                 <div class="post-list">@foreach($posts as $post)<x-post-card :post="$post" />@endforeach</div>
                 {{ $posts->links() }}
             @else
-                <div class="empty-state"><x-lucide-message-circle-question /><h2>{{ __('ui.account.no_posts') }}</h2><p>{{ __('ui.account.no_posts_help') }}</p></div>
+                <x-ui.empty-state icon="message-circle-question" :title="__('ui.account.no_posts')" :text="__('ui.account.no_posts_help')" />
             @endif
         </div>
         <aside class="profile-side">

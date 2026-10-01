@@ -9,7 +9,7 @@
         <div class="post-list">@foreach($posts as $post)<x-post-card :post="$post" />@endforeach</div>
         {{ $posts->links() }}
     @else
-        <div class="empty-state"><x-lucide-message-circle-question /><h2>{{ __('ui.account.member_no_posts') }}</h2></div>
+        <x-ui.empty-state icon="message-circle-question" :title="__('ui.account.member_no_posts')" />
     @endif
 </div></section>
 @endsection

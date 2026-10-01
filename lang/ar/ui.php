@@ -13,7 +13,9 @@ return [
         'track' => 'تتبع طلبك', 'seller_login' => 'دخول البائع',
         'community' => 'اسأل المربين', 'login' => 'دخول', 'register' => 'حساب جديد', 'logout' => 'تسجيل الخروج',
         'seller_panel' => 'لوحة البائع', 'admin_panel' => 'لوحة الإدارة',
+        'birds_short' => 'الطيور', 'guide_short' => 'الدليل', 'community_short' => 'اسأل',
     ],
+    'theme' => ['dark_mode' => 'الوضع الليلي'],
     'layout' => [
         'title' => 'سوق الكناري الموثوق',
         'description' => 'طيور كناري مختارة ببيانات واضحة وحجز مباشر.',
@@ -22,6 +24,8 @@ return [
         'choose_region' => 'اختر منطقتك',
         'region_help' => 'سنُظهر لك الطيور الأقرب أولًا، ويمكنك تغيير الاختيار في أي وقت.',
         'or' => 'أو', 'show_all_regions' => 'عرض كل المناطق',
+        'skip_to_content' => 'تخطَّ إلى المحتوى', 'close' => 'إغلاق', 'menu' => 'القائمة',
+        'bottom_navigation' => 'التنقل السريع', 'footer_market' => 'السوق', 'footer_learn' => 'المعرفة', 'footer_company' => 'عن رفقنا',
         'footer_about' => 'نرتب بيانات الطائر وصوره وفيديوه في مكان واحد، ثم نؤكد الحجز معك مباشرة.',
         'rights' => 'جميع الحقوق محفوظة.',
     ],

@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title }} | {{ __('ui.brand.name') }}</title>
+    @include('partials.theme-script')
     {{-- Styles are optional here: a missing asset build must not break the error page itself. --}}
     @if(is_file(public_path('build/manifest.json')) || is_file(public_path('hot')))
         @vite('resources/css/app.css')

@@ -15,6 +15,8 @@ use App\Http\Controllers\Seller\AuthController as SellerAuthController;
 use App\Http\Controllers\SellerProfileController;
 use App\Http\Middleware\EnsureCommunityEnabled;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\MessageBag;
+use Illuminate\Support\ViewErrorBag;
 
 Route::get('/', HomeController::class)->name('home');
 Route::get('/locale/{locale}', LocaleController::class)
@@ -69,3 +71,12 @@ Route::middleware('auth')->prefix('account')->name('account.')->group(function (
 });
 
 Route::get('/members/{user}', [MemberController::class, 'show'])->name('members.show');
+
+// Component gallery for reviewing the design system; never registered outside local development.
+if (app()->environment('local')) {
+    Route::get('/_ui', function () {
+        view()->share('errors', (new ViewErrorBag)->put('default', new MessageBag(['demo_email' => __('validation.email', ['attribute' => __('ui.common.email')])])));
+
+        return view('dev.ui');
+    })->name('dev.ui');
+}

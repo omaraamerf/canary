@@ -1,7 +1,10 @@
 @import "tailwindcss" source(none);
 @import "@fontsource-variable/readex-pro/wght.css";
 @import "./tokens.css";
-@import "./site.css";
+@import "./base.css" layer(base);
+@import "./components.css" layer(components);
+@import "./layout.css" layer(components);
+@import "./pages.css" layer(components);
 
 @source "../views";
 @source "../js";

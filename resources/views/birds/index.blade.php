@@ -22,7 +22,7 @@
     </aside>
     <div>
         <div class="results-toolbar"><span><strong>{{ $birds->total() }}</strong> {{ __('ui.common.results') }}</span><form>@foreach(request()->except('sort','page') as $key=>$value)@if(is_scalar($value))<input type="hidden" name="{{ $key }}" value="{{ $value }}">@endif @endforeach<select name="sort" onchange="this.form.submit()" aria-label="{{ __('ui.catalog.sort') }}"><option value="newest">{{ __('ui.catalog.newest') }}</option><option value="price_asc" @selected(request('sort') === 'price_asc')>{{ __('ui.catalog.lowest') }}</option><option value="price_desc" @selected(request('sort') === 'price_desc')>{{ __('ui.catalog.highest') }}</option></select></form></div>
-        @if($birds->count())<div class="birds-grid catalog-grid">@foreach($birds as $bird)<x-bird-card :bird="$bird" />@endforeach</div>{{ $birds->links() }}@else<div class="empty-state"><x-lucide-bird /><h2>{{ __('ui.catalog.empty') }}</h2><p>{{ __('ui.catalog.empty_help') }}</p><a class="btn btn-dark" href="{{ route('birds.index') }}">{{ __('ui.nav.birds') }}</a></div>@endif
+        @if($birds->count())<div class="birds-grid catalog-grid">@foreach($birds as $bird)<x-bird-card :bird="$bird" />@endforeach</div>{{ $birds->links() }}@else<x-ui.empty-state icon="bird" :title="__('ui.catalog.empty')" :text="__('ui.catalog.empty_help')"><x-ui.button variant="dark" :href="route('birds.index')">{{ __('ui.nav.birds') }}</x-ui.button></x-ui.empty-state>@endif
     </div>
 </div></section>
 @endsection

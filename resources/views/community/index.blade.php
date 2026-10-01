@@ -22,13 +22,12 @@
         </form>
     </aside>
     <div>
-        @if(session('success'))<div class="notice mb-4">{{ session('success') }}</div>@endif
         <div class="results-toolbar"><span><strong>{{ $posts->total() }}</strong> {{ __('ui.common.results') }}</span></div>
         @if($posts->count())
             <div class="post-list">@foreach($posts as $post)<x-post-card :post="$post" />@endforeach</div>
             {{ $posts->links() }}
         @else
-            <div class="empty-state"><x-lucide-message-circle-question /><h2>{{ __('ui.community.empty') }}</h2><p>{{ __('ui.community.empty_help') }}</p><a class="btn btn-dark" href="{{ route('community.create') }}">{{ __('ui.community.new_post') }}</a></div>
+            <x-ui.empty-state icon="message-circle-question" :title="__('ui.community.empty')" :text="__('ui.community.empty_help')"><x-ui.button variant="dark" :href="route('community.create')">{{ __('ui.community.new_post') }}</x-ui.button></x-ui.empty-state>
         @endif
     </div>
 </div></section>

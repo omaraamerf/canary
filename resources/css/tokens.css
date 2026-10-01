@@ -1,10 +1,12 @@
 /*
  * Design tokens.
  *
- * Brand ramps are OKLCH and anchored on the existing brand colors (the commented
- * hex values), so introducing them changes nothing visible. Components should use
- * the semantic utilities (bg-surface, text-fg, border-line…) rather than ramp steps,
- * so the dark theme can swap them in one place.
+ * Brand ramps are OKLCH and anchored on the original brand colors (the commented
+ * hex values). Components use the semantic tokens below, never ramp steps, so the
+ * dark theme only has to change this file.
+ *
+ * Theme: light-dark() follows the OS by default; data-theme="light|dark" on <html>
+ * pins a choice (set by the theme toggle, see resources/js/theme.js).
  */
 
 @theme {
@@ -23,7 +25,7 @@
     --color-canary-900: oklch(36% 0.06 72);
     --color-canary-950: oklch(26% 0.04 70);
 
-    /* Leaf green — trust, success, secondary accents. */
+    /* Leaf green — trust, success, links. */
     --color-leaf-50: oklch(98.5% 0.008 156);
     --color-leaf-100: oklch(96.2% 0.015 156);
     --color-leaf-200: oklch(92% 0.03 156);
@@ -36,7 +38,7 @@
     --color-leaf-900: oklch(30% 0.04 156);
     --color-leaf-950: oklch(22% 0.025 156);
 
-    /* Sage — warm green-grey neutrals for text, lines and surfaces. */
+    /* Sage — warm green-grey neutrals. */
     --color-sage-50: oklch(97.4% 0.007 115.7); /* #f6f7f2 */
     --color-sage-100: oklch(95.8% 0.007 124.4); /* #f0f2ed */
     --color-sage-200: oklch(89.9% 0.011 123.5); /* #dcdfd7 */
@@ -49,53 +51,100 @@
     --color-sage-900: oklch(25.7% 0.015 136.7); /* #20251e */
     --color-sage-950: oklch(21.7% 0.011 132.7); /* #181b16 */
 
-    --color-danger-600: oklch(48.7% 0.152 32.4); /* #a4331f */
-
-    --shadow-header: 0 1px 0 rgb(24 27 22 / 0.02), 0 8px 24px -18px rgb(24 27 22 / 0.25);
-    --shadow-popover: 0 16px 36px rgb(30 36 29 / 0.14);
+    --radius-control: 0.75rem;
+    --radius-card: 1rem;
+    --radius-panel: 1.25rem;
 }
 
 @theme inline {
     --color-bg: var(--bg);
     --color-surface: var(--surface);
-    --color-surface-muted: var(--surface-muted);
+    --color-surface-2: var(--surface-2);
+    --color-sunken: var(--sunken);
     --color-fg: var(--fg);
+    --color-fg-2: var(--fg-2);
     --color-fg-muted: var(--fg-muted);
     --color-line: var(--border);
+    --color-line-strong: var(--border-strong);
     --color-primary: var(--primary);
     --color-on-primary: var(--on-primary);
     --color-accent: var(--accent);
     --color-inverse: var(--inverse);
+    --color-on-inverse: var(--on-inverse);
     --color-danger: var(--danger);
 }
 
 :root {
-    color-scheme: light;
-    --bg: var(--color-sage-50);
-    --surface: #fff;
-    --surface-muted: var(--color-sage-100);
-    --fg: var(--color-sage-950);
-    --fg-muted: var(--color-sage-600);
-    --border: var(--color-sage-200);
+    color-scheme: light dark;
+
+    /* Surfaces */
+    --bg: light-dark(var(--color-sage-50), oklch(17.5% 0.01 135));
+    --surface: light-dark(#fff, oklch(22% 0.012 135));
+    --surface-2: light-dark(var(--color-sage-100), oklch(26.5% 0.013 135));
+    --sunken: light-dark(oklch(93% 0.01 124), oklch(19.5% 0.011 135));
+    --overlay-surface: light-dark(rgb(255 255 255 / 0.9), rgb(28 33 27 / 0.88));
+
+    /* Text */
+    --fg: light-dark(var(--color-sage-950), oklch(95% 0.007 120));
+    --fg-2: light-dark(var(--color-sage-700), oklch(86% 0.011 125));
+    /* Slightly darker than sage-600 so muted text keeps 4.5:1 even on --sunken. */
+    --fg-muted: light-dark(oklch(50% 0.017 128.8), oklch(74% 0.013 126));
+
+    /* Lines */
+    --border: light-dark(var(--color-sage-200), oklch(32% 0.014 132));
+    --border-strong: light-dark(oklch(85.5% 0.012 124), oklch(40% 0.015 130));
+    --border-subtle: light-dark(oklch(94.5% 0.006 120), oklch(27.5% 0.012 135));
+
+    /* Brand */
     --primary: var(--color-canary-400);
-    --on-primary: var(--color-sage-900);
-    --accent: var(--color-leaf-700);
-    --inverse: var(--color-sage-900);
-    --danger: var(--color-danger-600);
+    --primary-hover: light-dark(var(--color-canary-500), var(--color-canary-300));
+    --on-primary: var(--color-sage-950);
+    --primary-soft: light-dark(oklch(96.8% 0.033 95.9), oklch(30% 0.045 88));
+    --primary-ink: light-dark(oklch(50% 0.105 78), var(--color-canary-400));
+    --accent: light-dark(var(--color-leaf-700), var(--color-leaf-400));
+    --accent-hover: light-dark(var(--color-leaf-800), var(--color-leaf-300));
+    --on-accent: light-dark(#fff, var(--color-sage-950));
+    --accent-soft: light-dark(oklch(92.5% 0.035 156), oklch(30% 0.04 156));
+
+    /* Inverse bands (dark in both themes: hero bands, footer, chips on photos) */
+    --inverse: light-dark(var(--color-sage-900), oklch(13.5% 0.01 135));
+    --inverse-deep: light-dark(oklch(17% 0.012 135), oklch(11% 0.008 135));
+    --inverse-hover: light-dark(var(--color-sage-800), oklch(22% 0.012 135));
+    --inverse-line: light-dark(oklch(34% 0.014 134), oklch(28% 0.012 135));
+    --on-inverse: #fff;
+    /* High-emphasis neutral (dark buttons, selected chips): flips to light in the dark theme. */
+    --strong: light-dark(var(--color-sage-900), oklch(92% 0.008 120));
+    --strong-hover: light-dark(var(--color-sage-800), oklch(84% 0.01 122));
+    --on-strong: light-dark(#fff, var(--color-sage-950));
+    --on-inverse-2: oklch(83% 0.012 125);
+    --on-inverse-muted: oklch(68% 0.013 127);
+
+    /* Status */
+    --success-soft: var(--accent-soft);
+    --success-fg: light-dark(oklch(40% 0.07 156), oklch(86% 0.07 156));
+    --warning-soft: light-dark(oklch(95.5% 0.06 95), oklch(31% 0.055 88));
+    --warning-fg: light-dark(oklch(45% 0.09 80), oklch(88% 0.11 90));
+    --danger: light-dark(oklch(48.7% 0.152 32.4), oklch(72% 0.14 30)); /* #a4331f */
+    --on-danger: light-dark(#fff, var(--color-sage-950));
+    --danger-soft: light-dark(oklch(93% 0.035 30), oklch(30% 0.06 30));
+    --danger-fg: light-dark(oklch(42% 0.13 32), oklch(86% 0.07 30));
+    --info-soft: light-dark(oklch(94% 0.025 250), oklch(30% 0.05 250));
+    --info-fg: light-dark(oklch(42% 0.12 252), oklch(86% 0.06 250));
+
+    /* Elevation */
+    --shadow-color: light-dark(rgb(24 27 22 / 0.12), rgb(0 0 0 / 0.45));
+    --shadow-sm: 0 1px 2px var(--shadow-color);
+    --shadow-md: 0 10px 28px -12px var(--shadow-color);
+    --shadow-lg: 0 24px 48px -16px var(--shadow-color);
+    --focus-ring: 0 0 0 3px color-mix(in oklab, var(--accent) 35%, transparent);
+
+    /* Photo scrims stay dark in both themes. */
+    --scrim: rgb(13 18 11 / 0.78);
+    --backdrop: rgb(18 22 17 / 0.58);
+
+    --header-height: 72px;
+    --bottom-nav-height: 64px;
 }
 
-/* Dark theme values, switched on by data-theme once components use semantic tokens. */
-:root[data-theme="dark"] {
-    color-scheme: dark;
-    --bg: var(--color-sage-950);
-    --surface: var(--color-sage-900);
-    --surface-muted: var(--color-sage-800);
-    --fg: var(--color-sage-50);
-    --fg-muted: var(--color-sage-300);
-    --border: var(--color-sage-800);
-    --primary: var(--color-canary-400);
-    --on-primary: var(--color-sage-950);
-    --accent: var(--color-leaf-400);
-    --inverse: var(--color-sage-950);
-    --danger: oklch(70% 0.15 32.4);
-}
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\SettingKey;
 use App\Models\Article;
 use App\Models\ArticleCategory;
 use App\Models\Setting;
@@ -84,6 +85,6 @@ class GuideController extends Controller
 
     private function ensureEnabled(): void
     {
-        abort_unless(Setting::boolean('guide_enabled', true), 404);
+        abort_unless(Setting::boolean(SettingKey::GuideEnabled->value, true), 404);
     }
 }

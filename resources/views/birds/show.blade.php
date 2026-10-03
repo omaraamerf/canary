@@ -122,7 +122,7 @@
                     <h2>{{ __('ui.detail.video') }}</h2>
                     <div class="video-grid">
                         @foreach($videos as $video)
-                            <div class="video-frame">@if($video->isCloudinary())<video src="{{ $video->url }}" controls preload="metadata" playsinline title="{{ __('ui.detail.video_title', ['title' => $bird->title]) }}"></video>@else<iframe src="{{ $video->embed_url }}" allow="autoplay" allowfullscreen title="{{ __('ui.detail.video_title', ['title' => $bird->title]) }}"></iframe>@endif<span class="video-brand-cover" aria-hidden="true"><x-lucide-bird /></span></div>
+                            <div class="video-frame">@if($video->isCloudinary())<video src="{{ $video->url }}" controls preload="metadata" playsinline title="{{ __('ui.detail.video_title', ['title' => $bird->title]) }}"></video>@else<iframe src="{{ $video->embed_url }}" allow="autoplay" allowfullscreen title="{{ __('ui.detail.video_title', ['title' => $bird->title]) }}"></iframe>@endif<span class="video-brand-cover" aria-hidden="true"><img src="/images/brand/mark.svg" alt=""></span></div>
                         @endforeach
                     </div>
                 </section>

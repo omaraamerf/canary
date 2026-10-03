@@ -11,7 +11,7 @@
  *
  * Bump VERSION to drop every saved copy.
  */
-const VERSION = 'v1';
+const VERSION = 'v2';
 const PAGES = `pages-${VERSION}`;
 const ASSETS = `assets-${VERSION}`;
 const OFFLINE_URL = '/offline';

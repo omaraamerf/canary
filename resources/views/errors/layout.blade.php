@@ -21,7 +21,7 @@
 <body class="bg-bg text-fg antialiased">
     <header class="error-header"><div class="container">
         <a href="{{ url('/') }}" class="brand" aria-label="{{ __('ui.nav.home') }}">
-            <span class="brand-mark"><x-lucide-bird /></span>
+            <img class="brand-mark" src="/images/brand/mark.svg" alt="" width="44" height="44">
             <span><strong>{{ __('ui.brand.name') }}</strong><small>{{ __('ui.brand.tagline') }}</small></span>
         </a>
     </div></header>

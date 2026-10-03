@@ -38,7 +38,7 @@
     <header class="site-header">
         <div class="container header-bar">
             <a href="{{ route('home') }}" class="brand" aria-label="{{ __('ui.nav.home') }}">
-                <span class="brand-mark"><x-lucide-bird /></span>
+                <img class="brand-mark" src="/images/brand/mark.svg" alt="" width="44" height="44">
                 <span><strong>{{ __('ui.brand.name') }}</strong><small>{{ __('ui.brand.tagline') }}</small></span>
             </a>
 
@@ -130,7 +130,7 @@
     <footer class="site-footer">
         <div class="container footer-grid">
             <div class="footer-brand">
-                <a href="{{ route('home') }}" class="brand brand-light"><span class="brand-mark"><x-lucide-bird /></span><span><strong>{{ __('ui.brand.name') }}</strong><small>{{ __('ui.brand.promise') }}</small></span></a>
+                <a href="{{ route('home') }}" class="brand brand-light"><img class="brand-mark" src="/images/brand/mark.svg" alt="" width="44" height="44"><span><strong>{{ __('ui.brand.name') }}</strong><small>{{ __('ui.brand.promise') }}</small></span></a>
                 <p>{{ __('ui.layout.footer_about') }}</p>
             </div>
             <div class="footer-col">

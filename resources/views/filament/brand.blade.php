@@ -1,5 +1,5 @@
-{{-- Panel logo: the site's bird mark beside the panel name (Blade icon components are off in panels). --}}
+{{-- Panel logo: the site's mark beside the panel name. --}}
 <span class="panel-brand">
-    <span class="panel-brand-mark">@svg('lucide-bird')</span>
+    <img class="panel-brand-mark" src="/images/brand/mark.svg" alt="">
     <strong>{{ $name }}</strong>
 </span>

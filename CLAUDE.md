@@ -42,6 +42,7 @@ PHP 8.2، Laravel 12، Filament 5، spatie/laravel-permission 6، mallardduck/bl
 | `app/Filament/Support` | `SiteTheme` (ألوان وخط وشعار مشترك بين اللوحتين)، `InitialAvatarProvider` |
 | `resources/views` | واجهة الموقع (Blade)، ومكونات `components/ui/*` |
 | `resources/css`, `resources/js` | مداخل Vite: `app.css`, `fonts.css`, `panels.css` (للوحتين), `app.js` |
+| `public/images/brand` | الشعار الكامل `logo.svg` والعلامة `mark.svg` (رأس الموقع والفوتر واللوحتين). أيقونات التطبيق والـ favicon في `public/images/icons` |
 | `scripts/ui-check` | `npm run ui:audit / ui:baseline / ui:compare / ui:perf` على نسخة شغالة |
 
 ## الأدوار والصلاحيات
